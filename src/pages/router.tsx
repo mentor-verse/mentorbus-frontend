@@ -16,7 +16,7 @@ export function MainRouter() {
       <Route path="/mentorbus-frontend" element={<Onboarding />} />
       <Route path="/mentorbus-frontend/onboarding" element={<Onboarding />} />
       <Route path="/mentorbus-frontend/kakao" element={<Kakao />} />
-      <Route path="/mentorbus-frontend/oauth" element={<KakaoRedirect />} />
+      <Route path="/oauth" element={<KakaoRedirect />} />
       <Route path="/mentorbus-frontend/profile" element={<Profile />} />
       <Route path="mentorbus-frontend/main" element={<MainPage />} />
       <Route path="mentorbus-frontend/find" element={<FindMentor />} />
