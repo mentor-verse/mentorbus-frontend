@@ -10,6 +10,6 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: "/mentorbus-frontend/", // Ensure this matches your deployment base
-  publicDir: "public", // Explicitly set the public directory
+  base: "/mentorbus-frontend/",
 });
+
