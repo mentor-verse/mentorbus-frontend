@@ -9,6 +9,22 @@ interface SelectedBox {
   name: string;
   info: string;
   date: string;
+  sort: string;
+}
+
+// Define a type for valid sort values
+type SortType = "인문계열" | "예술계열" | "IT계열" | "공학계열";
+
+const gatherTownUrls: Record<SortType, string> = {
+  "인문계열": "nJCm-X-RR5OojtQzylwy",
+  "예술계열": "5RvF4SJkTl6csexWVxQw",
+  "IT계열": "PsbK1kvsSF2vqKIf-VLj",
+  "공학계열": "nWPWj7r6T8eRB2mVaUT8"
+};
+
+// Type guard to check if a value is a valid SortType
+function isSortType(value: any): value is SortType {
+  return ["인문계열", "예술계열", "IT계열", "공학계열"].includes(value);
 }
 
 export function MentorBusPage() {
@@ -31,6 +47,11 @@ export function MentorBusPage() {
   const handleEnter = () => {
     setHasEntered(true);
     setFilter("applied"); // Update filter to "applied" after entry
+
+    if (selectedBox && isSortType(selectedBox.sort)) {
+      const url = `https://app.gather.town/invite?token=${gatherTownUrls[selectedBox.sort]}`;
+      window.location.href = url;
+    }
   };
 
   return (
@@ -58,10 +79,11 @@ export function MentorBusPage() {
                     name={selectedBox.name}
                     info={selectedBox.info}
                     date={selectedBox.date}
+                    sort={selectedBox.sort} // Pass sort to the SearchBox
                     variant="default"
                     size="default"
                     onClick={handleEnter} // Pass handleEnter function to the SearchBox
-                                    >
+                   >
                     입장하기
                   </SearchBox>
                 </div>
@@ -73,6 +95,7 @@ export function MentorBusPage() {
                     name={selectedBox.name}
                     info={selectedBox.info}
                     date={selectedBox.date}
+                    sort={selectedBox.sort} // Pass sort to the SearchBox
                     variant="default"
                     size="default"
                   >

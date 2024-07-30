@@ -38,7 +38,7 @@ export interface SearchBoxProps
     info: string;
     date: string;
     gen: string;
-
+    sort: string;
 
     asChild?: boolean
 

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { SearchBox } from "@/components/ui/searchbox";
 import { FilterButton } from "@/components/Icons/FilterButton";
 import BottomNav from "@/containers/navbar";
@@ -13,29 +13,40 @@ type SearchBoxType = {
   info: string;
   date: string;
   text: string;
-  type: string;
+  sort: string;
 };
 
 export function FindMentor() {
   const [mainFilter, setMainFilter] = useState("all");
   const [subFilter, setSubFilter] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate();
+  const { school } = useParams(); // Extract school name from URL
+
+  useEffect(() => {
+    if (school) {
+      const decodedSchool = decodeURIComponent(school); // Decode the URL-encoded school name
+      setMainFilter("school");
+      setSubFilter(decodedSchool);
+    }
+  }, [school]);
 
   const searchBoxes: SearchBoxType[] = [
-    { gen: "man", major: "[진로체험의 날] 글로벌미디어학부", name: "윤영재 멘토", info: "숭실대학교 글로벌미디어학부 18학번", date: "2024.08.20(화) 18:00", text: "4/5", type: "인문계열" },
-    { gen: "man", major: "[진로체험의 날] 글로벌미디어학부", name: "윤영재 멘토", info: "한양대학교 글로벌미디어학부 18학번", date: "2024.09.20(화) 18:00", text: "10/15", type: "공학계열" },
-    { gen: "man", major: "[진로체험의 날] 글로벌미디어학부", name: "윤영재 멘토", info: "서울대학교 글로벌미디어학부 18학번", date: "2024.10.20(화) 18:00", text: "9/12", type: "자연계열" },
-    { gen: "man", major: "[진로체험의 날] 글로벌미디어학부", name: "윤영재 멘토", info: "경북대학교 글로벌미디어학부 18학번", date: "2024.11.20(화) 18:00", text: "4/13", type: "사회계열" },
-    { gen: "man", major: "[진로체험의 날] 글로벌미디어학부", name: "윤영재 멘토", info: "중앙대학교 글로벌미디어학부 18학번", date: "2024.12.20(화) 18:00", text: "5/9", type: "의학계열" },
-    { gen: "man", major: "[진로체험의 날] 글로벌미디어학부", name: "윤영재 멘토", info: "경희대학교 글로벌미디어학부 18학번", date: "2025.01.20(화) 18:00", text: "3/4", type: "교육계열" },
+    { gen: "man", major: "[진로체험의 날] 글로벌미디어학부", name: "윤영재 멘토", info: "숭실대학교", date: "2024.08.20(화) 18:00", text: "4/5", sort: "인문계열" },
+    { gen: "man", major: "[진로체험의 날] 글로벌미디어학부", name: "윤영재 멘토", info: "한양대학교", date: "2024.09.20(화) 18:00", text: "10/15", sort: "It계열" },
+    { gen: "man", major: "[진로체험의 날] 글로벌미디어학부", name: "윤영재 멘토", info: "서울대학교", date: "2024.10.20(화) 18:00", text: "9/12", sort: "자연계열" },
+    { gen: "man", major: "[진로체험의 날] 글로벌미디어학부", name: "윤영재 멘토", info: "세종대학교", date: "2024.11.20(화) 18:00", text: "4/13", sort: "공학계열" },
+    { gen: "man", major: "[진로체험의 날] 글로벌미디어학부", name: "윤영재 멘토", info: "중앙대학교", date: "2024.12.20(화) 18:00", text: "5/9", sort: "의학계열" },
+    { gen: "man", major: "[진로체험의 날] 글로벌미디어학부", name: "윤영재 멘토", info: "경희대학교", date: "2025.01.20(화) 18:00", text: "3/4", sort: "교육계열" },
+    { gen: "man", major: "[진로체험의 날] 글로벌미디어학부", name: "윤영재 멘토", info: "연세대학교", date: "2024.11.20(화) 18:00", text: "4/13", sort: "사회계열" },
+    { gen: "man", major: "[진로체험의 날] 글로벌미디어학부", name: "윤영재 멘토", info: "서울시립대학교", date: "2024.11.20(화) 18:00", text: "4/13", sort: "예술계열" },
   ];
-  const uniqueTypes = [...new Set(searchBoxes.map(box => box.type))];
+  const uniqueTypes = [...new Set(searchBoxes.map(box => box.sort))];
   const uniqueInfos = [...new Set(searchBoxes.map(box => box.info))];
 
   const filteredBoxes = searchBoxes.filter(box => {
     if (mainFilter === "all") {
-      return subFilter ? box.type === subFilter : true;
+      return subFilter ? box.sort === subFilter : true;
     } else if (mainFilter === "school") {
       return subFilter ? box.info === subFilter : true;
     }
@@ -84,13 +95,13 @@ export function FindMentor() {
               )}
               {dropdownOpen && (
                 <div className="dropdown absolute mt-[300px] bg-white border border-gray-300 rounded shadow-lg z-10 ml-[0px]">
-                  {mainFilter === "all" && uniqueTypes.map((type, index) => (
+                  {mainFilter === "all" && uniqueTypes.map((sort, index) => (
                     <div
                       key={index}
                       className="dropdown_option p-[10px] hover:bg-gray-200 cursor-pointer"
-                      onClick={() => handleSubFilterChange(type)}
+                      onClick={() => handleSubFilterChange(sort)}
                     >
-                      {type}
+                      {sort}
                     </div>
                   ))}
                   {mainFilter === "school" && uniqueInfos.map((info, index) => (
@@ -117,6 +128,7 @@ export function FindMentor() {
                     variant="state"
                     size="state"
                     onClick={() => handleSearchBoxClick(box)} // Add onClick handler
+                    sort=""
                   >
                     {box.text}
                   </SearchBox>

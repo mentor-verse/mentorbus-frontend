@@ -43,6 +43,7 @@ export function MentorPage() {
                     date={selectedBox.date}
                     variant="null"
                     size="state"
+                    sort={selectedBox.sort}
                   >
                     {selectedBox.text}
                   </SearchBox>

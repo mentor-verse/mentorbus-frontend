@@ -20,7 +20,7 @@ export function SamPage() {
                     <Input className="w-[318px]" type="text" placeholder="안녕"></Input>
                     <Button variant={"default"} size={"default"} className="w-full," >안녕</Button>
                     <Button variant={"kakao"} size={"ka"} >카카오 로그인</Button>
-                    <SearchBox gen="man" major="[진로체험의 날] 글로벌미디어학부" name="윤영재 멘토" info="숭실대학교 글로벌미디어학부 18학번" date="2024.08.20(화) 18:00" variant="null" size="state">4/5</SearchBox>
+                    <SearchBox gen="man" major="[진로체험의 날] 글로벌미디어학부" name="윤영재 멘토" info="숭실대학교 글로벌미디어학부 18학번" date="2024.08.20(화) 18:00" variant="null" size="state" sort="">4/5</SearchBox>
                     <QuestionBox question="Q2. 고2 1학기를 망했는데.." 
                     
                     answer="고1 1학기 때 3등급을 찍고, 2학기 때 2.4까지 올렸습니다. 근데

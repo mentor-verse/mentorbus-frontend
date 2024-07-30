@@ -13,7 +13,7 @@ const College = React.forwardRef<HTMLDivElement, CollegeProps>(
 
     const handleClick = () => {
       // Ensure `img` is properly escaped or sanitized if necessary
-      navigate(`/${img}`);
+      navigate(`/mentorbus-frontend/find/${name}`);
     };
 
     return (
