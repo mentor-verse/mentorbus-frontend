@@ -8,12 +8,11 @@ export interface QuestionBoxProps extends React.HTMLAttributes<HTMLDivElement> {
   answer: string;
   star_num: number;
   comment_num: number;
-  type: string;
-  onStarClick: (starred: boolean, star_num: number) => void; // 새로운 prop 추가
+  onStarClick?: (starred: boolean, star_num: number) => void; 
 }
 
 const QuestionBox = React.forwardRef<HTMLDivElement, QuestionBoxProps>(
-  ({ className, question, answer, star_num, comment_num, onStarClick }) => {
+  ({ className, question, answer, star_num, comment_num, onStarClick }, ref) => {
     const [stars, setStars] = React.useState(star_num);
     const [starred, setStarred] = React.useState(false);
 
@@ -22,11 +21,13 @@ const QuestionBox = React.forwardRef<HTMLDivElement, QuestionBoxProps>(
       const newStars = newStarred ? stars + 1 : stars - 1;
       setStars(newStars);
       setStarred(newStarred);
-      onStarClick(newStarred, newStars); // 현재 상태와 새로운 stars 값을 전달
+      if (onStarClick) {
+        onStarClick(newStarred, newStars); // 현재 상태와 새로운 stars 값을 전달
+      }
     };
 
     return (
-      <div className={cn("text-start items-center", className)}>
+      <div ref={ref} className={cn("text-start items-center", className)}>
         <div className={cn("text-xs not-italic font-semibold text-[13px]", className)}>
           {question}
         </div>

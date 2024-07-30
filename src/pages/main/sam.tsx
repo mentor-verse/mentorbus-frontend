@@ -31,7 +31,7 @@ export function SamPage() {
 
                     <SmallMentorProfile gen="Man" name="편유나 멘토" belong="숭실대학교 글로벌미디어학부"/>
                     <OnboardingButton title="멘토로 가입하기" explain="입시정보를 제공하고 싶어요"/>
-                    <College img={SU} name="세종대학교" />
+                    <College img={SU} name="세종대학교"/>
                     <MentorBox name="편유나" major="숭실대학교 글로벌미디어학부" gen="woman" info="-숭실대학교 재학" />
                     <BottomNav />
                     <OpenGatherTown />

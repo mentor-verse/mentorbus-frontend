@@ -1,11 +1,19 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { SearchBox } from "@/components/ui/searchbox";
 import BottomNav from "@/containers/navbar";
 import { useLocation } from "react-router-dom";
 
+interface SelectedBox {
+  gen: string;
+  major: string;
+  name: string;
+  info: string;
+  date: string;
+}
+
 export function MentorBusPage() {
   const [filter, setFilter] = useState("entry"); // Default filter value
-  const [selectedBox, setSelectedBox] = useState(null);
+  const [selectedBox, setSelectedBox] = useState<SelectedBox | null>(null);
   const [hasEntered, setHasEntered] = useState(false); // State to track entry
   const location = useLocation();
 
@@ -16,7 +24,7 @@ export function MentorBusPage() {
     const box = boxFromState || (boxFromStorage ? JSON.parse(boxFromStorage) : null);
 
     if (box) {
-      setSelectedBox(box);
+      setSelectedBox(box as SelectedBox);
     } 
   }, [location.state]);
 
@@ -53,7 +61,7 @@ export function MentorBusPage() {
                     variant="default"
                     size="default"
                     onClick={handleEnter} // Pass handleEnter function to the SearchBox
-                  >
+                                    >
                     입장하기
                   </SearchBox>
                 </div>

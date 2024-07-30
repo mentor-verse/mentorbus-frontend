@@ -1,4 +1,7 @@
-export function Home({color}){
+interface ColorProps {
+    color: string;
+  }
+export function Home({color}:ColorProps){
 
     return (
         <svg width="60" height="52" viewBox="0 0 60 52" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -10,7 +13,7 @@ export function Home({color}){
 
     )};
    
-export function FindMentor({color}){
+export function FindMentor({color}:ColorProps){
 
     return (
             
@@ -22,7 +25,7 @@ export function FindMentor({color}){
     
 )};
 
-export function MentorBus({color}){
+export function MentorBus({color}:ColorProps){
 
     return (
             
@@ -38,7 +41,7 @@ export function MentorBus({color}){
     
 )};
 
-export function QABus({color}){
+export function QABus({color}:ColorProps){
 
     return (
         <svg width="60" height="55" viewBox="0 0 60 55" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -50,7 +53,7 @@ export function QABus({color}){
     
 )};
 
-export function MyPage({color}){
+export function MyPage({color}:ColorProps){
 
     return (
             

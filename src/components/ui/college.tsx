@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { cn } from "@/libs/utils.ts";
 
 export interface CollegeProps extends React.HTMLAttributes<HTMLDivElement> {
-  title: string;
-  explain: string;
   img: string;
   name: string;
 }

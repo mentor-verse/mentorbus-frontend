@@ -1,10 +1,8 @@
 // src/components/Onboarding.js
 import { useRecoilValue } from 'recoil';
-import { userNameAtom } from '@/atoms/userNameAtom';
 import { isLoggedInAtom } from '@/atoms/isLoggedInAtom';
 import { Bottom } from "./containers/Bottom";
-import { Cloud } from "@/components/Icons/Cloud";
-import { Zero } from "./containers/Zero";
+import  Zero from "./containers/Zero";
 import { First } from "./containers/First";
 import { Second } from "./containers/Second";
 import { Third } from "./containers/Third";
@@ -13,7 +11,6 @@ import { useState, useEffect } from 'react';
 
 export function Onboarding() {
   const isLoggedIn = useRecoilValue(isLoggedInAtom);
-  const userName = useRecoilValue(userNameAtom);
   const [count, setCount] = useState(0);
 
   useEffect(() => {

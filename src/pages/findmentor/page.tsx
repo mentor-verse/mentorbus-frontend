@@ -1,10 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SearchBox } from "@/components/ui/searchbox";
 import { FilterButton } from "@/components/Icons/FilterButton";
 import BottomNav from "@/containers/navbar";
-import { FindTitle } from "./containers/FindTitle";
 import { UnderArrowBlue } from "@/components/Icons/UnderArrowBlue";
+import FindTitle from "./containers/FindTitle";
+
+type SearchBoxType = {
+  gen: string;
+  major: string;
+  name: string;
+  info: string;
+  date: string;
+  text: string;
+  type: string;
+};
 
 export function FindMentor() {
   const [mainFilter, setMainFilter] = useState("all");
@@ -12,7 +22,7 @@ export function FindMentor() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate hook
 
-  const searchBoxes = [
+  const searchBoxes: SearchBoxType[] = [
     { gen: "man", major: "[진로체험의 날] 글로벌미디어학부", name: "윤영재 멘토", info: "숭실대학교 글로벌미디어학부 18학번", date: "2024.08.20(화) 18:00", text: "4/5", type: "인문계열" },
     { gen: "man", major: "[진로체험의 날] 글로벌미디어학부", name: "윤영재 멘토", info: "한양대학교 글로벌미디어학부 18학번", date: "2024.09.20(화) 18:00", text: "10/15", type: "공학계열" },
     { gen: "man", major: "[진로체험의 날] 글로벌미디어학부", name: "윤영재 멘토", info: "서울대학교 글로벌미디어학부 18학번", date: "2024.10.20(화) 18:00", text: "9/12", type: "자연계열" },
@@ -32,19 +42,19 @@ export function FindMentor() {
     return true;
   });
 
-  const handleMainFilterChange = (filter) => {
+  const handleMainFilterChange = (filter: string) => {
     setMainFilter(filter);
     setSubFilter("");
     setDropdownOpen(false);
   };
 
-  const handleSubFilterChange = (filter) => {
+  const handleSubFilterChange = (filter: string) => {
     setSubFilter(filter);
     setDropdownOpen(false);
   };
 
-  const handleSearchBoxClick = (box) => {
-    navigate('/mentorinfo', { state: { selectedBox: box } });
+  const handleSearchBoxClick = (box: SearchBoxType) => {
+    navigate('/mentorbus-frontend/mentorinfo', { state: { selectedBox: box } });
   };
 
   return (

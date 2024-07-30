@@ -1,8 +1,22 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
+type KakaoProfile = {
+  id: number;
+  properties: {
+    nickname: string;
+    profile_image: string;
+    thumbnail_image: string;
+  };
+  kakao_account: {
+    email: string;
+    // Add other fields you expect from the kakao_account object if needed
+  };
+};
+
+
 export function Profile() {
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState<KakaoProfile | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('kakaoToken');
@@ -11,9 +25,9 @@ export function Profile() {
     }
   }, []);
 
-  const fetchProfile = async (token) => {
+  const fetchProfile = async (token: string) => {
     try {
-      const res = await axios.get('https://kapi.kakao.com/v2/user/me', {
+      const res = await axios.get<KakaoProfile>('https://kapi.kakao.com/v2/user/me', {
         headers: {
           Authorization: `Bearer ${token}`,
         },

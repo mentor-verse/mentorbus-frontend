@@ -31,15 +31,13 @@ const searchBoxVariants = cva(
 
 
 export interface SearchBoxProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends React.HTMLAttributes<HTMLButtonElement>,
    VariantProps<typeof searchBoxVariants> {
     major: string;
     name: string;
     info: string;
     date: string;
-    num: string;
     gen: string;
-    type: string;
 
 
     asChild?: boolean
@@ -47,8 +45,8 @@ export interface SearchBoxProps
 
   }
 
-const SearchBox = React.forwardRef<HTMLDivElement, SearchBoxProps>(
-  ({ className, major, name, info, num, date, gen, variant, size, asChild = false, ...props  }, ref) => {
+const SearchBox = React.forwardRef<HTMLButtonElement, SearchBoxProps>(
+  ({ className, major, name, info, date, gen, variant, size, asChild = false, ...props  }, ref) => {
     const Comp = asChild ? Slot : "button"
 
     return (

@@ -2,11 +2,22 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { NextButton } from "@/components/Icons/NextButton";
 import { Logo } from "@/components/Icons/Logo";
+import React from "react";
 
-export function Third({ count, setCount, sentence }) {
-  const { register, handleSubmit, formState: { errors, isSubmitted, isSubmitting } } = useForm();
+interface FormData {
+  belong: string;
+}
 
-  const onSubmit = (data) => {
+interface ThirdProps {
+  count: number;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
+  sentence: string;
+}
+
+export function Third({ count, setCount, sentence }: ThirdProps) {
+  const { register, handleSubmit, formState: { errors, isSubmitted, isSubmitting } } = useForm<FormData>();
+
+  const onSubmit = (data: FormData) => {
     localStorage.setItem('userBelong', data.belong);
     setCount(count + 1);
   };
@@ -15,7 +26,7 @@ export function Third({ count, setCount, sentence }) {
     <div>
       <div className="absolute top-1/4 left-1/2 transform -translate-x-[55%] -translate-y-2/3 z-10 text-[#fff]">
         <div className="flex items-start mb-3 text-[12px]">{count}/5</div>
-        <div className="flex items-start text-[26px]"><Logo width={"175"} /></div>
+        <div className="flex items-start text-[26px]"><Logo width={"175"} height='auto' /></div>
         <div className="flex items-start text-[26px] font-bold w-max">{sentence}</div>
       </div>
 

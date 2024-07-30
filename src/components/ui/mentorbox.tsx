@@ -10,8 +10,6 @@ export interface MentorBoxProps
     major: string;
     name: string;
     info: string;
-    date: string;
-    num: string;
     gen: string;
 
   }

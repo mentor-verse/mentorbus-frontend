@@ -1,9 +1,16 @@
 import { Logo } from "@/components/Icons/Logo";
 import { OnboardingButton } from "@/components/ui/onboardingbutton";
+import React from "react";
 
-export function Second({ count, setCount, sentence }) {
+interface SecondProps {
+  count: number;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
+  sentence: string;
+}
 
-  const handleNext = (position) => {
+export function Second({ count, setCount, sentence }: SecondProps) {
+
+  const handleNext = (position: string) => {
     localStorage.setItem('position', position);  // Store the position in localStorage
     setCount(count + 1);
   };
@@ -13,7 +20,7 @@ export function Second({ count, setCount, sentence }) {
       <div className="absolute top-1/4 left-1/2 transform -translate-x-[70%] -translate-y-2/3 z-10 text-[#fff]">
         <div className="flex items-start mb-3 text-[12px]">{count}/5</div>
         <div className="flex items-start text-[26px] font-bold w-max items-baseline">
-          <Logo width={"175"} /> <div>에서</div>
+          <Logo width={"175"} height="auto" /> <div>에서</div>
         </div>
         <div className="flex items-start text-[26px] font-bold w-max">{sentence}</div>
       </div>

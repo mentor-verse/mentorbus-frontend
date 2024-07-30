@@ -13,17 +13,17 @@ import { MentorBusPage } from "./mentorbus/page";
 export function MainRouter() {
   return (
     <Routes>
-      <Route path="/" element={<Onboarding />} />
-      <Route path="/onboarding" element={<Onboarding />} />
-      <Route path="/kakao" element={<Kakao />} />
-      <Route path="/oauth" element={<KakaoRedirect />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/main" element={<MainPage />} />
-      <Route path="/find" element={<FindMentor />} />
-      <Route path="/qabus" element={<QAPage />} />
-      <Route path="/mentorinfo" element={<MentorPage />} />
-      <Route path="/mypage" element={<MyPage />} />
-      <Route path="/mentorbus" element={<MentorBusPage />} />
+      <Route path="/mentorbus-frontend" element={<Onboarding />} />
+      <Route path="/mentorbus-frontend/onboarding" element={<Onboarding />} />
+      <Route path="/mentorbus-frontend/kakao" element={<Kakao />} />
+      <Route path="/mentorbus-frontend/oauth" element={<KakaoRedirect />} />
+      <Route path="/mentorbus-frontend/profile" element={<Profile />} />
+      <Route path="mentorbus-frontend/main" element={<MainPage />} />
+      <Route path="mentorbus-frontend/find" element={<FindMentor />} />
+      <Route path="/mentorbus-frontend/qabus" element={<QAPage />} />
+      <Route path="/mentorbus-frontend/mentorinfo" element={<MentorPage />} />
+      <Route path="/mentorbus-frontend/mypage" element={<MyPage />} />
+      <Route path="/mentorbus-frontend/mentorbus" element={<MentorBusPage />} />
 
 
 

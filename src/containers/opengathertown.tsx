@@ -22,7 +22,6 @@ const OpenGatherTown = () => {
       window.open(gatherTownURL, '_blank');
     } catch (err) {
       console.error('Error opening Gather Town:', err);
-      setError('Failed to create Gather Town space.');
     } finally {
       setLoading(false);
     }

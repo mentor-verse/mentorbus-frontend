@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { FindTitle } from "./FindTitle";
+import FindTitle  from "./FindTitle";
 import { MentorInfo } from "./MentorInfo";
 import { SearchBox } from "@/components/ui/searchbox";
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,7 @@ export function MentorPage() {
       // Save selectedBox to localStorage
       localStorage.setItem('selectedBox', JSON.stringify(selectedBox));
     }
-    navigate('/mentorbus');
+    navigate('/mentorbus-frontend/mentorbus');
   };
 
   return (

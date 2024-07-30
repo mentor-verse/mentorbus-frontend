@@ -1,4 +1,10 @@
-export function Logo({width,height}){
+interface LogoProps {
+    width: string | number;
+    height: string | number;
+  }
+  
+
+export function Logo({width,height}:LogoProps){
 
     return (
 

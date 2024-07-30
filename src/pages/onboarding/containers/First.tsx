@@ -4,12 +4,23 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from 'recoil';
 import { userNameAtom } from '@/atoms/userNameAtom';
+import React from 'react';
 
-export function First({ count, setCount, sentence }) {
+interface FirstProps {
+  count: number;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
+  sentence: string;
+}
+
+interface FormData {
+  name: string;
+}
+
+export function First({ count, setCount, sentence }: FirstProps) {
   const setUserName = useSetRecoilState(userNameAtom);
-  const { register, handleSubmit, formState: { errors, isSubmitted, isSubmitting } } = useForm();
+  const { register, handleSubmit, formState: { errors, isSubmitted, isSubmitting } } = useForm<FormData>();
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: FormData) => {
     setUserName(data.name);
     localStorage.setItem('userName', data.name);
     setCount(count + 1);
@@ -19,7 +30,7 @@ export function First({ count, setCount, sentence }) {
     <>
       <div className="absolute top-1/4 left-1/2 transform -translate-x-[70%] -translate-y-2/3 z-10 text-[#fff]">
         <div className="flex items-start mb-3 text-[12px]">{count}/5</div>
-        <div className="flex items-start"><Logo width={"175"} /></div>
+        <div className="flex items-start"><Logo width={"175"} height="auto" /></div>
         <div className="flex items-start mt-[13px] text-[26px] font-bold w-max">{sentence}</div>
       </div>
 

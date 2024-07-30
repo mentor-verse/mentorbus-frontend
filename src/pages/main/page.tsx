@@ -37,7 +37,7 @@ export function MainPage() {
       <div className="main">
         <div className="main_content overflow-hidden bg-white">
           <div style={{ background: '#fff' }}>
-             <Header major={userMajor} className="mt-[50px]"/>
+             <Header major={userMajor} className="mt-[50px]" title={""}/>
 
              <div className="w-auto mt-[30px]">
                  <Banner />
@@ -48,28 +48,28 @@ export function MainPage() {
            
              
              <div className="flex ml-[28px] overflow-auto mt-[10px]">
-                <College img={SSU} name="숭실대학교" title={""} explain={""} />
+                <College img={SSU} name="숭실대학교" title={""}  />
                 <div className="ml-[13px]"></div>
-                <College img={CAU} name="중앙대학교" title={""} explain={""} />
+                <College img={CAU} name="중앙대학교" title={""}  />
                 <div className="ml-[13px]"></div>
-                <College img={Seoul} name="서울대학교" title={""} explain={""} />
+                <College img={Seoul} name="서울대학교" title={""} />
                 <div className="ml-[13px]"></div>
-                <College img={HU} name="한양대학교" title={""} explain={""} />
+                <College img={HU} name="한양대학교" title={""} />
                 <div className="ml-[13px]"></div>
-                <College img={SU} name="세종대학교" title={""} explain={""} />
+                <College img={SU} name="세종대학교" title={""}  />
              </div>
 
              <TitleSection title={userName} title2="님에게 맞는" major={userMajor} title3="멘토" />
 
 
              <div className="flex mt-[20px] overflow-auto">
-                <MentorBox name="편유나" major="숭실대학교 글로벌미디어학부" gen="woman" info="-숭실대학교 재학" date={""} num={""} />
+                <MentorBox name="편유나" major="숭실대학교 글로벌미디어학부" gen="woman" info="-숭실대학교 재학" />
                 <div className="ml-[13px]"></div>
-                <MentorBox name="편유나" major="숭실대학교 글로벌미디어학부" gen="woman" info="-숭실대학교 재학" date={""} num={""} />
+                <MentorBox name="편유나" major="숭실대학교 글로벌미디어학부" gen="woman" info="-숭실대학교 재학"  />
                 <div className="ml-[13px]"></div>
-                <MentorBox name="편유나" major="숭실대학교 글로벌미디어학부" gen="woman" info="-숭실대학교 재학" date={""} num={""} />
+                <MentorBox name="편유나" major="숭실대학교 글로벌미디어학부" gen="woman" info="-숭실대학교 재학" />
                 <div className="ml-[13px]"></div>
-                <MentorBox name="편유나" major="숭실대학교 글로벌미디어학부" gen="woman" info="-숭실대학교 재학" date={""} num={""} />
+                <MentorBox name="편유나" major="숭실대학교 글로벌미디어학부" gen="woman" info="-숭실대학교 재학"  />
              </div>
 
 

@@ -10,6 +10,6 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: "/mentorbus/",
+  base: "/mentorbus-frontend/",
 });
 
