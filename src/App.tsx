@@ -32,7 +32,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
-        <BrowserRouter>
+        <BrowserRouter basename="/mentorbus-frontend">
           <MainRouter />
           <Toaster />
         </BrowserRouter>
