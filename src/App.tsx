@@ -35,7 +35,7 @@ function App() {
         <HashRouter>  {/* Ensure this matches the base in vite.config.js */}
           <MainRouter />
           <Toaster />
-        </Hash>
+        </HashRouter>
       </RecoilRoot>
     </QueryClientProvider>
   );
