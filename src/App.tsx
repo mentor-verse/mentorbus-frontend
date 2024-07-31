@@ -32,7 +32,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
-        <BrowserRouter basename="/mentorbus-frontend">  {/* Ensure this matches the base in vite.config.js */}
+        <BrowserRouter>  {/* Ensure this matches the base in vite.config.js */}
           <MainRouter />
           <Toaster />
         </BrowserRouter>
