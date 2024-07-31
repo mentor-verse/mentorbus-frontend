@@ -11,17 +11,5 @@ export default defineConfig({
     },
   },
   base: "/mentorbus-frontend/",
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          // Ensure react libraries are split into their own chunk
-          react: ["react", "react-dom"],
-        },
-      },
-    },
-  },
-  server: {
-    historyApiFallback: true, // This helps with the fallback to index.html for dev server
-  },
 });
+
