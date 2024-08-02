@@ -1,7 +1,9 @@
+// src/containers/Zero.tsx
 import { Button } from "@/components/ui/button";
 import { OnboardingTitle } from "@/pages/onboarding/containers/OnboardingTitle";
 import { OnbordingBus } from "@/components/Icons/OnboardingBus";
 import React from "react";
+import { Road } from "@/components/Icons/Road";
 
 interface ZeroProps {
   count: number;
@@ -24,17 +26,22 @@ const Zero: React.FC<ZeroProps> = () => {
     <>
       <OnboardingTitle />
 
-      <div
-        onClick={handleLogin}
-        className="absolute top-1/2 left-1/2 transform -translate-x-[50%] -translate-y-3/4 grid place-items-center"
-      >
+      <div onClick={handleLogin} className="grid place-items-center mt-[5%]">
         <Button variant={"kakao"} size={"ka"}>
           카카오 로그인
         </Button>
       </div>
 
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-[70%] -translate-y-0 grid place-items-center z-10">
-        <OnbordingBus />
+      <div className="relative z-20">
+        <div className="grid place-items-center mt-[2%] -ml-[30%]">
+          <OnbordingBus />
+        </div>
+      </div>
+
+      <div className="absolute inset-x-0 bottom-0 z-10">
+        <div className="grid place-items-center w-full">
+          <Road />
+        </div>
       </div>
     </>
   );
