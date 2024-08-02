@@ -24,7 +24,7 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 232 93% 58%;
     --radius: 0.75rem;
-    --kakao : 53.98 100% 48.82%;
+    --kakao: 53.98 100% 48.82%;
     --kakao-foreground: 0 0% 13.33%;
   }
 
@@ -59,7 +59,6 @@
     @apply bg-background text-foreground;
   }
 }
-
 
 #root {
   max-width: 1280px;
@@ -104,11 +103,10 @@
 }
 
 * {
-  -webkit-tap-highlight-color:rgba(255,255,255,0);
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   user-select: none;
   -webkit-touch-callout: none;
 }
-
 
 body {
   margin: 0;
@@ -121,11 +119,14 @@ body {
   border-radius: 0;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
-  touch-action: pan-y; 
+  touch-action: pan-y;
 }
 
-body, html, .App, .main .main_content{
-  overscroll-behavior: none  !important; 
+body,
+html,
+.App,
+.main .main_content {
+  overscroll-behavior: none !important;
 }
 
 a {
@@ -133,7 +134,11 @@ a {
 }
 
 .main {
-  background: var(--blue-GD, linear-gradient(180deg, #1485C4 7.08%, #55ABDC 38.5%, #FFF 127.13%));  font-family: 'Pretendard';
+  background: var(
+    --blue-GD,
+    linear-gradient(180deg, #1485c4 7.08%, #55abdc 38.5%, #fff 127.13%)
+  );
+  font-family: "Pretendard";
   letter-spacing: -0.08rem;
   max-width: 840px;
   height: 100%;
@@ -145,16 +150,13 @@ a {
   text-align: center;
   background-color: #ffffff;
   overflow-y: auto; /* �ㅽ겕濡ㅼ씠 蹂댁씠�꾨줉 �ㅼ젙 */
-  
 }
 
 @media screen and (min-width: 840px) {
   .main_content {
-    
     position: relative;
     max-width: 840px;
     min-height: 100vh;
-
   }
 
   .main_content:before {
@@ -176,8 +178,6 @@ a {
     border-right: 1px solid;
     border-color: #d1d6db;
   }
-
-  
 }
 
 .filter_btn {
@@ -193,14 +193,13 @@ a {
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  border-bottom: 1.5px solid var(--40, #EDEDED);
+  border-bottom: 1.5px solid var(--40, #ededed);
   cursor: pointer;
 }
 
 .filter_btn_label.active {
   border-bottom: 1.5px solid var(--kakao-logo, #000);
 }
-
 
 .wrapper {
   position: fixed;
@@ -209,7 +208,7 @@ a {
   right: 0;
   height: 80px;
   background-color: #ffffff;
-  border-top: 1px solid #D4D4D4;
+  border-top: 1px solid #d4d4d4;
 }
 
 nav {
@@ -230,9 +229,7 @@ nav > div {
   color: grey;
 }
 
-
-
-.bottom_nav_font{
+.bottom_nav_font {
   color: #000;
   font-family: Pretendard;
   font-size: 8px;
@@ -243,5 +240,3 @@ nav > div {
   margin-left: 0px;
   margin-top: -14px;
 }
-
-

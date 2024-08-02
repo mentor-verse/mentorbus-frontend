@@ -1,6 +1,6 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import FindTitle  from "./FindTitle";
+import FindTitle from "./FindTitle";
 import { MentorInfo } from "./MentorInfo";
 import { SearchBox } from "@/components/ui/searchbox";
 import { Button } from "@/components/ui/button";
@@ -19,15 +19,15 @@ export function MentorPage() {
   const handleRedirectToMentorBus = () => {
     if (selectedBox) {
       // Save selectedBox to localStorage
-      localStorage.setItem('selectedBox', JSON.stringify(selectedBox));
+      localStorage.setItem("selectedBox", JSON.stringify(selectedBox));
     }
-    navigate('/mentorbus-frontend/mentorbus');
+    navigate("/mentorbus-frontend/mentorbus");
   };
 
   return (
     <div className="main">
-      <div className="main_content" style={{ background: '#fff' }}>
-        <div style={{ background: '#fff' }}>
+      <div className="main_content" style={{ background: "#fff" }}>
+        <div style={{ background: "#fff" }}>
           {!isApplied ? (
             <>
               <div>
@@ -52,15 +52,18 @@ export function MentorPage() {
               <div className="mt-[40px]">
                 <MentorInfo content="안녀ㅑㅇ" order="하이" />
               </div>
-              <div className="absolute top-full right-1/2 transform translate-x-[50%] -translate-y-full -mt-[30px]">
-                <Button
-                  variant={"default"}
-                  size={"default"}
-                  className="w-[342px] h-[56px] text-[#fff] font-semibold"
-                  onClick={handleApplyClick}
-                >
-                  신청하기
-                </Button>
+              <div className="flex flex-col min-h-screen">
+                <div className="flex-grow"></div>
+                <div className="mb-5 flex justify-center">
+                  <Button
+                    variant={"default"}
+                    size={"default"}
+                    className="w-[342px] h-[56px] text-[#fff] font-semibold"
+                    onClick={handleApplyClick}
+                  >
+                    신청하기
+                  </Button>
+                </div>
               </div>
             </>
           ) : (
@@ -68,15 +71,18 @@ export function MentorPage() {
               <div className="absolute top-1/2 right-1/2 transform translate-x-[50%] -translate-y-1/2">
                 <ApplyFinished />
               </div>
-              <div className="absolute top-full right-1/2 transform translate-x-[50%] -translate-y-full -mt-[30px]">
-                <Button
-                  variant={"default"}
-                  size={"default"}
-                  className="w-[342px] h-[56px] text-[#fff] font-semibold"
-                  onClick={handleRedirectToMentorBus}
-                >
-                  멘토버스 바로가기
-                </Button>
+              <div className="flex flex-col min-h-screen">
+                <div className="flex-grow"></div>
+                <div className="mb-5 flex justify-center">
+                  <Button
+                    variant={"default"}
+                    size={"default"}
+                    className="w-[342px] h-[56px] text-[#fff] font-semibold"
+                    onClick={handleRedirectToMentorBus}
+                  >
+                    멘토버스 바로가기
+                  </Button>
+                </div>
               </div>
             </div>
           )}
