@@ -64,15 +64,17 @@ export function Onboarding() {
 
   return (
     <div className="main flex flex-col min-h-screen overflow-hidden">
-      <div className="main_content flex-1">{renderComponent()}</div>
-      <div className="flex-grow"></div>{" "}
-      {count !== 0 && (
-        <footer className="w-full">
-          <div className="grid place-items-center">
-            <Road />
-          </div>
-        </footer>
-      )}
+      <div className="main_content flex-1">
+        {renderComponent()}
+        <div className="flex-grow"></div>{" "}
+        {count !== 0 && (
+          <footer className="w-full">
+            <div className="grid place-items-center">
+              <Road />
+            </div>
+          </footer>
+        )}
+      </div>
     </div>
   );
 }
