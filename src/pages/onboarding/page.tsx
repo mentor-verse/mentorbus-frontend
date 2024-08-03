@@ -63,13 +63,12 @@ export function Onboarding() {
   };
 
   return (
-    <div className="main flex flex-col min-h-screen overflow-hidden">
-      <div className="main_content flex-1 flex flex-col">
+    <div className="main flex flex-col min-h-screen">
+      <div className="main_content" style={{ flexGrow: 1 }}>
         {renderComponent()}
       </div>
       {count !== 0 && (
-        <div className="w-full">
-          <div className="flex-grow"></div>{" "}
+        <div className="w-full mt-auto">
           <div className="grid place-items-center">
             <Road />
           </div>
