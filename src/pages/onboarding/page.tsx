@@ -1,4 +1,3 @@
-// src/components/Onboarding.js
 import { useRecoilValue } from "recoil";
 import { isLoggedInAtom } from "@/atoms/isLoggedInAtom";
 import Zero from "./containers/Zero";
@@ -67,9 +66,8 @@ export function Onboarding() {
       <div className="main_content flex-1 flex flex-col">
         {renderComponent()}
       </div>
-      <div className="flex-grow"></div>{" "}
       {count !== 0 && (
-        <div className="w-full">
+        <div className="w-full flex-grow-0">
           <div className="grid place-items-center">
             <Road />
           </div>
