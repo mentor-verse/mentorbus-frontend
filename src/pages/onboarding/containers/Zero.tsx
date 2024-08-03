@@ -38,11 +38,14 @@ const Zero: React.FC<ZeroProps> = () => {
     <>
       <OnboardingTitle />
 
-      <div onClick={handleLogin} className="grid place-items-center mt-[5%]">
+      <div
+        onClick={handleLogin}
+        className="grid place-items-center mt-[5%] mb-[200px]"
+      >
         <KakaoBtn />
       </div>
 
-      <div className="fixed z-20">
+      <div className="fixed z-20 -mt-[200px]">
         <div className="grid place-items-center -ml-[30%]">
           <OnbordingBus />
         </div>
