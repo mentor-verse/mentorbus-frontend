@@ -290,3 +290,30 @@ nav > div {
     height: 12rem; /* Adjust as needed */
   }
 }
+
+/* index.css */
+
+/* Responsive styling for the SVG */
+.onboarding-bus-svg {
+  width: 50%; /* Adjust as needed */
+  height: auto;
+}
+
+/* Additional responsiveness based on viewport sizes */
+@media (min-width: 480px) {
+  .onboarding-bus-svg {
+    width: 40%; /* Adjust for medium screens */
+  }
+}
+
+@media (min-width: 768px) {
+  .onboarding-bus-svg {
+    width: 30%; /* Adjust for larger screens */
+  }
+}
+
+@media (min-width: 1024px) {
+  .onboarding-bus-svg {
+    width: 25%; /* Adjust for extra-large screens */
+  }
+}
