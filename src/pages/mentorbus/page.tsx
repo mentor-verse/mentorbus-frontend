@@ -10,9 +10,9 @@ interface SelectedBox {
   info: string;
   date: string;
   sort: string;
+  status: "pending" | "completed"; // Add status property
 }
 
-// Define a type for valid sort values
 type SortType = "인문계열" | "예술계열" | "IT계열" | "공학계열";
 
 const gatherTownUrls: Record<SortType, string> = {
@@ -22,38 +22,35 @@ const gatherTownUrls: Record<SortType, string> = {
   공학계열: "nWPWj7r6T8eRB2mVaUT8",
 };
 
-// Type guard to check if a value is a valid SortType
 function isSortType(value: any): value is SortType {
   return ["인문계열", "예술계열", "IT계열", "공학계열"].includes(value);
 }
 
 export function MentorBusPage() {
-  const [filter, setFilter] = useState("entry"); // Default filter value
-  const [selectedBox, setSelectedBox] = useState<SelectedBox | null>(null);
-  const [hasEntered, setHasEntered] = useState(false); // State to track entry
+  const [filter, setFilter] = useState("entry");
+  const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
   const location = useLocation();
 
   useEffect(() => {
-    // Check if selectedBox is passed via location state or retrieve from localStorage
-    const boxFromState = location.state?.selectedBox;
-    const boxFromStorage = localStorage.getItem("selectedBox");
-    const box =
-      boxFromState || (boxFromStorage ? JSON.parse(boxFromStorage) : null);
+    const itemsFromStorage =
+      JSON.parse(localStorage.getItem("appliedItems")) || [];
+    setAppliedItems(itemsFromStorage);
+  }, []);
 
-    if (box) {
-      setSelectedBox(box as SelectedBox);
-    }
-  }, [location.state]);
-
-  const handleEnter = () => {
-    setHasEntered(true);
-    setFilter("applied"); // Update filter to "applied" after entry
-
-    if (selectedBox && isSortType(selectedBox.sort)) {
+  const handleEnter = (item: SelectedBox) => {
+    if (isSortType(item.sort)) {
       const url = `https://app.gather.town/invite?token=${
-        gatherTownUrls[selectedBox.sort]
+        gatherTownUrls[item.sort]
       }`;
       window.open(url, "_blank");
+
+      // Update the status of the item to "completed"
+      const updatedItems = appliedItems.map((i) =>
+        i === item ? { ...i, status: "completed" } : i
+      );
+      setAppliedItems(updatedItems);
+      localStorage.setItem("appliedItems", JSON.stringify(updatedItems));
+      setFilter("applied");
     }
   };
 
@@ -84,39 +81,34 @@ export function MentorBusPage() {
               </div>
             </div>
             <div className="mt-[35px] grid place-items-center">
-              {selectedBox &&
-                (filter === "entry" && !hasEntered ? (
-                  <div className="grid place-items-center mt-[0px] border-b-[0.7px] border-[#C0C0C0] h-[180px]">
+              {appliedItems
+                .filter((item) =>
+                  filter === "entry"
+                    ? item.status === "pending"
+                    : item.status === "completed"
+                )
+                .map((item, index) => (
+                  <div
+                    key={index}
+                    className="grid place-items-center mt-[0px]  h-[120px]"
+                  >
                     <SearchBox
-                      gen={selectedBox.gen}
-                      major={selectedBox.major}
-                      name={selectedBox.name}
-                      info={selectedBox.info}
-                      date={selectedBox.date}
-                      sort={selectedBox.sort} // Pass sort to the SearchBox
+                      gen={item.gen}
+                      major={item.major}
+                      name={item.name}
+                      info={item.info}
+                      date={item.date}
+                      sort={item.sort}
                       variant="default"
                       size="default"
-                      onClick={handleEnter} // Pass handleEnter function to the SearchBox
+                      onClick={
+                        filter === "entry" ? () => handleEnter(item) : undefined
+                      }
                     >
-                      입장하기
+                      {filter === "entry" ? "입장하기" : "진행완료"}
                     </SearchBox>
                   </div>
-                ) : filter === "applied" && hasEntered ? (
-                  <div className="grid place-items-center mt-[25px] border-b-[0.7px] border-[#C0C0C0] h-[180px]">
-                    <SearchBox
-                      gen={selectedBox.gen}
-                      major={selectedBox.major}
-                      name={selectedBox.name}
-                      info={selectedBox.info}
-                      date={selectedBox.date}
-                      sort={selectedBox.sort} // Pass sort to the SearchBox
-                      variant="default"
-                      size="default"
-                    >
-                      진행완료
-                    </SearchBox>
-                  </div>
-                ) : null)}
+                ))}
             </div>
           </div>
           <BottomNav />

@@ -10,17 +10,21 @@ export function MentorPage() {
   const [isApplied, setIsApplied] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const selectedBox = location.state?.selectedBox; // Access the passed data
+  const selectedBox = location.state?.selectedBox;
 
   const handleApplyClick = () => {
     setIsApplied(true);
+    let appliedItems = JSON.parse(localStorage.getItem("appliedItems")) || [];
+    if (selectedBox) {
+      appliedItems.push({
+        ...selectedBox,
+        status: "pending",
+      });
+      localStorage.setItem("appliedItems", JSON.stringify(appliedItems));
+    }
   };
 
   const handleRedirectToMentorBus = () => {
-    if (selectedBox) {
-      // Save selectedBox to localStorage
-      localStorage.setItem("selectedBox", JSON.stringify(selectedBox));
-    }
     navigate("/mentorbus-frontend/mentorbus");
   };
 
@@ -49,9 +53,9 @@ export function MentorPage() {
                     name={selectedBox.name}
                     info={selectedBox.info}
                     date={selectedBox.date}
+                    sort={selectedBox.sort}
                     variant="null"
                     size="state"
-                    sort={selectedBox.sort}
                   >
                     {selectedBox.text}
                   </SearchBox>
@@ -67,7 +71,6 @@ export function MentorPage() {
             </div>
           )}
         </div>
-        {/* Footer section with the button */}
         <div className="flex justify-center mb-5 mt-[30%]">
           <Button
             variant={"default"}
