@@ -29,11 +29,13 @@ export function Third({ count, setCount, sentence }: ThirdProps) {
   return (
     <div className="relative flex flex-col items-center text-[#fff]">
       <div className="relative z-10 text-start mt-[25%]">
-        <div className="flex items-start mb-3 text-[12px]">{count}/5</div>
-        <div className="flex items-start text-[26px] justify-center">
+        <div className="w-[300px] justify-start flex items-start mb-3 text-[12px]">
+          {count}/5
+        </div>
+        <div className="w-[300px] justify-start flex items-start text-[26px] ">
           <Logo width={"175"} height="auto" />
         </div>
-        <div className="flex items-start text-[26px] font-bold w-max text-center">
+        <div className="w-[300px] justify-start flex items-start text-[26px] font-bold  text-center">
           {sentence}
         </div>
       </div>
