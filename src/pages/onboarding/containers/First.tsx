@@ -33,13 +33,13 @@ export function First({ count, setCount, sentence }: FirstProps) {
   return (
     <>
       <div className="relative z-10 text-[#fff] flex flex-col items-center mt-[25%]">
-        <div className="flex items-start text-start mb-3 text-[12px]">
+        <div className="w-[300px] flex items-start justify-start mb-3 text-[12px]">
           {count}/5
         </div>
-        <div className="flex items-start text-start">
+        <div className="w-[300px] flex justify-start items-start text-start">
           <Logo width={"175"} height="auto" />
         </div>
-        <div className="flex items-start mt-[13px] text-[26px] font-bold w-max text-start">
+        <div className="w-[300px] flex items-start mt-[13px]  justify-start text-[26px] font-bold text-start">
           {sentence}
         </div>
       </div>
