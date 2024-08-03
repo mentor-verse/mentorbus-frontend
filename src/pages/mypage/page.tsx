@@ -25,8 +25,19 @@ export function MyPage() {
     <>
       <div className="main flex flex-col min-h-screen">
         <div className="main_content ">
-          <LevelThird />
-          <Profile name={userName} school={userBelong} level="3" gen="man" />
+          <div className="flex flex-col justify-center items-center">
+            <div>
+              <LevelThird />
+            </div>
+            <div>
+              <Profile
+                name={userName}
+                school={userBelong}
+                level="3"
+                gen="man"
+              />
+            </div>
+          </div>
         </div>
         <div className="w-full">
           <BottomNav />
