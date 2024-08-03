@@ -34,19 +34,19 @@ const Zero: React.FC<ZeroProps> = () => {
   console.log(code);
 
   return (
-    <div className="flex flex-col min-h-screen relative">
+    <div className="flex flex-col min-h-screen">
       <OnboardingTitle />
 
-      <div onClick={handleLogin} className="grid place-items-center mt-[5%]">
+      <div onClick={handleLogin} className="grid place-items-center mt-8">
         <KakaoBtn />
       </div>
 
-      <div className="flex-grow relative">
-        <div className="absolute inset-x-0 bottom-0 z-10 grid place-items-center">
-          <Road />
-        </div>
-        <div className="onboarding-bus-container absolute z-20 -ml-[100px]">
-          <OnbordingBus />
+      <div className="flex-grow flex flex-col justify-end">
+        <div className="relative grid place-items-center">
+          <Road className="w-full" />
+          <div className="absolute bottom-0">
+            <OnbordingBus />
+          </div>
         </div>
       </div>
     </div>
