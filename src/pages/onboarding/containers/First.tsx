@@ -32,7 +32,7 @@ export function First({ count, setCount, sentence }: FirstProps) {
 
   return (
     <>
-      <div className="relative z-10 text-[#fff] flex flex-col items-center mt-[25%] flex-grow-0">
+      <div className="relative z-10 text-[#fff] flex flex-col items-center mt-[25%]">
         <div className="w-[300px] flex items-start justify-start mb-3 text-[12px]">
           {count}/4
         </div>
@@ -45,14 +45,10 @@ export function First({ count, setCount, sentence }: FirstProps) {
       </div>
 
       <div
-        className="relative flex justify-center mt-10 flex-grow"
+        className="relative flex justify-center mt-10"
         style={{ top: "33%" }}
       >
-        <form
-          noValidate
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex-grow"
-        >
+        <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <Input
             type="text"
             className="w-[298px]"
