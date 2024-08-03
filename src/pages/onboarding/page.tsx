@@ -63,7 +63,7 @@ export function Onboarding() {
   };
 
   return (
-    <div className="main flex flex-col min-h-screen">
+    <div className="main flex flex-col min-h-screen overflow-hidden">
       <div className="main_content flex-1">{renderComponent()}</div>
       {count !== 0 && (
         <div className="flex-none">

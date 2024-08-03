@@ -42,8 +42,8 @@ const Zero: React.FC<ZeroProps> = () => {
         <KakaoBtn />
       </div>
 
-      <div className="relative z-20">
-        <div className="grid place-items-center mt-[2%] -ml-[30%]">
+      <div className="fixed z-20">
+        <div className="grid place-items-center -ml-[30%]">
           <OnbordingBus />
         </div>
       </div>
