@@ -1,44 +1,134 @@
-import { Input } from "../../components/ui/input";
-import { Button } from "../../components/ui/button";
-import { SearchBox } from "@/components/ui/searchbox";
-import { QuestionBox } from "@/components/ui/questionbox";
-import { SmallMentorProfile } from "@/components/ui/smallmentorprofile";
+// src/components/Onboarding.js
+import { useRecoilValue } from "recoil";
+import { isLoggedInAtom } from "@/atoms/isLoggedInAtom";
+
+import { useState, useEffect } from "react";
+import { Road } from "@/components/Icons/Road";
+import { Logo } from "@/components/Icons/Logo";
 import { OnboardingButton } from "@/components/ui/onboardingbutton";
-import { College } from "@/components/ui/college";
-import SU from "@/assets/SU.svg";
-import { MentorBox } from "@/components/ui/mentorbox";
-import BottomNav from "@/containers/navbar";
-import OpenGatherTown from "@/containers/opengathertown";
 
+export function Sam() {
+  const isLoggedIn = useRecoilValue(isLoggedInAtom);
+  const [count, setCount] = useState(0);
 
-export function SamPage() {
+  useEffect(() => {
+    if (isLoggedIn || localStorage.getItem("kakaoToken")) {
+      setCount(1);
+    } else {
+      setCount(0);
+    }
+  }, [isLoggedIn]);
+
   return (
-    <>
-        <div className="main">
-            <div className="main_content">
-                <div style={{background:'#fff'}}>
-                    <Input className="w-[318px]" type="text" placeholder="안녕"></Input>
-                    <Button variant={"default"} size={"default"} className="w-full," >안녕</Button>
-                    <Button variant={"kakao"} size={"ka"} >카카오 로그인</Button>
-                    <SearchBox gen="man" major="[진로체험의 날] 글로벌미디어학부" name="윤영재 멘토" info="숭실대학교 글로벌미디어학부 18학번" date="2024.08.20(화) 18:00" variant="null" size="state" sort="">4/5</SearchBox>
-                    <QuestionBox question="Q2. 고2 1학기를 망했는데.." 
-                    
-                    answer="고1 1학기 때 3등급을 찍고, 2학기 때 2.4까지 올렸습니다. 근데
-                            고2 1학기 때 너무 망해버려서 3.6까지 떨어져버렸어요...이거 남은 기간 동안
-                            올리면 종합전형 쓸 수 있을까요? 아니면 정시로 갈아타야할까요?" 
-                            
-                    star_num={1} comment_num={2}/>
-
-                    <SmallMentorProfile gen="Man" name="편유나 멘토" belong="숭실대학교 글로벌미디어학부"/>
-                    <OnboardingButton title="멘토로 가입하기" explain="입시정보를 제공하고 싶어요"/>
-                    <College img={SU} name="세종대학교"/>
-                    <MentorBox name="편유나" major="숭실대학교 글로벌미디어학부" gen="woman" info="-숭실대학교 재학" />
-                    <BottomNav />
-                    <OpenGatherTown />
-                </div>
-                   
+    <div className="main flex flex-col min-h-screen">
+      <div className="main_content flex-1">
+        <div className="relative flex flex-col items-center text-[#fff]">
+          <div className="relative flex flex-col items-center text-[#fff]">
+            <div className="relative z-10 text-center mt-[25%]">
+              <div className="flex items-start mb-3 text-[12px]">{count}/5</div>
+              <div className="flex items-start text-[26px] font-bold w-max items-baseline justify-center">
+                <Logo width={"175"} height="auto" /> <div>에서</div>
+              </div>
+              <div className="flex items-start text-[26px] font-bold w-max text-center">
+                안녕하세요
+              </div>
             </div>
+
+            <div className="relative flex flex-col items-center mt-10">
+              <div className="flex">
+                <button
+                  onClick={() => {
+                    handleNext("인문계열");
+                    incrementCount();
+                  }}
+                >
+                  <OnboardingButton
+                    className="w-[160px]"
+                    title="인문계열"
+                    explain={""}
+                  />
+                </button>
+
+                <button
+                  onClick={() => {
+                    handleNext("사회계열");
+                    incrementCount();
+                  }}
+                >
+                  <OnboardingButton
+                    className="w-[160px] ml-[12px]"
+                    title="사회계열"
+                    explain={""}
+                  />
+                </button>
+              </div>
+
+              <div className="mt-[11px]">
+                <button
+                  onClick={() => {
+                    handleNext("자연계열");
+                    incrementCount();
+                  }}
+                >
+                  <OnboardingButton
+                    className="w-[160px]"
+                    title="자연계열"
+                    explain={""}
+                  />
+                </button>
+
+                <button
+                  onClick={() => {
+                    handleNext("공학계열");
+                    incrementCount();
+                  }}
+                >
+                  <OnboardingButton
+                    className="w-[160px] ml-[12px]"
+                    title="공학계열"
+                    explain={""}
+                  />
+                </button>
+              </div>
+
+              <div className="mt-[11px]">
+                <button
+                  onClick={() => {
+                    handleNext("의학계열");
+                    incrementCount();
+                  }}
+                >
+                  <OnboardingButton
+                    className="w-[160px]"
+                    title="의학계열"
+                    explain={""}
+                  />
+                </button>
+
+                <button
+                  onClick={() => {
+                    handleNext("교육계열");
+                    incrementCount();
+                  }}
+                >
+                  <OnboardingButton
+                    className="w-[160px] ml-[12px]"
+                    title="교육계열"
+                    explain={""}
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-    </>
+      </div>
+      {count !== 0 && (
+        <div className="flex-none">
+          <div className="grid place-items-center w-full">
+            <Road />
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

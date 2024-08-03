@@ -15,22 +15,30 @@ interface ThirdProps {
 }
 
 export function Third({ count, setCount, sentence }: ThirdProps) {
-  const { register, handleSubmit, formState: { errors, isSubmitted, isSubmitting } } = useForm<FormData>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitted, isSubmitting },
+  } = useForm<FormData>();
 
   const onSubmit = (data: FormData) => {
-    localStorage.setItem('userBelong', data.belong);
+    localStorage.setItem("userBelong", data.belong);
     setCount(count + 1);
   };
 
   return (
-    <div>
-      <div className="absolute top-1/4 left-1/2 transform -translate-x-[55%] -translate-y-2/3 z-10 text-[#fff]">
+    <div className="relative flex flex-col items-center text-[#fff]">
+      <div className="relative z-10 text-center mt-[25%]">
         <div className="flex items-start mb-3 text-[12px]">{count}/5</div>
-        <div className="flex items-start text-[26px]"><Logo width={"175"} height='auto' /></div>
-        <div className="flex items-start text-[26px] font-bold w-max">{sentence}</div>
+        <div className="flex items-start text-[26px] justify-center">
+          <Logo width={"175"} height="auto" />
+        </div>
+        <div className="flex items-start text-[26px] font-bold w-max text-center">
+          {sentence}
+        </div>
       </div>
 
-      <div className="absolute top-1/3 left-1/2 transform -translate-x-[50%] -translate-y-1/3 mt-10">
+      <div className="relative flex flex-col items-center mt-10">
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <Input
             type="text"
@@ -38,16 +46,18 @@ export function Third({ count, setCount, sentence }: ThirdProps) {
             {...register("belong", {
               required: "소속정보는 필수입력입니다.",
             })}
-            aria-invalid={isSubmitted ? (errors.belong ? "true" : "false") : undefined}
+            aria-invalid={
+              isSubmitted ? (errors.belong ? "true" : "false") : undefined
+            }
           />
-          {errors.belong && <small className="text-sm text-[#fff]">{errors.belong.message}</small>}
+          {errors.belong && (
+            <small className="text-sm text-[#fff]">
+              {errors.belong.message}
+            </small>
+          )}
 
           <div className="flex justify-end mt-3">
-            <button 
-              className="flex"
-              type="submit"
-              disabled={isSubmitting}
-            >
+            <button className="flex" type="submit" disabled={isSubmitting}>
               <NextButton />
             </button>
           </div>

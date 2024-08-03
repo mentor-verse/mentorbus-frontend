@@ -9,6 +9,7 @@ import { QAPage } from "@/pages/qa/page";
 import { MentorPage } from "./findmentor/containers/MentorPage";
 import { MyPage } from "./mypage/page";
 import { MentorBusPage } from "./mentorbus/page";
+import { Sam } from "./main/sam";
 
 export function MainRouter() {
   return (
@@ -20,14 +21,16 @@ export function MainRouter() {
       <Route path="/mentorbus-frontend/profile" element={<Profile />} />
       <Route path="mentorbus-frontend/main" element={<MainPage />} />
       <Route path="mentorbus-frontend/find" element={<FindMentor />} />
-      <Route path="/mentorbus-frontend/find/:school" element={<FindMentor />} /> {/* 학교별 멘토링 찾기 링크 */}
+      <Route
+        path="/mentorbus-frontend/find/:school"
+        element={<FindMentor />}
+      />{" "}
+      {/* 학교별 멘토링 찾기 링크 */}
       <Route path="/mentorbus-frontend/qabus" element={<QAPage />} />
       <Route path="/mentorbus-frontend/mentorinfo" element={<MentorPage />} />
       <Route path="/mentorbus-frontend/mypage" element={<MyPage />} />
       <Route path="/mentorbus-frontend/mentorbus" element={<MentorBusPage />} />
-
-
-
+      <Route path="/mentorbus-frontend/sam" element={<Sam />} />
     </Routes>
   );
 }
