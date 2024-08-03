@@ -24,7 +24,7 @@ const Zero: React.FC<ZeroProps> = () => {
     const major = localStorage.getItem("major");
 
     if (position && userName && userBelong && major) {
-      navigate("/main");
+      navigate("/mentorbus-frontend/main");
     } else {
       window.location.href = kakaoURL;
     }
