@@ -22,7 +22,7 @@ export function Fourth({ count, setCount, sentence }: FourthProps) {
 
   return (
     <div className="relative flex flex-col items-center text-[#fff]">
-      <div className="relative z-10 text-center mt-[25%]">
+      <div className="relative z-10 text-start mt-[25%]">
         <div className="flex items-start mb-3 text-[12px]">{count}/5</div>
         <div className="flex items-start text-[26px] font-bold w-max items-baseline justify-center">
           <Logo width={"175"} height="auto" /> <div>에서</div>
