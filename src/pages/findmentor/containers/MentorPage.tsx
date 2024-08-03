@@ -62,7 +62,7 @@ export function MentorPage() {
               </div>
             </>
           ) : (
-            <div className="absolute top-1/2 right-1/2 transform translate-x-[50%] -translate-y-1/2">
+            <div className="grid place-items-center mt-[60%]">
               <ApplyFinished />
             </div>
           )}

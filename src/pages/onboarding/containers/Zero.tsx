@@ -1,5 +1,4 @@
 // src/containers/Zero.tsx
-import { Button } from "@/components/ui/button";
 import { OnboardingTitle } from "@/pages/onboarding/containers/OnboardingTitle";
 import { OnbordingBus } from "@/components/Icons/OnboardingBus";
 import React from "react";
