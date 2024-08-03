@@ -63,11 +63,11 @@ export function Onboarding() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen overflow-hidden">
-      <div className="flex-1">{renderComponent()}</div>
+    <div className="main flex flex-col min-h-screen overflow-hidden">
+      <div className="main_content flex-1">{renderComponent()}</div>
       {count !== 0 && (
-        <div className="flex-none mt-auto">
-          <div className="grid place-items-center w-full py-4">
+        <div className="flex-none">
+          <div className="grid place-items-center w-full">
             <Road />
           </div>
         </div>
