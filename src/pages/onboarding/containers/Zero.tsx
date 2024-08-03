@@ -33,16 +33,18 @@ const Zero: React.FC<ZeroProps> = () => {
   console.log(code);
 
   return (
-    <div className="flex flex-col min-h-screen relative">
+    <div className="flex flex-col min-h-screen">
       <OnboardingTitle />
-
       <div onClick={handleLogin} className="grid place-items-center mt-8">
         <KakaoBtn />
       </div>
-
-      <div className="grid place-items-center w-[120%] -ml-[20%] ">
-        <ZeroRoad />
-      </div>
+      <div className="flex-grow"></div>{" "}
+      {/* This pushes the footer to the bottom */}
+      <footer className="w-full">
+        <div className="grid place-items-center py-4 w-[120%] -ml-[20%]">
+          <ZeroRoad />
+        </div>
+      </footer>
     </div>
   );
 };
