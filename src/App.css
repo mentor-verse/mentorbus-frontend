@@ -24,7 +24,7 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 232 93% 58%;
     --radius: 0.75rem;
-    --kakao : 53.98 100% 48.82%;
+    --kakao: 53.98 100% 48.82%;
     --kakao-foreground: 0 0% 13.33%;
   }
 
@@ -60,12 +60,50 @@
   }
 }
 
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  border-radius: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  touch-action: pan-y;
+}
+
+body,
+html,
+.main .main_content {
+  overscroll-behavior: none !important;
+}
+
+a {
+  text-decoration: none;
+}
+
+.main {
+  background-color: #ffffff;
+  font-family: "Pretendard";
+  letter-spacing: -0.08rem;
+  max-width: 840px;
+  height: 100%;
+  margin: 0 auto;
+  -webkit-overflow-scrolling: touch; /* 추가 */
+}
+
+.App {
+  text-align: center;
+  background-color: #ffffff;
+  overflow-y: auto; /* 스크롤이 보이도록 설정 */
+}
 
 #root {
   max-width: 1280px;
   margin: 0 auto;
   text-align: center;
-  
 }
 
 .logo {
@@ -105,11 +143,10 @@
 }
 
 * {
-  -webkit-tap-highlight-color:rgba(255,255,255,0);
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   user-select: none;
   -webkit-touch-callout: none;
 }
-
 
 body {
   margin: 0;
@@ -122,11 +159,14 @@ body {
   border-radius: 0;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
-  touch-action: pan-y; 
+  touch-action: pan-y;
 }
 
-body, html, .App, .main .main_content{
-  overscroll-behavior: none  !important; 
+body,
+html,
+.App,
+.main .main_content {
+  overscroll-behavior: none !important;
 }
 
 a {
@@ -134,8 +174,12 @@ a {
 }
 
 .main {
-  background: var(--blue-GD, linear-gradient(180deg, #1485C4 7.08%, #55ABDC 38.5%, #FFF 127.13%));  font-family: 'Pretendard';
-  font-family: 'Pretendard';
+  background: var(
+    --blue-GD,
+    linear-gradient(180deg, #1485c4 7.08%, #55abdc 38.5%, #fff 127.13%)
+  );
+  font-family: "Pretendard";
+  font-family: "Pretendard";
   letter-spacing: -0.08rem;
   max-width: 840px;
   height: 100%;
@@ -145,9 +189,12 @@ a {
 
 .App {
   text-align: center;
-  background: var(--blue-GD, linear-gradient(180deg, #1485C4 7.08%, #55ABDC 38.5%, #FFF 127.13%));  font-family: 'Pretendard';
+  background: var(
+    --blue-GD,
+    linear-gradient(180deg, #1485c4 7.08%, #55abdc 38.5%, #fff 127.13%)
+  );
+  font-family: "Pretendard";
   overflow-y: auto; /* �ㅽ겕濡ㅼ씠 蹂댁씠�꾨줉 �ㅼ젙 */
-  
 }
 
 @media screen and (min-width: 840px) {
@@ -155,7 +202,6 @@ a {
     position: relative;
     max-width: 840px;
     min-height: 100vh;
-
   }
 
   .main_content:before {
@@ -177,6 +223,4 @@ a {
     border-right: 1px solid;
     border-color: #d1d6db;
   }
-
-  
 }

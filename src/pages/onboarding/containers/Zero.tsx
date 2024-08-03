@@ -4,6 +4,7 @@ import { OnboardingTitle } from "@/pages/onboarding/containers/OnboardingTitle";
 import { OnbordingBus } from "@/components/Icons/OnboardingBus";
 import React from "react";
 import { Road } from "@/components/Icons/Road";
+import { KakaoBtn } from "@/components/Icons/KakaoBtn";
 
 interface ZeroProps {
   count: number;
@@ -27,9 +28,7 @@ const Zero: React.FC<ZeroProps> = () => {
       <OnboardingTitle />
 
       <div onClick={handleLogin} className="grid place-items-center mt-[5%]">
-        <Button variant={"kakao"} size={"ka"}>
-          카카오 로그인
-        </Button>
+        <KakaoBtn />
       </div>
 
       <div className="relative z-20">

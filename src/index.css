@@ -240,3 +240,20 @@ nav > div {
   margin-left: 0px;
   margin-top: -14px;
 }
+
+/* Tailwind CSS customization if needed */
+
+@media (max-width: 375px) {
+  .profile-spacing {
+    margin-bottom: 2rem; /* Adjust as needed for spacing */
+  }
+
+  .profile-container {
+    margin-bottom: 4rem; /* Ensure Profile is not obscured */
+  }
+}
+
+/* Utility classes */
+.space-y-8 {
+  margin-bottom: 2rem; /* Adjust as needed */
+}
