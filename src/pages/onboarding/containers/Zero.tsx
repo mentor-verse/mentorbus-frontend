@@ -36,10 +36,7 @@ const Zero: React.FC<ZeroProps> = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <OnboardingTitle />
-      <div
-        onClick={handleLogin}
-        className="grid place-items-center mt-8 content"
-      >
+      <div onClick={handleLogin} className="grid place-items-center mt-8">
         <KakaoBtn />
       </div>
       <footer className="w-full footer">

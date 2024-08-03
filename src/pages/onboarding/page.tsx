@@ -8,6 +8,7 @@ import { Third } from "./containers/Third";
 import { Fourth } from "./containers/Fourth";
 import { useState, useEffect } from "react";
 import { Road } from "@/components/Icons/Road";
+import "./Onboarding.css"; // Import the CSS file
 
 export function Onboarding() {
   const isLoggedIn = useRecoilValue(isLoggedInAtom);
@@ -63,12 +64,10 @@ export function Onboarding() {
   };
 
   return (
-    <div className="main flex flex-col min-h-screen">
-      <div className="main_content_container">
-        <div className="main_content">{renderComponent()}</div>
-      </div>
+    <div className="main flex flex-col min-h-screen overflow-hidden">
+      <div className="main_content">{renderComponent()}</div>
       {count !== 0 && (
-        <div className="footer">
+        <div className="w-full footer">
           <div className="grid place-items-center">
             <Road />
           </div>

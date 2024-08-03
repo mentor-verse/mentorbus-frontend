@@ -318,40 +318,31 @@ nav > div {
   }
 }
 
-/* src/styles/onboarding.css */
-.main_content_container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.main_content {
-  flex: 0 0 auto;
-}
-
 .footer {
-  margin-top: auto;
+  margin-top: 20px; /* Default margin */
 }
 
-/* 미디어 쿼리로 디바이스 높이에 따른 레이아웃 조정 */
+/* Media Queries for different screen sizes */
 @media (min-height: 600px) {
-  .main_content_container {
-    padding-top: 20px;
-    padding-bottom: 20px;
+  .footer {
+    margin-top: 40px;
+  }
+}
+
+@media (min-height: 700px) {
+  .footer {
+    margin-top: 60px;
   }
 }
 
 @media (min-height: 800px) {
-  .main_content_container {
-    padding-top: 40px;
-    padding-bottom: 40px;
+  .footer {
+    margin-top: 80px;
   }
 }
 
-@media (min-height: 1000px) {
-  .main_content_container {
-    padding-top: 60px;
-    padding-bottom: 60px;
+@media (min-height: 900px) {
+  .footer {
+    margin-top: 100px;
   }
 }
