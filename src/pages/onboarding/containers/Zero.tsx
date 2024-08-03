@@ -39,7 +39,7 @@ const Zero: React.FC<ZeroProps> = () => {
         <KakaoBtn />
       </div>
       <div className="flex-grow"></div>{" "}
-      {/* This pushes the footer to the bottom */}
+      {/* This ensures the footer stays at the bottom */}
       <footer className="w-full">
         <div className="w-[120%] -ml-[20%] grid place-items-center py-4">
           <ZeroRoad />
