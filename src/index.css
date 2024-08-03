@@ -257,3 +257,37 @@ nav > div {
 .space-y-8 {
   margin-bottom: 2rem; /* Adjust as needed */
 }
+
+/* index.css */
+
+.divMargin {
+  height: 0;
+}
+
+@media (min-height: 630px) {
+  /* Small devices (640px and up) */
+  .divMargin {
+    margin-top: -50px; /* Adjust as needed */
+  }
+}
+
+@media (min-height: 670px) {
+  /* Small devices (640px and up) */
+  .divMargin {
+    height: -8rem; /* Adjust as needed */
+  }
+}
+
+@media (min-height: 768px) {
+  /* Medium devices (768px and up) */
+  .divMargin {
+    height: 7rem; /* Adjust as needed */
+  }
+}
+
+@media (min-height: 1024px) {
+  /* Large devices (1024px and up) */
+  .divMargin {
+    height: 12rem; /* Adjust as needed */
+  }
+}

@@ -25,10 +25,11 @@ export function MyPage() {
     <>
       <div className="main flex flex-col min-h-screen">
         <div className="main_content ">
-          <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-col justify-center items-center mt-[25%]">
             <div>
               <LevelThird />
             </div>
+            <div className="divMargin"></div>
             <div>
               <Profile
                 name={userName}
