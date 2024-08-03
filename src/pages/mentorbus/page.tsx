@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { SearchBox } from "@/components/ui/searchbox";
 import BottomNav from "@/containers/navbar";
-import { useLocation } from "react-router-dom";
 
 interface SelectedBox {
   gen: string;
@@ -10,7 +9,7 @@ interface SelectedBox {
   info: string;
   date: string;
   sort: string;
-  status: "pending" | "completed"; // Add status property
+  status: "pending" | "completed";
 }
 
 type SortType = "인문계열" | "예술계열" | "IT계열" | "공학계열";
@@ -26,15 +25,33 @@ function isSortType(value: any): value is SortType {
   return ["인문계열", "예술계열", "IT계열", "공학계열"].includes(value);
 }
 
+function isSelectedBox(item: any): item is SelectedBox {
+  return (
+    typeof item.gen === "string" &&
+    typeof item.major === "string" &&
+    typeof item.name === "string" &&
+    typeof item.info === "string" &&
+    typeof item.date === "string" &&
+    isSortType(item.sort) &&
+    (item.status === "pending" || item.status === "completed")
+  );
+}
+
 export function MentorBusPage() {
   const [filter, setFilter] = useState("entry");
   const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
-  const location = useLocation();
 
   useEffect(() => {
-    const itemsFromStorage =
-      JSON.parse(localStorage.getItem("appliedItems")) || [];
-    setAppliedItems(itemsFromStorage);
+    const itemsFromStorage = JSON.parse(
+      localStorage.getItem("appliedItems") || "[]"
+    );
+    const parsedItems: SelectedBox[] = itemsFromStorage
+      .map((item: any) => ({
+        ...item,
+        status: item.status === "completed" ? "completed" : "pending",
+      }))
+      .filter(isSelectedBox);
+    setAppliedItems(parsedItems);
   }, []);
 
   const handleEnter = (item: SelectedBox) => {
@@ -49,7 +66,15 @@ export function MentorBusPage() {
         i === item ? { ...i, status: "completed" } : i
       );
       setAppliedItems(updatedItems);
-      localStorage.setItem("appliedItems", JSON.stringify(updatedItems));
+      localStorage.setItem(
+        "appliedItems",
+        JSON.stringify(
+          updatedItems.map((i) => ({
+            ...i,
+            status: i.status === "completed" ? "completed" : "pending",
+          }))
+        )
+      );
       setFilter("applied");
     }
   };
@@ -90,7 +115,7 @@ export function MentorBusPage() {
                 .map((item, index) => (
                   <div
                     key={index}
-                    className="grid place-items-center mt-[0px]  h-[120px]"
+                    className="grid place-items-center mt-[0px] h-[120px]"
                   >
                     <SearchBox
                       gen={item.gen}

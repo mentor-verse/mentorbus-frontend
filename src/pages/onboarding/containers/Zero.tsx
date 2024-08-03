@@ -4,6 +4,7 @@ import { OnbordingBus } from "@/components/Icons/OnboardingBus";
 import React from "react";
 import { Road } from "@/components/Icons/Road";
 import { KakaoBtn } from "@/components/Icons/KakaoBtn";
+import { useNavigate } from "react-router-dom";
 
 interface ZeroProps {
   count: number;
@@ -15,8 +16,19 @@ const Zero: React.FC<ZeroProps> = () => {
   const redirect_uri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
 
+  const navigate = useNavigate();
+
   const handleLogin = () => {
-    window.location.href = kakaoURL;
+    const position = localStorage.getItem("position");
+    const userName = localStorage.getItem("userName");
+    const userBelong = localStorage.getItem("userBelong");
+    const major = localStorage.getItem("major");
+
+    if (position && userName && userBelong && major) {
+      navigate("/main");
+    } else {
+      window.location.href = kakaoURL;
+    }
   };
 
   const code = new URL(window.location.href).searchParams.get("code");

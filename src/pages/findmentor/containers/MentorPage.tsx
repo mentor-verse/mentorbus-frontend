@@ -14,7 +14,7 @@ export function MentorPage() {
 
   const handleApplyClick = () => {
     setIsApplied(true);
-    let appliedItems = JSON.parse(localStorage.getItem("appliedItems")) || [];
+    let appliedItems = JSON.parse(localStorage.getItem("appliedItems") || "[]");
     if (selectedBox) {
       appliedItems.push({
         ...selectedBox,
