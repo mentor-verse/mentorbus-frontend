@@ -64,7 +64,7 @@ export function Onboarding() {
 
   return (
     <div className="main flex flex-col min-h-screen">
-      <div className="main_content" style={{ flexGrow: 1 }}>
+      <div className="main_content" style={{ flex: "1 1 auto" }}>
         {renderComponent()}
       </div>
       {count !== 0 && (
