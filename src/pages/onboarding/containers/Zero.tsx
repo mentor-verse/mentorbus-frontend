@@ -40,8 +40,6 @@ const Zero: React.FC<ZeroProps> = () => {
         <KakaoBtn />
       </div>
 
-      <div className="flex-grow"></div>
-
       <div className="grid place-items-center w-[120%] -ml-[20%] ">
         <ZeroRoad />
       </div>
