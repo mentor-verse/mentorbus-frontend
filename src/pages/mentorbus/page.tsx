@@ -65,7 +65,7 @@ export function MentorBusPage() {
       const updatedItems = appliedItems.map((i) =>
         i === item ? { ...i, status: "completed" } : i
       );
-      setAppliedItems(updatedItems);
+      setAppliedItems(updatedItems as SelectedBox[]); // Type assertion here
       localStorage.setItem(
         "appliedItems",
         JSON.stringify(

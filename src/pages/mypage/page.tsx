@@ -30,7 +30,7 @@ export function MyPage() {
               <LevelThird />
             </div>
             <div className="divMargin"></div>
-            <div>
+            <div className="mb-[60px]">
               <Profile
                 name={userName}
                 school={userBelong}
