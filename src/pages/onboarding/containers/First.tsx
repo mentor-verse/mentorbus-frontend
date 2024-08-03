@@ -34,7 +34,7 @@ export function First({ count, setCount, sentence }: FirstProps) {
     <>
       <div className="relative z-10 text-[#fff] flex flex-col items-center mt-[25%]">
         <div className="w-[300px] flex items-start justify-start mb-3 text-[12px]">
-          {count}/5
+          {count}/4
         </div>
         <div className="w-[300px] flex justify-start items-start text-start">
           <Logo width={"175"} height="auto" />

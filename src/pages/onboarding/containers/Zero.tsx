@@ -48,7 +48,7 @@ const Zero: React.FC<ZeroProps> = () => {
         </div>
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 z-10">
+      <div className="fixed inset-x-0 bottom-0 z-10">
         <div className="grid place-items-center w-full">
           <Road />
         </div>
