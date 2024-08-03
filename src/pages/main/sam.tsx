@@ -10,13 +10,6 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 import { userNameAtom } from "@/atoms/userNameAtom";
-import React from "react";
-
-interface FirstProps {
-  count: number;
-  setCount: React.Dispatch<React.SetStateAction<number>>;
-  sentence: string;
-}
 
 interface FormData {
   name: string;
