@@ -62,20 +62,20 @@ export function MentorPage() {
               </div>
             </>
           ) : (
-            <div className="grid place-items-center mt-[60%]">
+            <div className="grid place-items-center mt-[45%]">
               <ApplyFinished />
             </div>
           )}
         </div>
         {/* Footer section with the button */}
-        <div className="flex justify-center mb-5">
+        <div className="flex justify-center mb-5 mt-[30%]">
           <Button
             variant={"default"}
             size={"default"}
             className="w-[342px] h-[56px] text-[#fff] font-semibold"
             onClick={isApplied ? handleRedirectToMentorBus : handleApplyClick}
           >
-            {isApplied ? "멘토버스 바로가기" : "바로가기"}
+            {isApplied ? "멘토버스 바로가기" : "신청하기"}
           </Button>
         </div>
       </div>
