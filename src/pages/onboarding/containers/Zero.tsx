@@ -38,12 +38,11 @@ const Zero: React.FC<ZeroProps> = () => {
       <OnboardingTitle />
       <div
         onClick={handleLogin}
-        className="grid place-items-center mt-8"
-        style={{ flex: "1 1 auto" }}
+        className="grid place-items-center mt-8 content"
       >
         <KakaoBtn />
       </div>
-      <footer className="w-full" style={{ flexShrink: 0 }}>
+      <footer className="w-full footer">
         <div className="w-[120%] -ml-[20%] grid place-items-center">
           <ZeroRoad />
         </div>

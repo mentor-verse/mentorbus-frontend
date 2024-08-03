@@ -64,11 +64,11 @@ export function Onboarding() {
 
   return (
     <div className="main flex flex-col min-h-screen">
-      <div className="main_content" style={{ flex: "1 1 auto" }}>
-        {renderComponent()}
+      <div className="main_content_container">
+        <div className="main_content">{renderComponent()}</div>
       </div>
       {count !== 0 && (
-        <div className="w-full mt-auto">
+        <div className="footer">
           <div className="grid place-items-center">
             <Road />
           </div>
