@@ -65,12 +65,13 @@ export function Onboarding() {
   return (
     <div className="main flex flex-col min-h-screen overflow-hidden">
       <div className="main_content flex-1">{renderComponent()}</div>
+      <div className="flex-grow"></div>{" "}
       {count !== 0 && (
-        <div className="flex-none">
-          <div className="grid place-items-center w-full">
+        <footer className="w-full">
+          <div className="grid place-items-center">
             <Road />
           </div>
-        </div>
+        </footer>
       )}
     </div>
   );
