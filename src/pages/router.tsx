@@ -9,7 +9,6 @@ import { QAPage } from "@/pages/qa/page";
 import { MentorPage } from "./findmentor/containers/MentorPage";
 import { MyPage } from "./mypage/page";
 import { MentorBusPage } from "./mentorbus/page";
-import { Sam } from "./main/sam";
 
 export function MainRouter() {
   return (
@@ -30,7 +29,6 @@ export function MainRouter() {
       <Route path="/mentorbus-frontend/mentorinfo" element={<MentorPage />} />
       <Route path="/mentorbus-frontend/mypage" element={<MyPage />} />
       <Route path="/mentorbus-frontend/mentorbus" element={<MentorBusPage />} />
-      <Route path="/mentorbus-frontend/sam" element={<Sam />} />
     </Routes>
   );
 }
