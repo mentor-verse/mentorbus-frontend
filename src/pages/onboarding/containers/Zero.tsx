@@ -1,9 +1,8 @@
 import { OnboardingTitle } from "@/pages/onboarding/containers/OnboardingTitle";
-import { OnbordingBus } from "@/components/Icons/OnboardingBus";
 import React from "react";
-import { Road } from "@/components/Icons/Road";
 import { KakaoBtn } from "@/components/Icons/KakaoBtn";
 import { useNavigate } from "react-router-dom";
+import { ZeroRoad } from "@/components/Icons/ZeroRoad";
 
 interface ZeroProps {
   count: number;
@@ -34,20 +33,17 @@ const Zero: React.FC<ZeroProps> = () => {
   console.log(code);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen relative">
       <OnboardingTitle />
 
       <div onClick={handleLogin} className="grid place-items-center mt-8">
         <KakaoBtn />
       </div>
 
-      <div className="flex-grow flex flex-col justify-end">
-        <div className="relative grid place-items-center">
-          <Road className="w-full" />
-          <div className="absolute bottom-0">
-            <OnbordingBus />
-          </div>
-        </div>
+      <div className="flex-grow"></div>
+
+      <div className="grid place-items-center w-[120%] -ml-[20%] ">
+        <ZeroRoad />
       </div>
     </div>
   );
