@@ -67,9 +67,9 @@ export function Onboarding() {
       <div className="main_content flex-1 flex flex-col">
         {renderComponent()}
       </div>
-      <div className="flex-grow"></div>{" "}
       {count !== 0 && (
         <div className="w-full">
+          <div className="flex-grow"></div>{" "}
           <div className="grid place-items-center">
             <Road />
           </div>
