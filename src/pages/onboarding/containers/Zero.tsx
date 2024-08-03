@@ -1,4 +1,3 @@
-// src/containers/Zero.tsx
 import { OnboardingTitle } from "@/pages/onboarding/containers/OnboardingTitle";
 import { OnbordingBus } from "@/components/Icons/OnboardingBus";
 import React from "react";
