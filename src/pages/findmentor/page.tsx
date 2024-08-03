@@ -218,6 +218,9 @@ export function FindMentor() {
                 </div>
               ))}
             </div>
+
+            <div className="mt-[120px]"></div>
+
             <BottomNav />
           </div>
         </div>

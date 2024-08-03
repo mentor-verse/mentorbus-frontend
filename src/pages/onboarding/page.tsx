@@ -69,11 +69,11 @@ export function Onboarding() {
       </div>
       <div className="flex-grow"></div>{" "}
       {count !== 0 && (
-        <footer className="w-full">
+        <div className="w-full">
           <div className="grid place-items-center">
             <Road />
           </div>
-        </footer>
+        </div>
       )}
     </div>
   );

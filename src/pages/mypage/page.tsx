@@ -30,7 +30,7 @@ export function MyPage() {
               <LevelThird />
             </div>
             <div className="divMargin"></div>
-            <div className="mb-[60px]">
+            <div className="mb-[90px]">
               <Profile
                 name={userName}
                 school={userBelong}
@@ -40,6 +40,7 @@ export function MyPage() {
             </div>
           </div>
         </div>
+
         <div className="w-full">
           <BottomNav />
         </div>

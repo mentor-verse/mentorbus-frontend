@@ -136,6 +136,9 @@ export function MentorBusPage() {
                 ))}
             </div>
           </div>
+
+          <div className="mt-[120px]"></div>
+
           <BottomNav />
         </div>
       </div>

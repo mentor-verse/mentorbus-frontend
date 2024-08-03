@@ -29,25 +29,28 @@ const colleges: CollegeType[] = [
   { img: SOF, name: "서울시립대학교" },
 ];
 
-const getRandomColleges = (colleges: CollegeType[], count: number): CollegeType[] => {
+const getRandomColleges = (
+  colleges: CollegeType[],
+  count: number
+): CollegeType[] => {
   const shuffled = [...colleges].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 };
 
 export function MainPage() {
-  const [userName, setUserName] = useState<string>('');
-  const [userMajor, setUserMajor] = useState<string>('');
+  const [userName, setUserName] = useState<string>("");
+  const [userMajor, setUserMajor] = useState<string>("");
   const [randomColleges, setRandomColleges] = useState<CollegeType[]>([]);
 
   useEffect(() => {
-    const storedUserName = localStorage.getItem('userName');
+    const storedUserName = localStorage.getItem("userName");
     if (storedUserName) {
       setUserName(storedUserName);
     }
   }, []);
 
   useEffect(() => {
-    const storedUserMajor = localStorage.getItem('major');
+    const storedUserMajor = localStorage.getItem("major");
     if (storedUserMajor) {
       setUserMajor(storedUserMajor);
     }
@@ -61,7 +64,7 @@ export function MainPage() {
     <>
       <div className="main">
         <div className="main_content overflow-hidden bg-white">
-          <div style={{ background: '#fff' }}>
+          <div style={{ background: "#fff" }}>
             <Header major={userMajor} className="mt-[50px]" title={""} />
 
             <div className="w-auto mt-[30px]">
@@ -71,28 +74,56 @@ export function MainPage() {
             <TitleSection title2="대학별" title={""} major={""} title3={""} />
 
             <div className="overflow-x-auto ml-[28px] mt-[10px]">
-              <div className="flex" style={{ width: 'max-content' }}>
+              <div className="flex" style={{ width: "max-content" }}>
                 {randomColleges.map((college, index) => (
                   <React.Fragment key={index}>
                     <College img={college.img} name={college.name} title={""} />
-                    {index < randomColleges.length - 1 && <div className="ml-[13px]"></div>}
+                    {index < randomColleges.length - 1 && (
+                      <div className="ml-[13px]"></div>
+                    )}
                   </React.Fragment>
                 ))}
               </div>
             </div>
 
-            <TitleSection title={userName} title2="님에게 맞는" major={userMajor} title3="멘토" />
+            <TitleSection
+              title={userName}
+              title2="님에게 맞는"
+              major={userMajor}
+              title3="멘토"
+            />
 
             <div className="flex mt-[20px] overflow-auto">
-              <MentorBox name="편유나" major="숭실대학교 글로벌미디어학부" gen="woman" info="-숭실대학교 재학" />
+              <MentorBox
+                name="편유나"
+                major="숭실대학교 글로벌미디어학부"
+                gen="woman"
+                info="-숭실대학교 재학"
+              />
               <div className="ml-[13px]"></div>
-              <MentorBox name="편유나" major="숭실대학교 글로벌미디어학부" gen="woman" info="-숭실대학교 재학" />
+              <MentorBox
+                name="편유나"
+                major="숭실대학교 글로벌미디어학부"
+                gen="woman"
+                info="-숭실대학교 재학"
+              />
               <div className="ml-[13px]"></div>
-              <MentorBox name="편유나" major="숭실대학교 글로벌미디어학부" gen="woman" info="-숭실대학교 재학" />
+              <MentorBox
+                name="편유나"
+                major="숭실대학교 글로벌미디어학부"
+                gen="woman"
+                info="-숭실대학교 재학"
+              />
               <div className="ml-[13px]"></div>
-              <MentorBox name="편유나" major="숭실대학교 글로벌미디어학부" gen="woman" info="-숭실대학교 재학" />
+              <MentorBox
+                name="편유나"
+                major="숭실대학교 글로벌미디어학부"
+                gen="woman"
+                info="-숭실대학교 재학"
+              />
             </div>
 
+            <div className="mt-[120px]"></div>
             <BottomNav />
           </div>
         </div>
