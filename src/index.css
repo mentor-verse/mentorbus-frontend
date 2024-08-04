@@ -319,10 +319,10 @@ nav > div {
 }
 
 .footer {
-  margin-top: 29.6vh; /* Default margin calculated based on the height of 844px and margin of 250px */
+  margin-top: 50px; /* Default margin calculated based on the height of 844px and margin of 250px */
 }
 
-/* Media Queries for different screen sizes 
+/* Media Queries for different screen sizes */
 @media (min-height: 600px) {
   .footer {
     margin-top: 100px;
@@ -346,4 +346,3 @@ nav > div {
     margin-top: 250px;
   }
 }
-  */
