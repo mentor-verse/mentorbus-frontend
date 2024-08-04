@@ -319,30 +319,5 @@ nav > div {
 }
 
 .footer {
-  margin-top: 100px; /* Default margin calculated based on the height of 844px and margin of 250px */
-}
-
-/* Media Queries for different screen sizes */
-@media (min-height: 600px) {
-  .footer {
-    margin-top: 200px;
-  }
-}
-
-@media (min-height: 700px) {
-  .footer {
-    margin-top: 300px;
-  }
-}
-
-@media (min-height: 800px) {
-  .footer {
-    margin-top: 400px;
-  }
-}
-
-@media (min-height: 900px) {
-  .footer {
-    margin-top: 5000px;
-  }
+  margin-top: 30%; /* Default margin calculated based on the height of 844px and margin of 250px */
 }
