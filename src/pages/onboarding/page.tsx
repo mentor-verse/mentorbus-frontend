@@ -25,13 +25,20 @@ export function Onboarding() {
   useEffect(() => {
     const handleResize = () => {
       if (growDivRef.current) {
-        const mainContentHeight =
-          document.querySelector(".main_content")?.clientHeight || 0;
-        const renderedComponentHeight =
-          document.querySelector(".rendered-component")?.clientHeight || 0;
-        growDivRef.current.style.height = `${
-          mainContentHeight - renderedComponentHeight
-        }px`;
+        const mainContentElement = document.querySelector(
+          ".main_content"
+        ) as HTMLElement;
+        const renderedComponentElement = document.querySelector(
+          ".rendered-component"
+        ) as HTMLElement;
+        if (mainContentElement && renderedComponentElement) {
+          const mainContentHeight = mainContentElement.clientHeight;
+          const renderedComponentHeight = renderedComponentElement.clientHeight;
+          growDivRef.current.style.height = `${Math.max(
+            mainContentHeight - renderedComponentHeight,
+            0
+          )}px`;
+        }
       }
     };
 
@@ -96,7 +103,7 @@ export function Onboarding() {
 
   return (
     <div className="main flex flex-col min-h-screen overflow-hidden">
-      <div className="main_content">
+      <div className="main_content flex flex-col flex-1">
         {renderComponent()}
         <div ref={growDivRef}></div>
         {count !== 0 && (

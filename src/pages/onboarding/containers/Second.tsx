@@ -47,8 +47,6 @@ export function Second({ count, setCount, sentence }: SecondProps) {
           />
         </button>
       </div>
-
-      <div className="footer"></div>
     </div>
   );
 }

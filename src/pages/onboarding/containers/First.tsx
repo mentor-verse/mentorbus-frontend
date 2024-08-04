@@ -70,8 +70,6 @@ export function First({ count, setCount, sentence }: FirstProps) {
           </div>
         </form>
       </div>
-
-      <div className="footer"></div>
     </>
   );
 }
