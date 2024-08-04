@@ -8,6 +8,7 @@ import { Second } from "./containers/Second";
 import { Third } from "./containers/Third";
 import { Fourth } from "./containers/Fourth";
 import { Road } from "@/components/Icons/Road";
+import ZeroRoad from "./components/ZeroRoad"; // ZeroRoad 컴포넌트를 가져옵니다
 
 export function Onboarding() {
   const isLoggedIn = useRecoilValue(isLoggedInAtom);
@@ -102,12 +103,18 @@ export function Onboarding() {
       <div className="main_content flex flex-col flex-1">
         {renderComponent()}
         <div ref={growDivRef}></div>
-        {count !== 0 && (
-          <div ref={roadDivRef} className="w-full">
-            <div className="grid place-items-center">
-              <Road />
-            </div>
+        {count === 0 ? (
+          <div className="w-[120%] -ml-[20%] grid place-items-center">
+            <ZeroRoad />
           </div>
+        ) : (
+          count !== 0 && (
+            <div ref={roadDivRef} className="w-full">
+              <div className="grid place-items-center">
+                <Road />
+              </div>
+            </div>
+          )
         )}
       </div>
     </div>
