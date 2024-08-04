@@ -1,5 +1,5 @@
 // src/components/Onboarding.tsx
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { isLoggedInAtom } from "@/atoms/isLoggedInAtom";
 import Zero from "./containers/Zero";
@@ -44,47 +44,50 @@ export function Onboarding() {
     switch (count) {
       case 0:
         return (
-          <Zero
-            className="rendered-component"
-            count={count}
-            setCount={setCount}
-          />
+          <div className="rendered-component">
+            {" "}
+            <Zero count={count} setCount={setCount} />
+          </div>
         );
       case 1:
         return (
-          <First
-            className="rendered-component"
-            count={count}
-            setCount={setCount}
-            sentence={"닉네임을 입력해주세요"}
-          />
+          <div className="rendered-component">
+            <First
+              count={count}
+              setCount={setCount}
+              sentence={"닉네임을 입력해주세요"}
+            />
+          </div>
         );
       case 2:
         return (
-          <Second
-            className="rendered-component"
-            count={count}
-            setCount={setCount}
-            sentence={"무엇을 하고 싶나요"}
-          />
+          <div className="rendered-component">
+            <Second
+              count={count}
+              setCount={setCount}
+              sentence={"무엇을 하고 싶나요"}
+            />
+          </div>
         );
       case 3:
         return (
-          <Third
-            className="rendered-component"
-            count={count}
-            setCount={setCount}
-            sentence={"소속대학교/직장을 알려주세요"}
-          />
+          <div className="rendered-component">
+            <Third
+              count={count}
+              setCount={setCount}
+              sentence={"소속대학교/직장을 알려주세요"}
+            />
+          </div>
         );
       case 4:
         return (
-          <Fourth
-            className="rendered-component"
-            count={count}
-            setCount={setCount}
-            sentence={"소속 계열을 선택해주세요"}
-          />
+          <div className={"rendered-component"}>
+            <Fourth
+              count={count}
+              setCount={setCount}
+              sentence={"소속 계열을 선택해주세요"}
+            />
+          </div>
         );
       default:
         return null;
