@@ -17,7 +17,12 @@ export function Onboarding() {
   const roadDivRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (isLoggedIn || localStorage.getItem("kakaoToken")) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const specialQuery = urlParams.get("specialQuery"); // 'specialQuery'를 원하는 쿼리 파라미터 이름으로 변경
+
+    if (specialQuery) {
+      setCount(1);
+    } else if (isLoggedIn || localStorage.getItem("kakaoToken")) {
       setCount(1);
     } else {
       setCount(0);
