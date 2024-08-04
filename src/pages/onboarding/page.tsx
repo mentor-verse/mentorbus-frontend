@@ -13,6 +13,7 @@ export function Onboarding() {
   const isLoggedIn = useRecoilValue(isLoggedInAtom);
   const [count, setCount] = useState(0);
   const growDivRef = useRef<HTMLDivElement>(null);
+  const roadDivRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isLoggedIn || localStorage.getItem("kakaoToken")) {
@@ -24,15 +25,16 @@ export function Onboarding() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (growDivRef.current) {
+      if (growDivRef.current && roadDivRef.current) {
         const viewportHeight = window.innerHeight;
         const renderedComponentElement = document.querySelector(
           ".rendered-component"
         ) as HTMLElement;
         const renderedComponentHeight =
           renderedComponentElement?.clientHeight || 0;
+        const roadDivHeight = roadDivRef.current?.clientHeight || 0;
         growDivRef.current.style.height = `${
-          viewportHeight - renderedComponentHeight
+          viewportHeight - renderedComponentHeight - roadDivHeight
         }px`;
       }
     };
@@ -47,7 +49,6 @@ export function Onboarding() {
       case 0:
         return (
           <div className="rendered-component">
-            {" "}
             <Zero count={count} setCount={setCount} />
           </div>
         );
@@ -83,7 +84,7 @@ export function Onboarding() {
         );
       case 4:
         return (
-          <div className={"rendered-component"}>
+          <div className="rendered-component">
             <Fourth
               count={count}
               setCount={setCount}
@@ -102,7 +103,7 @@ export function Onboarding() {
         {renderComponent()}
         <div ref={growDivRef}></div>
         {count !== 0 && (
-          <div className="w-full">
+          <div ref={roadDivRef} className="w-full">
             <div className="grid place-items-center">
               <Road />
             </div>
