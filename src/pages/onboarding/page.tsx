@@ -25,20 +25,15 @@ export function Onboarding() {
   useEffect(() => {
     const handleResize = () => {
       if (growDivRef.current) {
-        const mainContentElement = document.querySelector(
-          ".main_content"
-        ) as HTMLElement;
+        const viewportHeight = window.innerHeight;
         const renderedComponentElement = document.querySelector(
           ".rendered-component"
         ) as HTMLElement;
-        if (mainContentElement && renderedComponentElement) {
-          const mainContentHeight = mainContentElement.clientHeight;
-          const renderedComponentHeight = renderedComponentElement.clientHeight;
-          growDivRef.current.style.height = `${Math.max(
-            mainContentHeight - renderedComponentHeight,
-            0
-          )}px`;
-        }
+        const renderedComponentHeight =
+          renderedComponentElement?.clientHeight || 0;
+        growDivRef.current.style.height = `${
+          viewportHeight - renderedComponentHeight
+        }px`;
       }
     };
 
