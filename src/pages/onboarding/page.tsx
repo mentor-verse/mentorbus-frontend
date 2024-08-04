@@ -8,7 +8,6 @@ import { Third } from "./containers/Third";
 import { Fourth } from "./containers/Fourth";
 import { useState, useEffect } from "react";
 import { Road } from "@/components/Icons/Road";
-import "./Onboarding.css"; // Import the CSS file
 
 export function Onboarding() {
   const isLoggedIn = useRecoilValue(isLoggedInAtom);
