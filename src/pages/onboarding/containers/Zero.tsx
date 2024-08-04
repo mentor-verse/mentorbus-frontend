@@ -38,6 +38,7 @@ const Zero: React.FC<ZeroProps> = () => {
     } else {
       window.Kakao.Auth.authorize({
         redirectUri: redirect_uri,
+        throughTalk: true, // 간편 로그인을 위해 추가
       });
     }
   };
