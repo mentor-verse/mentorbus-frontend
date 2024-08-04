@@ -119,6 +119,8 @@ export function Fourth({ count, setCount, sentence }: FourthProps) {
           </button>
         </div>
       </div>
+
+      <div className="footer"></div>
     </div>
   );
 }

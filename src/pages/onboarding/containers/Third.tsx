@@ -65,6 +65,8 @@ export function Third({ count, setCount, sentence }: ThirdProps) {
           </div>
         </form>
       </div>
+
+      <div className="footer"></div>
     </div>
   );
 }
