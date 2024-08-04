@@ -39,7 +39,7 @@ const Zero: React.FC<ZeroProps> = () => {
       <div onClick={handleLogin} className="grid place-items-center mt-8">
         <KakaoBtn />
       </div>
-      <footer className="w-full footer">
+      <footer className="w-full">
         <div className="w-[120%] -ml-[20%] grid place-items-center">
           <ZeroRoad />
         </div>

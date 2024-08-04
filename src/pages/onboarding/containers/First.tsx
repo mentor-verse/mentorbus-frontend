@@ -71,7 +71,7 @@ export function First({ count, setCount, sentence }: FirstProps) {
         </form>
       </div>
 
-      <div className="footer"></div>
+      <div className="flex-grow"></div>
     </>
   );
 }
