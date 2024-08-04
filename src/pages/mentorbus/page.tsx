@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { SearchBox } from "@/components/ui/searchbox";
 import BottomNav from "@/containers/navbar";
-import { Platform, Linking } from "react-native";
+import { Platform } from "react-native"; // Only if using React Native
 
 interface SelectedBox {
   gen: string;
@@ -60,14 +60,14 @@ export function MentorBusPage() {
       const url = `https://app.gather.town/invite?token=${
         gatherTownUrls[item.sort]
       }`;
+
       if (Platform.OS === "web") {
-        // Web platform: open URL in new tab
+        // Web platform: open URL in a new tab
         window.open(url, "_blank");
       } else {
-        // Mobile platform: use Linking to open URL
-        Linking.openURL(url).catch((err) =>
-          console.error("Failed to open URL:", err)
-        );
+        // WebView in React Native (or Android WebView) might require a custom URL scheme
+        // Check if you have a custom URL scheme or app-specific handling
+        window.location.href = url; // Fallback to change location
       }
 
       // Update the status of the item to "completed"
