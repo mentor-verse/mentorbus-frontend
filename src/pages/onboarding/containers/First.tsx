@@ -45,7 +45,7 @@ export function First({ count, setCount, sentence }: FirstProps) {
       </div>
 
       <div
-        className="relative flex justify-center mt-10 mb-32"
+        className="relative flex justify-center mt-10 "
         style={{ top: "33%" }}
       >
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
@@ -70,6 +70,8 @@ export function First({ count, setCount, sentence }: FirstProps) {
           </div>
         </form>
       </div>
+
+      <div className="footer"></div>
     </>
   );
 }

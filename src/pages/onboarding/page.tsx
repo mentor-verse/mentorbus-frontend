@@ -66,7 +66,7 @@ export function Onboarding() {
     <div className="main flex flex-col min-h-screen overflow-hidden">
       <div className="main_content">{renderComponent()}</div>
       {count !== 0 && (
-        <div className="w-full footer">
+        <div className="w-full">
           <div className="grid place-items-center">
             <Road />
           </div>
