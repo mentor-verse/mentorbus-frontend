@@ -3,7 +3,6 @@ import { OnboardingTitle } from "@/pages/onboarding/containers/OnboardingTitle";
 import React from "react";
 import { KakaoBtn } from "@/components/Icons/KakaoBtn";
 import { useNavigate } from "react-router-dom";
-import { ZeroRoad } from "@/components/Icons/ZeroRoad";
 
 interface ZeroProps {
   count: number;
