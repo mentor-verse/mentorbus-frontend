@@ -1,5 +1,4 @@
-// types.d.ts
-
+// src/types/types.d.ts
 export interface KakaoUserData {
   id: number;
   properties: {

@@ -1,16 +1,11 @@
-declare global {
-  interface Window {
-    Kakao: any;
-  }
-}
-
+// src/components/KakaoRedirect.tsx
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { useEffect, useCallback } from "react";
 import axios from "axios";
 import qs from "qs";
-
 import { isLoggedInAtom } from "@/atoms/isLoggedInAtom";
+import { setKakaoToken } from "@/utils/auth";
 
 const Rest_api_key = import.meta.env.VITE_KAKAO_REST_API_KEY; // REST API KEY
 const redirect_uri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
@@ -40,7 +35,7 @@ export function KakaoRedirect() {
         );
         window.Kakao.init(Rest_api_key); // Kakao Javascript SDK 초기화
         window.Kakao.Auth.setAccessToken(res.data.access_token); // access token 설정
-        localStorage.setItem("kakaoToken", res.data.access_token); // Store token in localStorage
+        setKakaoToken(res.data.access_token); // Store token in localStorage
         setIsLoggedIn(true);
         navigate("/mentorbus-frontend/onboarding"); // 일관된 경로 사용
       } catch (err) {
