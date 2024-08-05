@@ -40,7 +40,7 @@ export function First({ count, setCount, sentence }: FirstProps) {
     const major = localStorage.getItem("major");
 
     if (position && userName && userBelong && major) {
-      navigate("/main");
+      navigate("/mentorbus-frontend/main");
     }
   }, [navigate]);
 
