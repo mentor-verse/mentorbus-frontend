@@ -3,8 +3,6 @@ import { KakaoUserData, TransformedUserData } from "./types/types";
 
 const Rest_api_key = import.meta.env.VITE_REST_API_KEY;
 const redirect_uri = import.meta.env.VITE_REDIRECT_URI;
-const encoded_redirect_uri = encodeURIComponent(redirect_uri);
-const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${encoded_redirect_uri}&response_type=code`;
 
 const getToken = async (code: string): Promise<TransformedUserData> => {
   const grant_type = "authorization_code";
@@ -62,10 +60,14 @@ const getToken = async (code: string): Promise<TransformedUserData> => {
 
     return transformedUserData;
   } catch (error) {
-    console.error(
-      "Error fetching token:",
-      error.response ? error.response.data : error.message
-    );
+    if (axios.isAxiosError(error)) {
+      console.error(
+        "Error fetching token:",
+        error.response ? error.response.data : error.message
+      );
+    } else {
+      console.error("Unexpected error:", error);
+    }
     throw error;
   }
 };
