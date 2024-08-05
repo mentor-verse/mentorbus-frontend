@@ -12,6 +12,7 @@ import CAU from "@/assets/CAU.svg";
 import BottomNav from "@/containers/navbar";
 import { MentorBox } from "@/components/ui/mentorbox";
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 // Define the College type
 interface CollegeType {
@@ -41,6 +42,10 @@ export function MainPage() {
   const [userName, setUserName] = useState<string>("");
   const [userMajor, setUserMajor] = useState<string>("");
   const [randomColleges, setRandomColleges] = useState<CollegeType[]>([]);
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const userName = searchParams.get("userName");
 
   useEffect(() => {
     const storedUserName = localStorage.getItem("userName");

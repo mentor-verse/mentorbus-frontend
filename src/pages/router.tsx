@@ -19,12 +19,9 @@ export function MainRouter() {
       <Route path="/mentorbus-frontend/kakao" element={<Kakao />} />
       <Route path="/mentorbus-frontend/oauth" element={<KakaoRedirect />} />
       <Route path="/mentorbus-frontend/profile" element={<Profile />} />
-      <Route path="mentorbus-frontend/main" element={<MainPage />} />
-      <Route path="mentorbus-frontend/find" element={<FindMentor />} />
-      <Route
-        path="/mentorbus-frontend/find/:school"
-        element={<FindMentor />}
-      />{" "}
+      <Route path="/mentorbus-frontend/main" element={<MainPage />} />
+      <Route path="/mentorbus-frontend/find" element={<FindMentor />} />
+      <Route path="/mentorbus-frontend/find/:school" element={<FindMentor />} />
       {/* 학교별 멘토링 찾기 링크 */}
       <Route path="/mentorbus-frontend/qabus" element={<QAPage />} />
       <Route path="/mentorbus-frontend/mentorinfo" element={<MentorPage />} />

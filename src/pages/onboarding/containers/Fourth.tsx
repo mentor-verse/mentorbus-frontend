@@ -13,7 +13,9 @@ export function Fourth({ count, setCount, sentence }: FourthProps) {
 
   const handleNext = (major: string) => {
     localStorage.setItem("major", major); // Store the major in localStorage
-    navigate("/mentorbus-frontend/main");
+    const userName = localStorage.getItem("userName");
+
+    navigate(`/mentorbus-frontend/main?userName=${userName}`);
   };
 
   const incrementCount = () => {
