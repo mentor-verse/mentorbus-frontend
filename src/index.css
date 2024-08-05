@@ -321,5 +321,4 @@ nav > div {
 .footer {
   margin-top: 30vh; /* Default margin calculated based on the height of 844px and margin of 250px */
   height: -webkit-fill-available;
-  height: fill-available;
 }

@@ -1,3 +1,4 @@
+// src/components/First.js
 import { NextButton } from "@/components/Icons/NextButton";
 import { Logo } from "@/components/Icons/Logo";
 import { Input } from "@/components/ui/input";
@@ -5,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 import { userNameAtom } from "@/atoms/userNameAtom";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface FirstProps {
   count: number;
@@ -18,6 +20,7 @@ interface FormData {
 
 export function First({ count, setCount, sentence }: FirstProps) {
   const setUserName = useSetRecoilState(userNameAtom);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -30,6 +33,17 @@ export function First({ count, setCount, sentence }: FirstProps) {
     setCount(count + 1);
   };
 
+  React.useEffect(() => {
+    const position = localStorage.getItem("position");
+    const userName = localStorage.getItem("userName");
+    const userBelong = localStorage.getItem("userBelong");
+    const major = localStorage.getItem("major");
+
+    if (position && userName && userBelong && major) {
+      navigate("/main");
+    }
+  }, [navigate]);
+
   return (
     <>
       <div className="relative z-10 text-[#fff] flex flex-col items-center mt-[25%]">
@@ -39,7 +53,7 @@ export function First({ count, setCount, sentence }: FirstProps) {
         <div className="w-[300px] flex justify-start items-start text-start">
           <Logo width={"175"} height="auto" />
         </div>
-        <div className="w-[300px] flex items-start mt-[13px]  justify-start text-[26px] font-bold text-start">
+        <div className="w-[300px] flex items-start mt-[13px] justify-start text-[26px] font-bold text-start">
           {sentence}
         </div>
       </div>

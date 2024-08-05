@@ -2,7 +2,6 @@
 import { OnboardingTitle } from "@/pages/onboarding/containers/OnboardingTitle";
 import React, { useEffect } from "react";
 import { KakaoBtn } from "@/components/Icons/KakaoBtn";
-import { useNavigate } from "react-router-dom";
 
 interface ZeroProps {
   count: number;
@@ -19,8 +18,6 @@ const Zero: React.FC<ZeroProps> = () => {
   const Rest_api_key = import.meta.env.VITE_KAKAO_REST_API_KEY; // REST API KEY
   const redirect_uri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     if (!window.Kakao.isInitialized()) {
       window.Kakao.init(Rest_api_key);
@@ -28,19 +25,10 @@ const Zero: React.FC<ZeroProps> = () => {
   }, [Rest_api_key]);
 
   const handleLogin = () => {
-    const position = localStorage.getItem("position");
-    const userName = localStorage.getItem("userName");
-    const userBelong = localStorage.getItem("userBelong");
-    const major = localStorage.getItem("major");
-
-    if (position && userName && userBelong && major) {
-      navigate("/main");
-    } else {
-      window.Kakao.Auth.authorize({
-        redirectUri: redirect_uri,
-        throughTalk: true, // 간편 로그인을 위해 추가
-      });
-    }
+    window.Kakao.Auth.authorize({
+      redirectUri: redirect_uri,
+      throughTalk: true, // 간편 로그인을 위해 추가
+    });
   };
 
   return (
