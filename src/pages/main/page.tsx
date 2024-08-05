@@ -42,17 +42,20 @@ export function MainPage() {
   const [userName, setUserName] = useState<string>("");
   const [userMajor, setUserMajor] = useState<string>("");
   const [randomColleges, setRandomColleges] = useState<CollegeType[]>([]);
-
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const userName = searchParams.get("userName");
 
   useEffect(() => {
-    const storedUserName = localStorage.getItem("userName");
+    const searchParams = new URLSearchParams(location.search);
+    const storedUserName = searchParams.get("userName");
     if (storedUserName) {
       setUserName(storedUserName);
+    } else {
+      const localUserName = localStorage.getItem("userName");
+      if (localUserName) {
+        setUserName(localUserName);
+      }
     }
-  }, []);
+  }, [location.search]);
 
   useEffect(() => {
     const storedUserMajor = localStorage.getItem("major");
