@@ -42,7 +42,7 @@ export function KakaoRedirect() {
         window.Kakao.Auth.setAccessToken(res.data.access_token); // access token 설정
         localStorage.setItem("kakaoToken", res.data.access_token); // Store token in localStorage
         setIsLoggedIn(true);
-        navigate("/onboarding"); // 일관된 경로 사용
+        navigate("/mentorbus-frontend/onboarding"); // 일관된 경로 사용
       } catch (err) {
         console.log(err);
       }
@@ -56,7 +56,7 @@ export function KakaoRedirect() {
     if (code) {
       getToken(code)
         .then(() => {
-          navigate("/onboarding"); // 일관된 경로 사용
+          navigate("/mentorbus-frontend/onboarding"); // 일관된 경로 사용
         })
         .catch((error) => {
           console.error("Error fetching user data:", error);
