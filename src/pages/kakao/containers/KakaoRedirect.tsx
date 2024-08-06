@@ -1,3 +1,5 @@
+// kakaoRedirect.tsx
+
 declare global {
   interface Window {
     Kakao: any;
@@ -7,44 +9,25 @@ declare global {
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { useEffect, useCallback } from "react";
-import axios from "axios";
-import qs from "qs";
-
 import { isLoggedInAtom } from "@/atoms/isLoggedInAtom";
-
-const Rest_api_key = import.meta.env.VITE_KAKAO_REST_API_KEY; // REST API KEY
-const redirect_uri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
+import getToken from "../containers/apis/getToken"; // Import the getToken function
 
 export function KakaoRedirect() {
   const navigate = useNavigate();
   const setIsLoggedIn = useSetRecoilState(isLoggedInAtom);
   const [searchParams] = useSearchParams();
 
-  const getToken = useCallback(
+  const handleLogin = useCallback(
     async (code: string) => {
-      const payload = qs.stringify({
-        grant_type: "authorization_code",
-        client_id: Rest_api_key,
-        redirect_uri: redirect_uri,
-        code: code,
-      });
       try {
-        const res = await axios.post(
-          "https://kauth.kakao.com/oauth/token",
-          payload,
-          {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-          }
-        );
-        window.Kakao.init(Rest_api_key); // Kakao Javascript SDK 초기화
-        window.Kakao.Auth.setAccessToken(res.data.access_token); // access token 설정
-        localStorage.setItem("kakaoToken", res.data.access_token); // Store token in localStorage
+        const transformedUserData = await getToken(code); // Use the getToken function
+        console.log("Transformed User Data:", transformedUserData);
+
+        // Set the login state and navigate to the onboarding page
         setIsLoggedIn(true);
-        navigate("/mentorbus-frontend/onboarding"); // 일관된 경로 사용
-      } catch (err) {
-        console.log(err);
+        navigate("/mentorbus-frontend/onboarding");
+      } catch (error) {
+        console.error("Error fetching user data:", error);
       }
     },
     [navigate, setIsLoggedIn]
@@ -54,15 +37,9 @@ export function KakaoRedirect() {
     const code = searchParams.get("code");
 
     if (code) {
-      getToken(code)
-        .then(() => {
-          navigate("/mentorbus-frontend/onboarding"); // 일관된 경로 사용
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error);
-        });
+      handleLogin(code);
     }
-  }, [searchParams, getToken, navigate]);
+  }, [searchParams, handleLogin]);
 
   return (
     <div>
