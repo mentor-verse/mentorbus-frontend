@@ -28,8 +28,16 @@ const Zero: React.FC<ZeroProps> = () => {
     // Create the intent URL for KakaoTalk login
     const loginUrl = `intent://authorize?client_id=${Rest_api_key}&response_type=code&redirect_uri=${encodeURIComponent(
       redirect_uri
-    )}#Intent;scheme=kakao;package=com.kakao.talk;end`;
+    )}#Intent;scheme=kakao;package=com.example.test;end`;
+    const webLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${encodeURIComponent(
+      redirect_uri
+    )}&response_type=code`;
+
     window.location.href = loginUrl;
+
+    setTimeout(() => {
+      window.location.href = webLoginUrl;
+    }, 2000); // Adjust the timeout as needed
   };
 
   return (
