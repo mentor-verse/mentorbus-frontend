@@ -1,6 +1,6 @@
 declare global {
   interface Window {
-    ReactNativeWebView: {
+    ReactNativeWebView?: {
       postMessage: (message: string) => void;
     };
   }
@@ -68,10 +68,12 @@ export function MentorBusPage() {
         gatherTownUrls[item.sort]
       }`;
 
-      // Use a custom event to communicate with the Android WebView
-      window.ReactNativeWebView.postMessage(
-        JSON.stringify({ action: "openUrl", url })
-      );
+      // Check if the code is running in a React Native WebView
+      if (window.ReactNativeWebView) {
+        window.ReactNativeWebView.postMessage(JSON.stringify({ url }));
+      } else {
+        window.open(url, "_blank");
+      }
 
       // Update the status of the item to "completed"
       const updatedItems = appliedItems.map((i) =>
