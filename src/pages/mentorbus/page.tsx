@@ -1,3 +1,11 @@
+declare global {
+  interface Window {
+    ReactNativeWebView: {
+      postMessage: (message: string) => void;
+    };
+  }
+}
+
 import { useState, useEffect } from "react";
 import { SearchBox } from "@/components/ui/searchbox";
 import BottomNav from "@/containers/navbar";
