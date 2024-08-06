@@ -1,3 +1,4 @@
+// src/containers/Zero.js
 import { OnboardingTitle } from "@/pages/onboarding/containers/OnboardingTitle";
 import React, { useEffect } from "react";
 import { KakaoBtn } from "@/components/Icons/KakaoBtn";
@@ -18,16 +19,17 @@ const Zero: React.FC<ZeroProps> = () => {
   const redirect_uri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
 
   useEffect(() => {
-    if (window.Kakao && !window.Kakao.isInitialized()) {
+    if (!window.Kakao.isInitialized()) {
       window.Kakao.init(Rest_api_key);
     }
   }, [Rest_api_key]);
 
   const handleLogin = () => {
-    window.Kakao.Auth.authorize({
-      redirectUri: redirect_uri,
-      throughTalk: true,
-    });
+    // Create the intent URL for KakaoTalk login
+    const loginUrl = `intent://authorize?client_id=${Rest_api_key}&response_type=code&redirect_uri=${encodeURIComponent(
+      redirect_uri
+    )}#Intent;scheme=kakao;package=com.kakao.talk;end`;
+    window.location.href = loginUrl;
   };
 
   return (
