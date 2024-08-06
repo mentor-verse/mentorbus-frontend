@@ -1,8 +1,14 @@
 declare global {
-    interface Window {
-      Kakao: any;
-    }
+  interface Window {
+    Kakao: any;
   }
-  
-  export {};
-  
+
+  // global.d.ts
+  interface Window {
+    ReactNativeWebView: {
+      postMessage: (message: string) => void;
+    };
+  }
+}
+
+export {};

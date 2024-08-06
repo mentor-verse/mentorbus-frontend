@@ -59,7 +59,11 @@ export function MentorBusPage() {
       const url = `https://app.gather.town/invite?token=${
         gatherTownUrls[item.sort]
       }`;
-      window.open(url, "_blank");
+
+      // Use a custom event to communicate with the Android WebView
+      window.ReactNativeWebView.postMessage(
+        JSON.stringify({ action: "openUrl", url })
+      );
 
       // Update the status of the item to "completed"
       const updatedItems = appliedItems.map((i) =>
