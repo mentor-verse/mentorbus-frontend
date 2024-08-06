@@ -1,8 +1,8 @@
 import axios from "axios";
 import { KakaoUserData, TransformedUserData } from "./types/types";
 
-const Rest_api_key = import.meta.env.VITE_REST_API_KEY;
-const redirect_uri = import.meta.env.VITE_REDIRECT_URI;
+const Rest_api_key = import.meta.env.VITE_KAKAO_REST_API_KEY;
+const redirect_uri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
 
 const getToken = async (code: string): Promise<TransformedUserData> => {
   const grant_type = "authorization_code";
