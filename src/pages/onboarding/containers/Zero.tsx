@@ -16,6 +16,7 @@ declare global {
 
 const Zero: React.FC<ZeroProps> = () => {
   const Rest_api_key = import.meta.env.VITE_KAKAO_REST_API_KEY; // REST API KEY
+  const Native_app_key = import.meta.env.VITE_KAKAO_NATIVE_APP_KEY; // 네이티브 앱 키
   const redirect_uri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
 
   useEffect(() => {
@@ -25,7 +26,7 @@ const Zero: React.FC<ZeroProps> = () => {
   }, [Rest_api_key]);
 
   const handleLogin = () => {
-    const intentUrl = `intent://authorize?client_id=${Rest_api_key}&response_type=code&redirect_uri=${encodeURIComponent(
+    const intentUrl = `intent://authorize?client_id=${Native_app_key}&response_type=code&redirect_uri=${encodeURIComponent(
       redirect_uri
     )}#Intent;scheme=kakao;package=com.kakao.talk;end`;
     const webLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${encodeURIComponent(
