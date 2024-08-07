@@ -31,12 +31,14 @@ export function KakaoRedirect() {
         if (window.Android) {
           window.Android.onLoginSuccess();
         }
-      } catch (error) {
+      } catch (error: unknown) {
         console.error("Error fetching user data:", error);
 
         // Notify the Android app about the login error
         if (window.Android) {
-          window.Android.onLoginError(error.message);
+          const errorMessage =
+            error instanceof Error ? error.message : "Unknown error";
+          window.Android.onLoginError(errorMessage);
         }
       }
     },
