@@ -3,6 +3,7 @@
 declare global {
   interface Window {
     Kakao: any;
+    Android: any; // Add this line to declare the Android interface
   }
 }
 
@@ -10,7 +11,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { useEffect, useCallback } from "react";
 import { isLoggedInAtom } from "@/atoms/isLoggedInAtom";
-import getToken from "../containers/apis/getToken"; // Import the getToken function
+import getToken from "../containers/apis/getToken";
 
 export function KakaoRedirect() {
   const navigate = useNavigate();
@@ -20,14 +21,23 @@ export function KakaoRedirect() {
   const handleLogin = useCallback(
     async (code: string) => {
       try {
-        const transformedUserData = await getToken(code); // Use the getToken function
+        const transformedUserData = await getToken(code);
         console.log("Transformed User Data:", transformedUserData);
 
-        // Set the login state and navigate to the onboarding page
         setIsLoggedIn(true);
         navigate("/mentorbus-frontend/onboarding");
+
+        // Notify the Android app about the login success
+        if (window.Android) {
+          window.Android.onLoginSuccess();
+        }
       } catch (error) {
         console.error("Error fetching user data:", error);
+
+        // Notify the Android app about the login error
+        if (window.Android) {
+          window.Android.onLoginError(error.message);
+        }
       }
     },
     [navigate, setIsLoggedIn]
