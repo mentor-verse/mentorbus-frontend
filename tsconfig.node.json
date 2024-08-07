@@ -7,6 +7,6 @@
     "allowSyntheticDefaultImports": true,
     "strict": true
   },
-  "include": ["src/**/*.ts"],  // Include your TypeScript files
+  "include": ["src/**/*.ts", "src/pages/kakao/containers/OAuthRedirect.tsx"], // Include your TypeScript files
   "exclude": ["node_modules"]
 }

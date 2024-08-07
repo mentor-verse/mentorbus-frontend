@@ -41,6 +41,17 @@ export function KakaoRedirect() {
     }
   }, [searchParams, handleLogin]);
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code");
+    const error = urlParams.get("error"); // Send the code or error to the app using postMessage
+    if (code) {
+      window.postMessage({ type: "AUTH_CODE", code: code }, "*");
+    } else if (error) {
+      window.postMessage({ type: "AUTH_ERROR", error: error }, "*");
+    }
+  }, []);
+
   return (
     <div>
       <h1>로그인 중입니다.</h1>
