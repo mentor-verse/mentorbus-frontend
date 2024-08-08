@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { SearchBox } from "@/components/ui/searchbox";
 import { FilterButton } from "@/components/Icons/FilterButton";
@@ -22,6 +22,8 @@ export function FindMentor() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const { school } = useParams(); // Extract school name from URL
+  const growDivRef = useRef<HTMLDivElement>(null);
+  const roadDivRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (school) {
@@ -132,6 +134,28 @@ export function FindMentor() {
     navigate("/mentorbus-frontend/mentorinfo", { state: { selectedBox: box } });
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (growDivRef.current && roadDivRef.current) {
+        const viewportHeight = window.innerHeight;
+        const renderedComponentElement = document.querySelector(
+          ".rendered-component"
+        ) as HTMLElement;
+        const renderedComponentHeight =
+          renderedComponentElement?.clientHeight || 0;
+        const roadDivHeight = roadDivRef.current?.clientHeight || 0;
+        growDivRef.current.style.height = `${
+          viewportHeight - renderedComponentHeight - roadDivHeight
+        }px`;
+        growDivRef.current.style.background = "white";
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <>
       <div className="main">
@@ -219,7 +243,7 @@ export function FindMentor() {
               ))}
             </div>
 
-            <div className="mt-[120px]"></div>
+            <div ref={growDivRef}></div>
 
             <BottomNav />
           </div>

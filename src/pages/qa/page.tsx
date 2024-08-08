@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { QuestionBox } from "@/components/ui/questionbox";
 import BottomNav from "@/containers/navbar";
 import { UnderArrowBlue } from "@/components/Icons/UnderArrowBlue";
@@ -8,6 +8,8 @@ export function QAPage() {
   const [filter, setFilter] = useState("entry");
   const [subFilter, setSubFilter] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const growDivRef = useRef<HTMLDivElement>(null);
+  const roadDivRef = useRef<HTMLDivElement>(null);
 
   const [searchBoxes, setSearchBoxes] = useState([
     {
@@ -105,6 +107,28 @@ export function QAPage() {
     setDropdownOpen(false);
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (growDivRef.current && roadDivRef.current) {
+        const viewportHeight = window.innerHeight;
+        const renderedComponentElement = document.querySelector(
+          ".rendered-component"
+        ) as HTMLElement;
+        const renderedComponentHeight =
+          renderedComponentElement?.clientHeight || 0;
+        const roadDivHeight = roadDivRef.current?.clientHeight || 0;
+        growDivRef.current.style.height = `${
+          viewportHeight - renderedComponentHeight - roadDivHeight
+        }px`;
+        growDivRef.current.style.background = "white";
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <>
       <div className="main">
@@ -184,7 +208,7 @@ export function QAPage() {
               ))}
             </div>
 
-            <div className="mt-[120px]"></div>
+            <div ref={growDivRef}></div>
 
             <BottomNav />
           </div>
