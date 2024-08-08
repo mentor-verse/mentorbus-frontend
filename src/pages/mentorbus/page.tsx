@@ -6,7 +6,7 @@ declare global {
   }
 }
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { SearchBox } from "@/components/ui/searchbox";
 import BottomNav from "@/containers/navbar";
 
@@ -48,6 +48,8 @@ function isSelectedBox(item: any): item is SelectedBox {
 export function MentorBusPage() {
   const [filter, setFilter] = useState("entry");
   const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
+  const growDivRef = useRef<HTMLDivElement>(null);
+  const roadDivRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const itemsFromStorage = JSON.parse(
@@ -93,6 +95,27 @@ export function MentorBusPage() {
     }
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (growDivRef.current && roadDivRef.current) {
+        const viewportHeight = window.innerHeight;
+        const renderedComponentElement = document.querySelector(
+          ".rendered-component"
+        ) as HTMLElement;
+        const renderedComponentHeight =
+          renderedComponentElement?.clientHeight || 0;
+        const roadDivHeight = roadDivRef.current?.clientHeight || 0;
+        growDivRef.current.style.height = `${
+          viewportHeight - renderedComponentHeight - roadDivHeight
+        }px`;
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <>
       <div className="main">
@@ -119,7 +142,7 @@ export function MentorBusPage() {
                 진행완료
               </div>
             </div>
-            <div className="mt-[35px] grid place-items-center">
+            <div ref={roadDivRef} className="mt-[35px] grid place-items-center">
               {appliedItems
                 .filter((item) =>
                   filter === "entry"
@@ -151,7 +174,7 @@ export function MentorBusPage() {
             </div>
           </div>
 
-          <div className="flex-grow"></div>
+          <div ref={growDivRef}></div>
 
           <BottomNav />
         </div>
