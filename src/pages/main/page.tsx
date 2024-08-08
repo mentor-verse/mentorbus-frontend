@@ -50,9 +50,8 @@ export function MainPage() {
     const userName = localStorage.getItem("userName");
     const userBelong = localStorage.getItem("userBelong");
     const major = localStorage.getItem("major");
-    const kakao = localStorage.getItem("transformedUserData");
 
-    if (!(position && userName && userBelong && major && kakao)) {
+    if (!(position && userName && userBelong && major)) {
       navigate(`/mentorbus-frontend/`);
     }
   }, [navigate]);
