@@ -109,6 +109,7 @@ export function MentorBusPage() {
           viewportHeight - renderedComponentHeight - roadDivHeight
         }px`;
         growDivRef.current.style.background = "white";
+        roadDivRef.current.style.background = "white";
       }
     };
 
