@@ -174,7 +174,7 @@ export function MentorBusPage() {
             </div>
           </div>
 
-          <div className="bg-white" ref={growDivRef}></div>
+          <div style={{ background: "white" }} ref={growDivRef}></div>
 
           <BottomNav />
         </div>
