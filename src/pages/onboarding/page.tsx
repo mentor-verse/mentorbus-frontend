@@ -9,12 +9,26 @@ import { Third } from "./containers/Third";
 import { Fourth } from "./containers/Fourth";
 import { Road } from "@/components/Icons/Road";
 import { ZeroRoad } from "@/components/Icons/ZeroRoad"; // ZeroRoad 컴포넌트를 가져옵니다
+import { useNavigate } from "react-router-dom";
 
 export function Onboarding() {
   const isLoggedIn = useRecoilValue(isLoggedInAtom);
   const [count, setCount] = useState(0);
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const position = localStorage.getItem("position");
+    const userName = localStorage.getItem("userName");
+    const userBelong = localStorage.getItem("userBelong");
+    const major = localStorage.getItem("major");
+    const kakao = localStorage.getItem("transformedUserData");
+
+    if (position && userName && userBelong && major && kakao) {
+      navigate(`/mentorbus-frontend/main?userName=${userName}`);
+    }
+  }, [navigate]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
