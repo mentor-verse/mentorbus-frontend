@@ -12,7 +12,7 @@ import CAU from "@/assets/CAU.svg";
 import BottomNav from "@/containers/navbar";
 import { MentorBox } from "@/components/ui/mentorbox";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // Define the College type
 interface CollegeType {
@@ -43,6 +43,19 @@ export function MainPage() {
   const [userMajor, setUserMajor] = useState<string>("");
   const [randomColleges, setRandomColleges] = useState<CollegeType[]>([]);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const position = localStorage.getItem("position");
+    const userName = localStorage.getItem("userName");
+    const userBelong = localStorage.getItem("userBelong");
+    const major = localStorage.getItem("major");
+    const kakao = localStorage.getItem("transformedUserData");
+
+    if ((position && userName && userBelong && major && kakao)!) {
+      navigate(`/mentorbus-frontend/`);
+    }
+  }, [navigate]);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
