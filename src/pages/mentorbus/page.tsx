@@ -108,6 +108,7 @@ export function MentorBusPage() {
         growDivRef.current.style.height = `${
           viewportHeight - renderedComponentHeight - roadDivHeight
         }px`;
+        growDivRef.current.style.background = "white";
       }
     };
 
@@ -174,7 +175,7 @@ export function MentorBusPage() {
             </div>
           </div>
 
-          <div style={{ background: "white" }} ref={growDivRef}></div>
+          <div ref={growDivRef}></div>
 
           <BottomNav />
         </div>
