@@ -182,7 +182,10 @@ export function FindMentor() {
               </div>
             </div>
 
-            <div className="mt-[20px] flex items-center relative ml-4">
+            <div
+              ref={roadDivRef}
+              className="mt-[20px] flex items-center relative ml-4"
+            >
               <button onClick={() => setDropdownOpen(!dropdownOpen)}>
                 <FilterButton />
               </button>

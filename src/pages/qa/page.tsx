@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { QuestionBox } from "@/components/ui/questionbox";
 import BottomNav from "@/containers/navbar";
 import { UnderArrowBlue } from "@/components/Icons/UnderArrowBlue";
@@ -165,7 +165,10 @@ export function QAPage() {
             </div>
 
             {filter === "entry" && (
-              <div className="mt-[20px] flex items-center relative ml-4">
+              <div
+                ref={roadDivRef}
+                className="mt-[20px] flex items-center relative ml-4"
+              >
                 <button onClick={() => setDropdownOpen(!dropdownOpen)}>
                   <FilterButton />
                 </button>
