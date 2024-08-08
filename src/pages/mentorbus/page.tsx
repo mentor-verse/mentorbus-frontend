@@ -151,7 +151,7 @@ export function MentorBusPage() {
             </div>
           </div>
 
-          <div className="mt-[120px]"></div>
+          <div className="flex-grow"></div>
 
           <BottomNav />
         </div>

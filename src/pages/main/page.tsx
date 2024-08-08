@@ -52,7 +52,7 @@ export function MainPage() {
     const major = localStorage.getItem("major");
     const kakao = localStorage.getItem("transformedUserData");
 
-    if ((position && userName && userBelong && major && kakao)!) {
+    if (!(position && userName && userBelong && major && kakao)) {
       navigate(`/mentorbus-frontend/`);
     }
   }, [navigate]);
