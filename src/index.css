@@ -210,6 +210,15 @@ a {
   border-top: 1px solid #d4d4d4;
 }
 
+.above_wrapper {
+  position: fixed;
+  top: 80vh;
+  left: 83%;
+  right: 0;
+  height: 80px;
+  background: transparent;
+}
+
 nav {
   overflow: hidden;
   border-top: 2px solid grey;

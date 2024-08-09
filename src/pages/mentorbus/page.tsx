@@ -144,7 +144,7 @@ export function MentorBusPage() {
                 진행완료
               </div>
             </div>
-            <div ref={roadDivRef} className="mt-[35px] grid place-items-center">
+            <div ref={roadDivRef} className="grid place-items-center">
               {appliedItems
                 .filter((item) =>
                   filter === "entry"

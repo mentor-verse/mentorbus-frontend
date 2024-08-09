@@ -10,8 +10,14 @@ import { MentorPage } from "./findmentor/containers/MentorPage";
 import { MyPage } from "./mypage/page";
 import { MentorBusPage } from "./mentorbus/page";
 import { Sam } from "./main/sam";
+import { CommentPage } from "./qa/containers/CommentPage";
+import { ApplyAnswerPage } from "./qa/containers/ApplyAnswerPage";
+import { useState } from "react";
+import { ApplyQuestionPage } from "./qa/containers/ApplyQuestionPage";
 
 export function MainRouter() {
+  const [mentor_answer, setAnswer] = useState(""); // 상태 선언
+
   return (
     <Routes>
       <Route path="/mentorbus-frontend" element={<Onboarding />} />
@@ -27,7 +33,52 @@ export function MainRouter() {
       <Route path="/mentorbus-frontend/mentorinfo" element={<MentorPage />} />
       <Route path="/mentorbus-frontend/mypage" element={<MyPage />} />
       <Route path="/mentorbus-frontend/mentorbus" element={<MentorBusPage />} />
+      <Route
+        path="/mentorbus-frontend/comment"
+        element={
+          <CommentPage
+            mentor_answer={mentor_answer}
+            Link={""}
+            back_disable={""}
+            back_work={"yes"}
+          />
+        }
+      />
+      <Route
+        path="/mentorbus-frontend/comment/:index"
+        element={
+          <CommentPage
+            mentor_answer={mentor_answer}
+            Link={""}
+            back_disable={""}
+            back_work={"yes"}
+          />
+        }
+      />
       <Route path="/mentorbus-frontend/sam" element={<Sam />} />
+      <Route
+        path="/mentorbus-frontend/applyanswer"
+        element={
+          <ApplyAnswerPage
+            setAnswer={setAnswer}
+            Link={""}
+            back_disable={""}
+            back_work={"yes"}
+          />
+        }
+      />
+
+      <Route
+        path="/mentorbus-frontend/applyquestion"
+        element={
+          <ApplyQuestionPage
+            setAnswer={setAnswer}
+            Link={""}
+            back_disable={""}
+            back_work={"yes"}
+          />
+        }
+      />
     </Routes>
   );
 }

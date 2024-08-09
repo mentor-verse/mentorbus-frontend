@@ -3,6 +3,7 @@ import { QuestionBox } from "@/components/ui/questionbox";
 import BottomNav from "@/containers/navbar";
 import { UnderArrowBlue } from "@/components/Icons/UnderArrowBlue";
 import { FilterButton } from "@/components/Icons/FilterButton";
+import { useNavigate } from "react-router-dom";
 
 export function QAPage() {
   const [filter, setFilter] = useState("entry");
@@ -10,65 +11,17 @@ export function QAPage() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
-  const [searchBoxes, setSearchBoxes] = useState([
-    {
-      question: "고2 1학기를 망했는데..",
-      answer:
-        "고1 1학기 때 3등급을 찍고, 2학기 때 2.4까지 올렸습니다. 근데 고2 1학기 때 너무 망해버려서 3.6까지 떨어져버렸어요...이거 남은 기간 동안 올리면 종합전형 쓸 수 있을까요? 아니면 정시로 갈아타야할까요?",
-      star_num: 1,
-      comment_num: 1,
-      type: "all",
-      major: "공학계열",
-    },
-    {
-      question: "숭실대 컴퓨터학부 VS 숭실대 AI융합학부",
-      answer:
-        "고1 1학기 때 3등급을 찍고, 2학기 때 2.4까지 올렸습니다. 근데 고2 1학기 때 너무 망해버려서 3.6까지 떨어져버렸어요...이거 남은 기간 동안 올리면 종합전형 쓸 수 있을까요? 아니면 정시로 갈아타야할까요?",
-      star_num: 1,
-      comment_num: 1,
-      type: "all",
-      major: "인문계열",
-    },
-    {
-      question: "2.4 어문 교과",
-      answer:
-        "고1 1학기 때 3등급을 찍고, 2학기 때 2.4까지 올렸습니다. 근데 고2 1학기 때 너무 망해버려서 3.6까지 떨어져버렸어요...이거 남은 기간 동안 올리면 종합전형 쓸 수 있을까요? 아니면 정시로 갈아타야할까요?",
-      star_num: 1,
-      comment_num: 3,
-      type: "all",
-      major: "사회계열",
-    },
-    {
-      question: "이과 내신 2.9가 지원했을 때 가능성 있는 공과계열 인서울 학과",
-      answer:
-        "고1 1학기 때 3등급을 찍고, 2학기 때 2.4까지 올렸습니다. 근데 고2 1학기 때 너무 망해버려서 3.6까지 떨어져버렸어요...이거 남은 기간 동안 올리면 종합전형 쓸 수 있을까요? 아니면 정시로 갈아타야할까요?",
-      star_num: 1,
-      comment_num: 3,
-      type: "all",
-      major: "교육계열",
-    },
-    {
-      question: "컴공 생기부",
-      answer:
-        "고1 1학기 때 3등급을 찍고, 2학기 때 2.4까지 올렸습니다. 근데 고2 1학기 때 너무 망해버려서 3.6까지 떨어져버렸어요...이거 남은 기간 동안 올리면 종합전형 쓸 수 있을까요? 아니면 정시로 갈아타야할까요?",
-      star_num: 1,
-      comment_num: 2,
-      type: "all",
-      major: "자연계열",
-    },
-    {
-      question: "정시 백분위 컷 좀 알려주세요ㅠㅠ",
-      answer:
-        "고1 1학기 때 3등급을 찍고, 2학기 때 2.4까지 올렸습니다. 근데 고2 1학기 때 너무 망해버려서 3.6까지 떨어져버렸어요...이거 남은 기간 동안 올리면 종합전형 쓸 수 있을까요? 아니면 정시로 갈아타야할까요?",
-      star_num: 1,
-      comment_num: 2,
-      type: "all",
-      major: "의학계열",
-    },
-  ]);
+  const [searchBoxes, setSearchBoxes] = useState(() => {
+    const savedQuestions = JSON.parse(
+      localStorage.getItem("questions") || "[]"
+    );
+    return savedQuestions;
+  });
 
   const uniqueMajors = [...new Set(searchBoxes.map((box) => box.major))];
+  const loggedInUserName = localStorage.getItem("userName") || ""; // Retrieve the logged-in userName
 
   const filteredBoxes = searchBoxes.filter((box) => {
     if (filter === "entry") {
@@ -78,7 +31,7 @@ export function QAPage() {
       return box.type === "best";
     }
     if (filter === "written") {
-      return box.type === "my";
+      return box.userName === loggedInUserName; // Filter based on the logged-in user's name
     }
     return false;
   });
@@ -98,6 +51,7 @@ export function QAPage() {
           box.type = "all";
         }
       }
+      localStorage.setItem("questions", JSON.stringify(updatedBoxes));
       return updatedBoxes;
     });
   };
@@ -105,6 +59,24 @@ export function QAPage() {
   const handleSubFilterChange = (filter: string) => {
     setSubFilter(filter);
     setDropdownOpen(false);
+  };
+
+  const handleQuestionBoxClick = (box: any, index: number) => {
+    navigate(
+      `/mentorbus-frontend/comment?userName=${encodeURIComponent(
+        box.userName
+      )}&userQuestion=${encodeURIComponent(box.question)}`,
+      {
+        state: {
+          answer: box.answer,
+          question: box.question,
+          star_num: box.star_num,
+          comment_num: box.comment_num,
+          index,
+          mentor_answer: box.mentor_answer,
+        },
+      }
+    );
   };
 
   useEffect(() => {
@@ -196,9 +168,13 @@ export function QAPage() {
               </div>
             )}
 
-            <div className="mt-[15px] grid place-items-center">
+            <div className="grid place-items-center">
               {filteredBoxes.map((box, index) => (
-                <div className="mt-[20px]" key={index}>
+                <div
+                  className="border-b-[0.6px] border-[#BABABA] w-full grid place-items-center py-6"
+                  key={index}
+                  onClick={() => handleQuestionBoxClick(box, index)} // index 전달
+                >
                   <QuestionBox
                     question={box.question}
                     answer={box.answer}
