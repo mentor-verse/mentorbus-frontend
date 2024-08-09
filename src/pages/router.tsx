@@ -16,7 +16,7 @@ import { useState } from "react";
 import { ApplyQuestionPage } from "./qa/containers/ApplyQuestionPage";
 
 export function MainRouter() {
-  const [mentor_answer, setAnswer] = useState(""); // 상태 선언
+  const [, setAnswer] = useState(""); // 상태 선언
 
   return (
     <Routes>
@@ -35,36 +35,17 @@ export function MainRouter() {
       <Route path="/mentorbus-frontend/mentorbus" element={<MentorBusPage />} />
       <Route
         path="/mentorbus-frontend/comment"
-        element={
-          <CommentPage
-            mentor_answer={mentor_answer}
-            Link={""}
-            back_disable={""}
-            back_work={"yes"}
-          />
-        }
+        element={<CommentPage Link={""} back_disable={""} back_work={"yes"} />}
       />
       <Route
         path="/mentorbus-frontend/comment/:index"
-        element={
-          <CommentPage
-            mentor_answer={mentor_answer}
-            Link={""}
-            back_disable={""}
-            back_work={"yes"}
-          />
-        }
+        element={<CommentPage Link={""} back_disable={""} back_work={"yes"} />}
       />
       <Route path="/mentorbus-frontend/sam" element={<Sam />} />
       <Route
         path="/mentorbus-frontend/applyanswer"
         element={
-          <ApplyAnswerPage
-            setAnswer={setAnswer}
-            Link={""}
-            back_disable={""}
-            back_work={"yes"}
-          />
+          <ApplyAnswerPage Link={""} back_disable={""} back_work={"yes"} />
         }
       />
 

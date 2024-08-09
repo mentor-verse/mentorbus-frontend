@@ -5,22 +5,38 @@ import { UnderArrowBlue } from "@/components/Icons/UnderArrowBlue";
 import { FilterButton } from "@/components/Icons/FilterButton";
 import { useNavigate } from "react-router-dom";
 
+// Define the type for the question boxes
+interface QuestionBoxType {
+  question: string;
+  answer: string;
+  star_num: number;
+  comment_num: number;
+  type: string;
+  major: string; // Add major to the type
+  userName: string; // Add userName to the type
+  mentor_answer?: string; // Optional field for mentor_answer
+}
+
 export function QAPage() {
   const [filter, setFilter] = useState("entry");
-  const [subFilter, setSubFilter] = useState("");
+  const [subFilter, setSubFilter] = useState<string>("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  const [searchBoxes, setSearchBoxes] = useState(() => {
+  // Use the defined type for searchBoxes
+  const [searchBoxes, setSearchBoxes] = useState<QuestionBoxType[]>(() => {
     const savedQuestions = JSON.parse(
       localStorage.getItem("questions") || "[]"
     );
     return savedQuestions;
   });
 
-  const uniqueMajors = [...new Set(searchBoxes.map((box) => box.major))];
+  // Specify uniqueMajors with type string[]
+  const uniqueMajors: string[] = [
+    ...new Set(searchBoxes.map((box) => box.major)),
+  ];
   const loggedInUserName = localStorage.getItem("userName") || ""; // Retrieve the logged-in userName
 
   const filteredBoxes = searchBoxes.filter((box) => {
@@ -61,7 +77,7 @@ export function QAPage() {
     setDropdownOpen(false);
   };
 
-  const handleQuestionBoxClick = (box: any, index: number) => {
+  const handleQuestionBoxClick = (box: QuestionBoxType, index: number) => {
     navigate(
       `/mentorbus-frontend/comment?userName=${encodeURIComponent(
         box.userName
@@ -169,22 +185,27 @@ export function QAPage() {
             )}
 
             <div className="grid place-items-center">
-              {filteredBoxes.map((box, index) => (
-                <div
-                  className="border-b-[0.6px] border-[#BABABA] w-full grid place-items-center py-6"
-                  key={index}
-                  onClick={() => handleQuestionBoxClick(box, index)} // index 전달
-                >
-                  <QuestionBox
-                    question={box.question}
-                    answer={box.answer}
-                    star_num={box.star_num}
-                    comment_num={box.comment_num}
-                    className={box.type === "best" ? "best" : ""}
-                    onStarClick={(starred) => handleStarClick(index, starred)}
-                  />
-                </div>
-              ))}
+              {filteredBoxes.map(
+                (
+                  box,
+                  index: number // Ensure index is typed as number
+                ) => (
+                  <div
+                    className="border-b-[0.6px] border-[#BABABA] w-full grid place-items-center py-6"
+                    key={index}
+                    onClick={() => handleQuestionBoxClick(box, index)} // Convert Key to number
+                  >
+                    <QuestionBox
+                      question={box.question}
+                      answer={box.answer}
+                      star_num={box.star_num}
+                      comment_num={box.comment_num}
+                      className={box.type === "best" ? "best" : ""}
+                      onStarClick={(starred) => handleStarClick(index, starred)} // Convert Key to number
+                    />
+                  </div>
+                )
+              )}
             </div>
 
             <div ref={growDivRef}></div>

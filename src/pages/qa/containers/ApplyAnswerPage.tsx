@@ -8,11 +8,10 @@ export interface ApplyAnswerPageProps
   Link: string;
   back_disable: string;
   back_work: string;
-  setAnswer: (answer: string) => void;
 }
 
 const ApplyAnswerPage = React.forwardRef<HTMLDivElement, ApplyAnswerPageProps>(
-  ({ className, back_disable, back_work, Link, setAnswer }, ref) => {
+  ({ className, back_disable, back_work, Link }, ref) => {
     const navigate = useNavigate();
     const location = useLocation();
     const [inputValue, setInputValue] = React.useState("");
