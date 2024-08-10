@@ -12,6 +12,7 @@ import { ZeroRoad } from "@/components/Icons/ZeroRoad"; // ZeroRoad 컴포넌트
 import { useNavigate } from "react-router-dom";
 import { Cloud } from "@/components/Icons/Cloud";
 import { Cloud2 } from "@/components/Icons/Cloud2";
+import { Fifth } from "./containers/Fifth";
 
 export function Onboarding() {
   const isLoggedIn = useRecoilValue(isLoggedInAtom);
@@ -111,6 +112,16 @@ export function Onboarding() {
               count={count}
               setCount={setCount}
               sentence={"소속 계열을 선택해주세요"}
+            />
+          </div>
+        );
+      case 5:
+        return (
+          <div className="rendered-component">
+            <Fifth
+              count={count}
+              setCount={setCount}
+              sentence={"관심사를 선택해주세요"}
             />
           </div>
         );
