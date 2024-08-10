@@ -108,10 +108,13 @@ export function MentorBusPageMentee() {
       const url = `https://app.gather.town/invite?token=${
         gatherTownUrls[item.sort]
       }`;
+      console.log("Generated URL: ", url); // URL 로그 출력
 
       if (window.ReactNativeWebView) {
+        console.log("Posting message to React Native WebView");
         window.ReactNativeWebView.postMessage(JSON.stringify({ url }));
       } else {
+        console.log("Opening URL in a new tab");
         window.open(url, "_blank");
       }
 
@@ -189,7 +192,7 @@ export function MentorBusPageMentee() {
                       variant="default"
                       size="default"
                       onClick={
-                        filter === "entry" ? () => handleEnter(item) : undefined
+                        filter === "entry" ? () => handleEnter(item) : () => {}
                       }
                     >
                       {filter === "entry" ? "입장하기" : "진행완료"}
@@ -223,27 +226,41 @@ export function MentorBusPageMentor() {
   const navigate = useNavigate(); // useNavigate 사용
 
   const handleEnter = (item: SelectedBox, classData: any) => {
-    if (isSortType(item.sort)) {
+    console.log(
+      "handleEnter called with item:",
+      item,
+      "and classData:",
+      classData
+    );
+
+    // classData.gatherUrl이 유효한지 확인
+    if (classData.gatherUrl) {
       const url = `https://app.gather.town/invite?token=${classData.gatherUrl}`;
-      console.log("Opening URL: ", url); // URL이 올바른지 확인하기 위한 디버깅 로그
+      console.log("Generated URL: ", url);
 
       if (window.ReactNativeWebView) {
-        console.log("Posting message to React Native WebView");
         window.ReactNativeWebView.postMessage(JSON.stringify({ url }));
       } else {
-        console.log("Opening URL in a new tab");
-        window.open(url, "_blank");
+        const link = document.createElement("a");
+        link.href = url;
+        link.target = "_blank";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
       }
 
-      // `status` 필드를 'completed'로 업데이트합니다.
       const updatedItems: SelectedBox[] = appliedItems.map((i) =>
         i === item ? { ...i, status: "completed" } : i
       );
 
       setAppliedItems(updatedItems);
-
       localStorage.setItem("appliedItems", JSON.stringify(updatedItems));
       setFilter("applied");
+    } else {
+      console.error(
+        "classData.gatherUrl is missing or invalid:",
+        classData.gatherUrl
+      );
     }
   };
 
@@ -363,6 +380,11 @@ export function MentorBusPageMentor() {
                         sort={classData.gatherUrl}
                         variant="default"
                         size="default"
+                        onClick={
+                          filter === "entry"
+                            ? () => handleEnter(appliedItem, classData)
+                            : undefined
+                        }
                       >
                         {filter === "entry" ? "수업입장" : "수업 완료"}
                       </SearchBox>

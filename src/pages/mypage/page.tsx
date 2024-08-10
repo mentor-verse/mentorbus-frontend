@@ -17,7 +17,7 @@ import { Cloud2 } from "@/components/Icons/Cloud2";
 export function MyPage() {
   const [userName, setUserName] = useState("");
   const [userBelong, setUserBelong] = useState("");
-  const [level, setLevel] = useState("3"); // 기본값을 설정하거나 필요에 따라 변경 가능
+  const [level] = useState("3"); // 기본값을 설정하거나 필요에 따라 변경 가능
   const [position, setPosition] = useState("");
 
   useEffect(() => {

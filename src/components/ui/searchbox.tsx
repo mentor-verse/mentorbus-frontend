@@ -16,7 +16,7 @@ const searchBoxVariants = cva(
         null: "text-[0px]",
       },
       size: {
-        default: "h-[26px] w-[37px] px-[12px] py-[12px]",
+        default: "h-[26px] w-[61px] px-[26px] py-[12px]",
         state: "h-[15px] w-[40px] px-[12px] py-[12px]",
       },
     },
