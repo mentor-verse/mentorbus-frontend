@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { SearchBox } from "@/components/ui/searchbox";
 import BottomNav from "@/containers/navbar";
+import { useLocation } from "react-router-dom";
 import { Info } from "@/components/ui/info";
+import { useNavigate } from "react-router-dom";
 
 declare global {
   interface Window {
@@ -21,7 +23,19 @@ interface SelectedBox {
   status: "pending" | "completed";
 }
 
+// Fetch the position value from localStorage
+const position = localStorage.getItem("position");
+
+// Common type and interface declarations
 type SortType = "인문계열" | "예술계열" | "IT계열" | "공학계열";
+
+// Common function to check SortType
+function isSortType(value: any): value is SortType {
+  return ["인문계열", "예술계열", "IT계열", "공학계열"].includes(value);
+}
+
+// Declare function variable for isSelectedBox
+let isSelectedBox: (item: any) => item is SelectedBox;
 
 const gatherTownUrls: Record<SortType, string> = {
   인문계열: "nJCm-X-RR5OojtQzylwy",
@@ -30,33 +44,67 @@ const gatherTownUrls: Record<SortType, string> = {
   공학계열: "nWPWj7r6T8eRB2mVaUT8",
 };
 
-function isSortType(value: any): value is SortType {
-  return ["인문계열", "예술계열", "IT계열", "공학계열"].includes(value);
+// Conditional logic based on position
+if (position === "멘티") {
+  isSelectedBox = function (item: any): item is SelectedBox {
+    return (
+      typeof item.gen === "string" &&
+      typeof item.major === "string" &&
+      typeof item.name === "string" &&
+      typeof item.info === "string" &&
+      typeof item.date === "string" &&
+      isSortType(item.sort) &&
+      (item.status === "pending" || item.status === "completed")
+    );
+  };
+} else if (position === "멘토") {
+  isSelectedBox = function (item: any): item is SelectedBox {
+    return (
+      typeof item.gen === "string" &&
+      typeof item.major === "string" &&
+      typeof item.name === "string" &&
+      typeof item.info === "string" &&
+      typeof item.date === "string" &&
+      typeof item.sort === "string" &&
+      (item.status === "pending" || item.status === "completed")
+    );
+  };
 }
 
-function isSelectedBox(item: any): item is SelectedBox {
-  return (
-    typeof item.gen === "string" &&
-    typeof item.major === "string" &&
-    typeof item.name === "string" &&
-    typeof item.info === "string" &&
-    typeof item.date === "string" &&
-    isSortType(item.sort) &&
-    (item.status === "pending" || item.status === "completed")
-  );
-}
-
-export function MentorBusPage() {
+// 멘티용 컴포넌트
+export function MentorBusPageMentee() {
   const [filter, setFilter] = useState("entry");
   const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
-  const [classDataArray, setClassDataArray] = useState<
-    { title: string; content: string; date: string; gatherUrl: string }[]
-  >([]);
+  const location = useLocation();
+  const [showDiv, setShowDiv] = useState(false);
 
-  const name = localStorage.getItem("userName");
-  const major = localStorage.getItem("major");
+  useEffect(() => {
+    const itemsFromStorage = JSON.parse(
+      localStorage.getItem("appliedItems") || "[]"
+    );
+
+    console.log("itemsFromStorage:", itemsFromStorage);
+
+    if (Array.isArray(itemsFromStorage)) {
+      const parsedItems: SelectedBox[] = itemsFromStorage
+        .map((item: any) => ({
+          ...item,
+          status: item.status === "completed" ? "completed" : "pending",
+        }))
+        .filter((item) => {
+          console.log("isSelectedBox:", isSelectedBox);
+          console.log("item:", item);
+          return isSelectedBox(item);
+        });
+
+      setAppliedItems(parsedItems);
+    } else {
+      console.error("appliedItems is not an array:", itemsFromStorage);
+      setAppliedItems([]);
+    }
+  }, []);
 
   const handleEnter = (item: SelectedBox) => {
     if (isSortType(item.sort)) {
@@ -85,6 +133,130 @@ export function MentorBusPage() {
       );
       setFilter("applied");
     }
+  };
+
+  return (
+    <>
+      <div className="main">
+        <div className="main_content">
+          <div style={{ background: "#fff" }}>
+            <div className="text-lg not-italic font-bold text-[19px] mt-[20px]">
+              멘토버스
+            </div>
+            <div className="flex justify-between mt-[40px]">
+              <div
+                className={`filter_btn_label ${
+                  filter === "entry" ? "active" : ""
+                }`}
+                onClick={() => setFilter("entry")}
+              >
+                진행예정
+              </div>
+              <div
+                className={`filter_btn_label ${
+                  filter === "applied" ? "active" : ""
+                }`}
+                onClick={() => setFilter("applied")}
+              >
+                진행완료
+              </div>
+            </div>
+
+            <div className="grid place-items-center mt-3">
+              <Info
+                Info={
+                  "멘토는 자유롭게 수업 입장 가능하며, 멘티들은 수업 시작 10분 전부터 입장이 가능합니다."
+                }
+              />
+            </div>
+
+            <div ref={roadDivRef} className="grid place-items-center">
+              {appliedItems
+                .filter((item) =>
+                  filter === "entry"
+                    ? item.status === "pending"
+                    : item.status === "completed"
+                )
+                .map((item, index) => (
+                  <div
+                    key={index}
+                    className="grid place-items-center mt-[0px] h-[120px]"
+                  >
+                    <SearchBox
+                      gen={item.gen}
+                      major={item.major}
+                      name={item.name}
+                      info={item.info}
+                      date={item.date}
+                      sort={item.sort}
+                      variant="default"
+                      size="default"
+                      onClick={
+                        filter === "entry" ? () => handleEnter(item) : undefined
+                      }
+                    >
+                      {filter === "entry" ? "입장하기" : "진행완료"}
+                    </SearchBox>
+                  </div>
+                ))}
+            </div>
+          </div>
+
+          <div ref={growDivRef}></div>
+
+          <BottomNav />
+        </div>
+      </div>
+    </>
+  );
+}
+
+export function MentorBusPageMentor() {
+  const [filter, setFilter] = useState("entry");
+  const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
+  const growDivRef = useRef<HTMLDivElement>(null);
+  const roadDivRef = useRef<HTMLDivElement>(null);
+  const [classDataArray, setClassDataArray] = useState<
+    { title: string; content: string; date: string; gatherUrl: string }[]
+  >([]);
+
+  const name = localStorage.getItem("userName") || "";
+  const major = localStorage.getItem("major") || "";
+  const position = localStorage.getItem("position") || "";
+
+  const navigate = useNavigate(); // useNavigate 사용
+
+  const handleEnter = (item: SelectedBox, classData: any) => {
+    // Construct the Gather Town URL
+    const url = `https://app.gather.town/invite?token=${classData.gatherUrl}`;
+    console.log("Opening URL: ", url); // Debugging line to ensure URL is correct
+
+    // Check if running inside a React Native WebView
+    if (window.ReactNativeWebView) {
+      console.log("Posting message to React Native WebView");
+      window.ReactNativeWebView.postMessage(JSON.stringify({ url }));
+    } else {
+      // Open the URL in a new tab
+      console.log("Opening URL in a new tab");
+      window.open(url, "_blank");
+    }
+
+    // Update the status of the item to 'completed'
+    const updatedItems = appliedItems.map((i) =>
+      i === item ? { ...i, status: "completed" } : i
+    );
+    setAppliedItems(updatedItems);
+    localStorage.setItem("appliedItems", JSON.stringify(updatedItems));
+    setFilter("applied");
+  };
+
+  const handleSearchBoxClick = (item: SelectedBox, classData: any) => {
+    navigate("/mentorbus-frontend/classinfo", {
+      state: {
+        selectedBox: item,
+        content: classData.content,
+      },
+    });
   };
 
   useEffect(() => {
@@ -117,15 +289,14 @@ export function MentorBusPage() {
     const parsedItems: SelectedBox[] = itemsFromStorage.filter(isSelectedBox);
     setAppliedItems(parsedItems);
 
-    // Load multiple class data entries, initializing as an empty array if not found
     const classDataArray = JSON.parse(
       localStorage.getItem("ClassData") || "[]"
     );
 
     if (Array.isArray(classDataArray)) {
-      setClassDataArray(classDataArray); // Store this in state to render multiple SearchBox components
+      setClassDataArray(classDataArray);
     } else {
-      setClassDataArray([]); // Ensure it’s an empty array if not found or invalid
+      setClassDataArray([]);
     }
   }, []);
 
@@ -166,33 +337,43 @@ export function MentorBusPage() {
 
             <div ref={roadDivRef} className="grid place-items-center">
               {classDataArray.map((classData, index) => {
-                const itemIndex = typeof index === "number" ? index : -1;
-                const appliedItem = appliedItems[itemIndex];
+                const appliedItem = appliedItems[index];
 
-                return (
-                  <div
-                    key={index}
-                    className="grid place-items-center mt-[0px] h-[120px]"
-                  >
-                    <SearchBox
-                      gen={appliedItem?.gen || ""}
-                      major={classData.title}
-                      name={name || ""} // Use title from classData
-                      info={major || ""} // Use content from classData
-                      date={classData.date}
-                      sort={classData.gatherUrl}
-                      variant="default"
-                      size="default"
-                      onClick={
-                        filter === "entry" && itemIndex !== -1
-                          ? () => handleEnter(appliedItems[itemIndex])
-                          : undefined
+                if (
+                  (filter === "entry" && appliedItem?.status !== "completed") ||
+                  (filter === "applied" && appliedItem?.status === "completed")
+                ) {
+                  return (
+                    <div
+                      key={index}
+                      className="grid place-items-center mt-[0px] h-[120px]"
+                      onClick={() =>
+                        filter === "entry" &&
+                        handleSearchBoxClick(appliedItem, classData)
                       }
                     >
-                      {filter === "entry" ? "입장하기" : "진행완료"}
-                    </SearchBox>
-                  </div>
-                );
+                      <SearchBox
+                        gen={appliedItem?.gen || ""}
+                        major={classData.title}
+                        name={name || ""}
+                        info={major || ""}
+                        date={classData.date}
+                        sort={classData.gatherUrl}
+                        variant="default"
+                        size="default"
+                        onClick={
+                          filter === "entry"
+                            ? () => handleEnter(appliedItem, classData)
+                            : undefined
+                        }
+                      >
+                        {filter === "entry" ? "수업입장" : "수업 완료"}
+                      </SearchBox>
+                    </div>
+                  );
+                }
+
+                return null;
               })}
             </div>
           </div>

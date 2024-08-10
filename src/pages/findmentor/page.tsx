@@ -5,6 +5,7 @@ import { FilterButton } from "@/components/Icons/FilterButton";
 import BottomNav from "@/containers/navbar";
 import { UnderArrowBlue } from "@/components/Icons/UnderArrowBlue";
 import FindTitle from "./containers/FindTitle";
+import { NotYetPage } from "./containers/NotYetPage"; // Import NotYetPage
 
 type SearchBoxType = {
   gen: string;
@@ -17,6 +18,13 @@ type SearchBoxType = {
 };
 
 export function FindMentor() {
+  // Check if the 'position' in localStorage is '멘토'
+  const position = localStorage.getItem("position");
+
+  if (position === "멘토") {
+    return <NotYetPage />; // Render NotYetPage if the position is '멘토'
+  }
+
   const [mainFilter, setMainFilter] = useState("all");
   const [subFilter, setSubFilter] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -161,7 +169,12 @@ export function FindMentor() {
       <div className="main">
         <div className="main_content">
           <div style={{ background: "#fff" }}>
-            <FindTitle title="멘토버스" />
+            <FindTitle
+              title="멘토버스"
+              Link={""}
+              back_disable={""}
+              back_work={""}
+            />
 
             <div className="flex justify-between mt-[40px]">
               <div
