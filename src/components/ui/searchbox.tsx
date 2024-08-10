@@ -59,7 +59,7 @@ const SearchBox = React.forwardRef<HTMLButtonElement, SearchBoxProps>(
     const Comp = asChild ? Slot : "button";
 
     return (
-      <div className={cn("flex text-start items-center w-[35vh]", className)}>
+      <div className={cn("flex text-start items-center w-full", className)}>
         <div className={gen}>{gen === "man" ? <Man /> : <Woman />}</div>
 
         <div className="ml-[15px] ">

@@ -221,7 +221,7 @@ a {
 
 .above_wrapper {
   position: fixed;
-  top: 80vh;
+  top: 80%;
   left: 83%;
   right: 0;
   height: 80px;
