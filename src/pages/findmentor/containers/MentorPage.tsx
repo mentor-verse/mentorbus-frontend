@@ -76,7 +76,7 @@ export function MentorPage() {
             </div>
           )}
         </div>
-        <div className="flex justify-center mb-5 mt-[30%]">
+        <div className="bottom_button">
           <Button
             variant={"default"}
             size={"default"}
