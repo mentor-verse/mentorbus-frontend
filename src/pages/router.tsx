@@ -14,6 +14,7 @@ import { CommentPage } from "./qa/containers/CommentPage";
 import { ApplyAnswerPage } from "./qa/containers/ApplyAnswerPage";
 import { useState } from "react";
 import { ApplyQuestionPage } from "./qa/containers/ApplyQuestionPage";
+import { OpenClassPage } from "./mentorbus/containers/OpenClassPage";
 
 export function MainRouter() {
   const [, setAnswer] = useState(""); // 상태 선언
@@ -58,6 +59,12 @@ export function MainRouter() {
             back_disable={""}
             back_work={"yes"}
           />
+        }
+      />
+      <Route
+        path="/mentorbus-frontend/openclass"
+        element={
+          <OpenClassPage Link={""} back_disable={""} back_work={"yes"} />
         }
       />
     </Routes>

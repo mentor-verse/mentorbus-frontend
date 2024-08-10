@@ -8,6 +8,7 @@ import {
 } from "@/components/Icons/Nav";
 import { PencilBtn } from "@/components/Icons/PencilBtn";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { PlusButton } from "@/components/Icons/PlusButton";
 
 const BottomNav = () => {
   // 현재 선택된 아이콘을 관리하는 state
@@ -16,6 +17,7 @@ const BottomNav = () => {
 
   // PencilBtn 표시 여부를 관리하는 state
   const [showPencilBtn, setShowPencilBtn] = useState(false);
+  const [showPlusBtn, setshowPlusBtn] = useState(false);
 
   useEffect(() => {
     // 로컬 스토리지에서 position 값을 가져옴
@@ -32,12 +34,31 @@ const BottomNav = () => {
     }
   }, [location.pathname]);
 
+  useEffect(() => {
+    // 로컬 스토리지에서 position 값을 가져옴
+    const position = localStorage.getItem("position");
+
+    // 현재 경로가 "/mentorbus-frontend/qabus"이고, position 값이 "멘티"인 경우에만 PencilBtn을 보여줌
+    if (
+      location.pathname === "/mentorbus-frontend/mentorbus" &&
+      position === "멘토"
+    ) {
+      setshowPlusBtn(true);
+    } else {
+      setshowPlusBtn(false);
+    }
+  }, [location.pathname]);
+
   const getColor = (path: string): string => {
     return location.pathname === path ? "#393939" : "#B2BAC2";
   };
 
   const handleClick = () => {
     navigate("/mentorbus-frontend/applyquestion");
+  };
+
+  const handleClick2 = () => {
+    navigate("/mentorbus-frontend/openclass");
   };
 
   return (
@@ -47,6 +68,18 @@ const BottomNav = () => {
           <PencilBtn />
         </div>
       )}
+
+      {/*
+      {showPlusBtn && (
+        <div onClick={handleClick} className="above_wrapper">
+          <PlusButton />
+        </div>
+      )}
+        */}
+
+      <div onClick={handleClick2} className="above_wrapper">
+        <PlusButton />
+      </div>
 
       <nav className="wrapper">
         <div>

@@ -1,3 +1,9 @@
+import { useState, useEffect, useRef, Key } from "react";
+import { SearchBox } from "@/components/ui/searchbox";
+import BottomNav from "@/containers/navbar";
+import { useLocation } from "react-router-dom";
+import { Info } from "@/components/ui/info";
+
 declare global {
   interface Window {
     ReactNativeWebView?: {
@@ -5,10 +11,6 @@ declare global {
     };
   }
 }
-
-import { useState, useEffect, useRef } from "react";
-import { SearchBox } from "@/components/ui/searchbox";
-import BottomNav from "@/containers/navbar";
 
 interface SelectedBox {
   gen: string;
@@ -50,19 +52,27 @@ export function MentorBusPage() {
   const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
+  const [showDiv, setShowDiv] = useState(false);
+  const [classDataArray, setClassDataArray] = useState<
+    { title: string; content: string; date: string; gatherUrl: string }[]
+  >([]);
+
+  const name = localStorage.getItem("userName");
+  const major = localStorage.getItem("major");
 
   useEffect(() => {
-    const itemsFromStorage = JSON.parse(
-      localStorage.getItem("appliedItems") || "[]"
-    );
-    const parsedItems: SelectedBox[] = itemsFromStorage
-      .map((item: any) => ({
-        ...item,
-        status: item.status === "completed" ? "completed" : "pending",
-      }))
-      .filter(isSelectedBox);
-    setAppliedItems(parsedItems);
-  }, []);
+    const position = localStorage.getItem("position");
+
+    if (
+      location.pathname === "/mentorbus-frontend/mentorbus" &&
+      position === "멘토"
+    ) {
+      setShowDiv(true);
+    } else {
+      setShowDiv(false);
+    }
+  }, [location.pathname]);
 
   const handleEnter = (item: SelectedBox) => {
     if (isSortType(item.sort)) {
@@ -70,18 +80,16 @@ export function MentorBusPage() {
         gatherTownUrls[item.sort]
       }`;
 
-      // Check if the code is running in a React Native WebView
       if (window.ReactNativeWebView) {
         window.ReactNativeWebView.postMessage(JSON.stringify({ url }));
       } else {
         window.open(url, "_blank");
       }
 
-      // Update the status of the item to "completed"
       const updatedItems = appliedItems.map((i) =>
         i === item ? { ...i, status: "completed" } : i
       );
-      setAppliedItems(updatedItems as SelectedBox[]); // Type assertion here
+      setAppliedItems(updatedItems as SelectedBox[]);
       localStorage.setItem(
         "appliedItems",
         JSON.stringify(
@@ -118,6 +126,25 @@ export function MentorBusPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    const itemsFromStorage = JSON.parse(
+      localStorage.getItem("appliedItems") || "[]"
+    );
+    const parsedItems: SelectedBox[] = itemsFromStorage.filter(isSelectedBox);
+    setAppliedItems(parsedItems);
+
+    // Load multiple class data entries, initializing as an empty array if not found
+    const classDataArray = JSON.parse(
+      localStorage.getItem("ClassData") || "[]"
+    );
+
+    if (Array.isArray(classDataArray)) {
+      setClassDataArray(classDataArray); // Store this in state to render multiple SearchBox components
+    } else {
+      setClassDataArray([]); // Ensure it’s an empty array if not found or invalid
+    }
+  }, []);
+
   return (
     <>
       <div className="main">
@@ -144,40 +171,53 @@ export function MentorBusPage() {
                 진행완료
               </div>
             </div>
+
+            <div className="grid place-items-center mt-3">
+              <Info
+                Info={
+                  "멘토는 자유롭게 수업 입장 가능하며, 멘티들은 수업 시작 10분 전부터 입장이 가능합니다."
+                }
+              />
+            </div>
+
             <div ref={roadDivRef} className="grid place-items-center">
-              {appliedItems
-                .filter((item) =>
-                  filter === "entry"
-                    ? item.status === "pending"
-                    : item.status === "completed"
-                )
-                .map((item, index) => (
+              {classDataArray.map(
+                (
+                  classData: {
+                    title: string;
+                    content: string;
+                    date: string;
+                    gatherUrl: string;
+                  },
+                  index: Key | null | undefined
+                ) => (
                   <div
                     key={index}
                     className="grid place-items-center mt-[0px] h-[120px]"
                   >
                     <SearchBox
-                      gen={item.gen}
-                      major={item.major}
-                      name={item.name}
-                      info={item.info}
-                      date={item.date}
-                      sort={item.sort}
+                      gen={appliedItems[index]?.gen || ""}
+                      major={major}
+                      name={name} // Use title from classData
+                      info={classData.title} // Use content from classData
+                      date={classData.date}
+                      sort={classData.gatherUrl}
                       variant="default"
                       size="default"
                       onClick={
-                        filter === "entry" ? () => handleEnter(item) : undefined
+                        filter === "entry"
+                          ? () => handleEnter(appliedItems[index])
+                          : undefined
                       }
                     >
                       {filter === "entry" ? "입장하기" : "진행완료"}
                     </SearchBox>
                   </div>
-                ))}
+                )
+              )}
             </div>
           </div>
-
           <div ref={growDivRef}></div>
-
           <BottomNav />
         </div>
       </div>

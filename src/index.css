@@ -210,6 +210,15 @@ a {
   border-top: 1px solid #d4d4d4;
 }
 
+.bottom_button {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background-color: #ffffff;
+}
+
 .above_wrapper {
   position: fixed;
   top: 80vh;
@@ -330,4 +339,62 @@ nav > div {
 .footer {
   margin-top: 30vh; /* Default margin calculated based on the height of 844px and margin of 250px */
   height: -webkit-fill-available;
+}
+
+input[type="date"]::-webkit-clear-button,
+input[type="date"]::-webkit-inner-spin-button {
+  display: none;
+}
+
+input[type="date"] {
+  position: relative;
+  background: url(./assets/calendar.svg);
+  background-repeat: no-repeat;
+  background-position: right; /* 배경 이미지를 오른쪽 중앙으로 위치시킵니다 */
+
+  padding-right: 10px;
+  color: #858585;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  color: transparent;
+}
+
+/* OpenClassThird.css */
+
+.class_button {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: none;
+  width: 163px;
+  height: 106px;
+  transition: background-color 0.3s, border 0.3s;
+}
+
+.button-computer {
+  background-image: url("/assets/computerClass.png");
+}
+
+.button-art {
+  background-image: url("/assets/ArtClass.png");
+}
+
+.button-science {
+  background-image: url("/assets/ScienceClass.png");
+}
+
+.button-humanities {
+  background-image: url("/assets/HumanityClass.png");
+}
+
+.selected {
+  border: 2px solid #47aee7;
+  background-color: #d9eaff;
 }
