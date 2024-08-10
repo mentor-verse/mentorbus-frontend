@@ -73,7 +73,11 @@ const ApplyAnswerPage = React.forwardRef<HTMLDivElement, ApplyAnswerPageProps>(
 
       localStorage.setItem("questions", JSON.stringify(updatedData));
 
-      navigate(`/mentorbus-frontend/qabus`);
+      navigate(
+        `/mentorbus-frontend/comment?userName=${encodeURIComponent(
+          userName
+        )}&userQuestion=${encodeURIComponent(questionData.question)}`
+      );
     };
 
     return (

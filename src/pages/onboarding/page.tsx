@@ -10,6 +10,8 @@ import { Fourth } from "./containers/Fourth";
 import { Road } from "@/components/Icons/Road";
 import { ZeroRoad } from "@/components/Icons/ZeroRoad"; // ZeroRoad 컴포넌트를 가져옵니다
 import { useNavigate } from "react-router-dom";
+import { Cloud } from "@/components/Icons/Cloud";
+import { Cloud2 } from "@/components/Icons/Cloud2";
 
 export function Onboarding() {
   const isLoggedIn = useRecoilValue(isLoggedInAtom);
@@ -120,6 +122,14 @@ export function Onboarding() {
   return (
     <div className="main flex flex-col min-h-screen overflow-hidden">
       <div className="main_content flex flex-col flex-1">
+        <div className="fixed  w-full z-0">
+          <div className="fixed top-[10vh] right-0 ">
+            <Cloud />
+          </div>
+          <div className="fixed left-0 top-[20vh] ">
+            <Cloud2 />
+          </div>
+        </div>
         {renderComponent()}
         <div ref={growDivRef}></div>
         {count === 0 ? (

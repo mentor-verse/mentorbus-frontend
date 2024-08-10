@@ -41,7 +41,10 @@ const CommentQuestionSection = React.forwardRef<
         )}
         ref={ref}
       >
-        <div className="text-[18px] font-semibold">Q. {question}</div>
+        <div className="flex text-[18px] font-semibold">
+          <p className="text-[#4E98EE] mr-[5px]">Q. </p>
+          <p>{question}</p>
+        </div>
         <div className="text-[11px] font-normal px-4 py-3 w-[80%]">
           {answer}
         </div>

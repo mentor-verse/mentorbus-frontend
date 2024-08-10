@@ -1,28 +1,25 @@
 import { Logo } from "@/components/Icons/Logo";
+import { NextButton } from "@/components/Icons/NextButton";
 import { OnboardingButton } from "@/components/ui/onboardingbutton";
 import { useNavigate } from "react-router-dom";
 
-interface FourthProps {
+interface FifthProps {
   count: number;
   setCount: React.Dispatch<React.SetStateAction<number>>;
   sentence: string;
 }
 
-export function Fourth({ count, setCount, sentence }: FourthProps) {
+export function Fifth({ count, sentence }: FifthProps) {
   const navigate = useNavigate();
 
-  const handleNext = (major: string) => {
-    localStorage.setItem("major", major); // Store the major in localStorage
-    const position = localStorage.getItem("position");
-
-    if (position === "멘토") {
-      const userName = localStorage.getItem("userName");
-      navigate(`/mentorbus-frontend/main?userName=${userName}`);
-    }
+  const handleFavor = (favor: string) => {
+    localStorage.setItem("favor", favor); // Store the major in localStorage
   };
 
-  const incrementCount = () => {
-    setCount((prevCount) => prevCount + 1);
+  const handleNext = () => {
+    const userName = localStorage.getItem("userName");
+
+    navigate(`/mentorbus-frontend/main?userName=${userName}`);
   };
 
   return (
@@ -43,26 +40,24 @@ export function Fourth({ count, setCount, sentence }: FourthProps) {
         <div className="flex">
           <button
             onClick={() => {
-              handleNext("인문계열");
-              incrementCount();
+              handleFavor("입시전략");
             }}
           >
             <OnboardingButton
               className="w-[160px]"
-              title="인문계열"
+              title="입시전략"
               explain={""}
             />
           </button>
 
           <button
             onClick={() => {
-              handleNext("사회계열");
-              incrementCount();
+              handleFavor("전공탐색");
             }}
           >
             <OnboardingButton
               className="w-[160px] ml-[12px]"
-              title="사회계열"
+              title="전공탐색"
               explain={""}
             />
           </button>
@@ -71,56 +66,31 @@ export function Fourth({ count, setCount, sentence }: FourthProps) {
         <div className="mt-[11px]">
           <button
             onClick={() => {
-              handleNext("자연계열");
-              incrementCount();
+              handleFavor("진로고민");
             }}
           >
             <OnboardingButton
               className="w-[160px]"
-              title="자연계열"
+              title="진로괴민"
               explain={""}
             />
           </button>
 
           <button
             onClick={() => {
-              handleNext("공학계열");
-              incrementCount();
+              handleFavor("자기계발");
             }}
           >
             <OnboardingButton
               className="w-[160px] ml-[12px]"
-              title="공학계열"
+              title="자기계발"
               explain={""}
             />
           </button>
         </div>
-
-        <div className="mt-[11px]">
-          <button
-            onClick={() => {
-              handleNext("의학계열");
-              incrementCount();
-            }}
-          >
-            <OnboardingButton
-              className="w-[160px]"
-              title="의학계열"
-              explain={""}
-            />
-          </button>
-
-          <button
-            onClick={() => {
-              handleNext("교육계열");
-              incrementCount();
-            }}
-          >
-            <OnboardingButton
-              className="w-[160px] ml-[12px]"
-              title="교육계열"
-              explain={""}
-            />
+        <div className="flex justify-end mt-3">
+          <button className="flex" type="submit" onClick={handleNext}>
+            <NextButton />
           </button>
         </div>
       </div>

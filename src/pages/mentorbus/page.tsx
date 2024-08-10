@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { SearchBox } from "@/components/ui/searchbox";
 import BottomNav from "@/containers/navbar";
-import { useLocation } from "react-router-dom";
 import { Info } from "@/components/ui/info";
 import { useNavigate } from "react-router-dom";
 
@@ -77,8 +76,6 @@ export function MentorBusPageMentee() {
   const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
-  const location = useLocation();
-  const [showDiv, setShowDiv] = useState(false);
 
   useEffect(() => {
     const itemsFromStorage = JSON.parse(
@@ -222,32 +219,32 @@ export function MentorBusPageMentor() {
 
   const name = localStorage.getItem("userName") || "";
   const major = localStorage.getItem("major") || "";
-  const position = localStorage.getItem("position") || "";
 
   const navigate = useNavigate(); // useNavigate 사용
 
   const handleEnter = (item: SelectedBox, classData: any) => {
-    // Construct the Gather Town URL
-    const url = `https://app.gather.town/invite?token=${classData.gatherUrl}`;
-    console.log("Opening URL: ", url); // Debugging line to ensure URL is correct
+    if (isSortType(item.sort)) {
+      const url = `https://app.gather.town/invite?token=${classData.gatherUrl}`;
+      console.log("Opening URL: ", url); // URL이 올바른지 확인하기 위한 디버깅 로그
 
-    // Check if running inside a React Native WebView
-    if (window.ReactNativeWebView) {
-      console.log("Posting message to React Native WebView");
-      window.ReactNativeWebView.postMessage(JSON.stringify({ url }));
-    } else {
-      // Open the URL in a new tab
-      console.log("Opening URL in a new tab");
-      window.open(url, "_blank");
+      if (window.ReactNativeWebView) {
+        console.log("Posting message to React Native WebView");
+        window.ReactNativeWebView.postMessage(JSON.stringify({ url }));
+      } else {
+        console.log("Opening URL in a new tab");
+        window.open(url, "_blank");
+      }
+
+      // `status` 필드를 'completed'로 업데이트합니다.
+      const updatedItems: SelectedBox[] = appliedItems.map((i) =>
+        i === item ? { ...i, status: "completed" } : i
+      );
+
+      setAppliedItems(updatedItems);
+
+      localStorage.setItem("appliedItems", JSON.stringify(updatedItems));
+      setFilter("applied");
     }
-
-    // Update the status of the item to 'completed'
-    const updatedItems = appliedItems.map((i) =>
-      i === item ? { ...i, status: "completed" } : i
-    );
-    setAppliedItems(updatedItems);
-    localStorage.setItem("appliedItems", JSON.stringify(updatedItems));
-    setFilter("applied");
   };
 
   const handleSearchBoxClick = (item: SelectedBox, classData: any) => {
@@ -346,11 +343,16 @@ export function MentorBusPageMentor() {
                   return (
                     <div
                       key={index}
-                      className="grid place-items-center mt-[0px] h-[120px]"
-                      onClick={() =>
-                        filter === "entry" &&
-                        handleSearchBoxClick(appliedItem, classData)
-                      }
+                      className="grid place-items-center mt-[0px] h-[120px] relative "
+                      onClick={(e) => {
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        const clickX = e.clientX - rect.left;
+
+                        // 전체 넓이의 80%까지 클릭 시에만 handleSearchBoxClick 호출
+                        if (clickX <= rect.width * 0.8 && filter === "entry") {
+                          handleSearchBoxClick(appliedItem, classData);
+                        }
+                      }}
                     >
                       <SearchBox
                         gen={appliedItem?.gen || ""}
@@ -361,11 +363,6 @@ export function MentorBusPageMentor() {
                         sort={classData.gatherUrl}
                         variant="default"
                         size="default"
-                        onClick={
-                          filter === "entry"
-                            ? () => handleEnter(appliedItem, classData)
-                            : undefined
-                        }
                       >
                         {filter === "entry" ? "수업입장" : "수업 완료"}
                       </SearchBox>

@@ -43,7 +43,12 @@ export function MentorPage() {
           {!isApplied ? (
             <>
               <div>
-                <FindTitle title="멘토정보" />
+                <FindTitle
+                  title="멘토정보"
+                  Link={""}
+                  back_disable={""}
+                  back_work={""}
+                />
               </div>
               {selectedBox && (
                 <div className="grid place-items-center mt-[25px] border-b-[0.7px] border-[#C0C0C0] h-[180px]">

@@ -1,11 +1,9 @@
 import { cn } from "@/libs/utils.ts";
 import React from "react";
 import FindTitle from "../containers/FindTitle";
+import BottomNav from "@/containers/navbar";
 
-export interface NotYetPageProps extends React.HTMLAttributes<HTMLDivElement> {
-  content: string;
-  order: string;
-}
+export interface NotYetPageProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const NotYetPage = React.forwardRef<HTMLDivElement, NotYetPageProps>(
   ({ className }) => {
@@ -18,8 +16,8 @@ const NotYetPage = React.forwardRef<HTMLDivElement, NotYetPageProps>(
                 <FindTitle
                   title="멘토 찾기"
                   Link={""}
-                  back_disable={""}
-                  back_work={"yes"}
+                  back_disable={"no"}
+                  back_work={"no"}
                 />
               </div>
               <div
@@ -36,6 +34,7 @@ const NotYetPage = React.forwardRef<HTMLDivElement, NotYetPageProps>(
                   </div>
                 </div>
               </div>
+              <BottomNav />
             </div>
           </div>
         </div>
