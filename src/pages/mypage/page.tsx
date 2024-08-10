@@ -79,7 +79,7 @@ export function MyPage() {
               <Cloud2 />
             </div>
           </div>
-          <div className="flex flex-col justify-center items-center mt-[19vh]">
+          <div className="flex flex-col justify-center items-center mt-[90px]">
             <div>{renderLevelIcon()}</div>
             <div className="divMargin"></div>
             <div className="mb-[150px]">

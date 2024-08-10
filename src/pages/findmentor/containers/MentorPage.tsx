@@ -51,7 +51,7 @@ export function MentorPage() {
                 />
               </div>
               {selectedBox && (
-                <div className="grid place-items-center mt-[25px] border-b-[0.7px] border-[#C0C0C0] h-[180px]">
+                <div className="grid place-content-center mt-[25px] border-b-[0.7px] border-[#C0C0C0] h-[180px]">
                   <SearchBox
                     gen={selectedBox.gen}
                     major={selectedBox.major}
