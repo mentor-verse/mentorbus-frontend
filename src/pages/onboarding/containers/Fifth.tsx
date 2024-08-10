@@ -26,7 +26,7 @@ export function Fifth({ count, sentence }: FifthProps) {
     <div className="relative flex flex-col items-center text-[#fff]">
       <div className="relative z-10 text-start mt-[25%]">
         <div className="w-[320px] justify-start flex items-start mb-3 text-[12px]">
-          {count}/4
+          {count}/5
         </div>
         <div className="w-[320px] justify-start flex items-start text-[26px] font-bold ">
           <Logo width={"175"} height="auto" /> <div>에서</div>
@@ -88,7 +88,7 @@ export function Fifth({ count, sentence }: FifthProps) {
             />
           </button>
         </div>
-        <div className="flex justify-end mt-3">
+        <div className="flex w-full justify-end mt-3">
           <button className="flex" type="submit" onClick={handleNext}>
             <NextButton />
           </button>
