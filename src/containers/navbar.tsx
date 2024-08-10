@@ -69,13 +69,11 @@ const BottomNav = () => {
         </div>
       )}
 
-      {/*
       {showPlusBtn && (
         <div onClick={handleClick} className="above_wrapper">
           <PlusButton />
         </div>
       )}
-        */}
 
       <div onClick={handleClick2} className="above_wrapper">
         <PlusButton />

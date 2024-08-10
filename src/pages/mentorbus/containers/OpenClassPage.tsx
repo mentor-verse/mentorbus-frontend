@@ -13,6 +13,17 @@ export interface OpenClassPageProps
   back_work: string;
 }
 
+// SelectedBox 타입 정의
+interface SelectedBox {
+  gen: string;
+  major: string;
+  name: string;
+  info: string;
+  date: string;
+  sort: string;
+  status: string;
+}
+
 const OpenClassPage = React.forwardRef<HTMLDivElement, OpenClassPageProps>(
   ({ className, back_disable, back_work, Link }, ref) => {
     const navigate = useNavigate();
@@ -67,7 +78,6 @@ const OpenClassPage = React.forwardRef<HTMLDivElement, OpenClassPageProps>(
         console.log("Final view state, attempting to navigate...");
 
         try {
-          // Validate and parse existing class data from localStorage
           const existingClassDataString =
             localStorage.getItem("ClassData") || "[]";
           let existingClassData: {
@@ -89,7 +99,6 @@ const OpenClassPage = React.forwardRef<HTMLDivElement, OpenClassPageProps>(
             existingClassData = [];
           }
 
-          // Create and update classData
           const classData = {
             id: Date.now(),
             title,
@@ -102,7 +111,6 @@ const OpenClassPage = React.forwardRef<HTMLDivElement, OpenClassPageProps>(
           const updatedClassData = [...existingClassData, classData];
           localStorage.setItem("ClassData", JSON.stringify(updatedClassData));
 
-          // Update appliedItems
           const newSelectedBox: SelectedBox = {
             gen: "",
             major: "",
@@ -136,14 +144,12 @@ const OpenClassPage = React.forwardRef<HTMLDivElement, OpenClassPageProps>(
             JSON.stringify(updatedAppliedItems)
           );
 
-          // Navigate
           navigate("/mentorbus-frontend/mentorbus");
         } catch (error) {
           console.error("Error saving data or navigating:", error);
         }
       } else {
-        console.log("Incrementing view state...");
-        setViewState((prev) => (prev + 1) % 3);
+        setViewState((prev) => ((prev + 1) % 3) as 0 | 1 | 2); // 수정된 부분
       }
     };
 

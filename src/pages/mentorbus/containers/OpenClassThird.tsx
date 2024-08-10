@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, CSSProperties } from "react";
 
 import {
   ArtClass,
@@ -13,11 +13,11 @@ export interface OpenClassThirdProps
   Link: string;
   back_disable: string;
   back_work: string;
-  onSelectionStatusChange: (isButtonSelected: boolean) => void; // 버튼 선택 상태를 부모 컴포넌트로 알리기 위한 콜백
-  onGatherUrlChange: (url: string) => void; // URL 변경을 부모 컴포넌트로 알리기 위한 콜백
+  onSelectionStatusChange: (isButtonSelected: boolean) => void;
+  onGatherUrlChange: (url: string) => void;
 }
 
-const buttonBaseStyles = {
+const buttonBaseStyles: CSSProperties = {
   width: "163px",
   height: "106px",
   border: "none",
@@ -29,16 +29,16 @@ const buttonBaseStyles = {
   backgroundSize: "contain",
   backgroundRepeat: "no-repeat",
   backgroundPosition: "center",
-  position: "relative",
+  position: "relative" as "relative", // 'relative' 타입 명시적으로 지정
 };
 
-const selectedButtonStyles = {
+const selectedButtonStyles: CSSProperties = {
   border: "2px solid #47AEE7",
   backgroundColor: "#d9eaff",
 };
 
-const textStyle = {
-  position: "absolute",
+const textStyle: CSSProperties = {
+  position: "absolute" as "absolute", // 'absolute' 타입 명시적으로 지정
   color: "#fff",
   fontSize: "14px",
   fontWeight: "semibold",
@@ -61,10 +61,8 @@ const OpenClassThird = React.forwardRef<HTMLDivElement, OpenClassThirdProps>(
 
     useEffect(() => {
       const isButtonSelected = selectedButton !== null;
-      // 버튼이 선택되었는지 여부를 부모 컴포넌트에 알림
       onSelectionStatusChange(!isButtonSelected);
 
-      // 선택된 버튼에 해당하는 값을 부모 컴포넌트로 전달
       if (selectedButton && buttonValues[selectedButton]) {
         onGatherUrlChange(buttonValues[selectedButton]);
       }
@@ -83,7 +81,9 @@ const OpenClassThird = React.forwardRef<HTMLDivElement, OpenClassThirdProps>(
               }}
               onClick={() => setSelectedButton("computer")}
             >
-              <ComputerClass style={{ width: "100%", height: "100%" }} />
+              <div style={{ width: "100%", height: "100%" }}>
+                <ComputerClass />
+              </div>
               <span style={textStyle}>Computer</span>
             </button>
             <button
@@ -94,7 +94,9 @@ const OpenClassThird = React.forwardRef<HTMLDivElement, OpenClassThirdProps>(
               }}
               onClick={() => setSelectedButton("art")}
             >
-              <ArtClass style={{ width: "100%", height: "100%" }} />
+              <div style={{ width: "100%", height: "100%" }}>
+                <ArtClass />
+              </div>
               <span style={textStyle}>Art</span>
             </button>
           </div>
@@ -107,7 +109,9 @@ const OpenClassThird = React.forwardRef<HTMLDivElement, OpenClassThirdProps>(
               }}
               onClick={() => setSelectedButton("science")}
             >
-              <ScienceClasss style={{ width: "100%", height: "100%" }} />
+              <div style={{ width: "100%", height: "100%" }}>
+                <ScienceClasss />
+              </div>
               <span style={textStyle}>Science</span>
             </button>
             <button
@@ -120,7 +124,9 @@ const OpenClassThird = React.forwardRef<HTMLDivElement, OpenClassThirdProps>(
               }}
               onClick={() => setSelectedButton("humanities")}
             >
-              <HumanityClass style={{ width: "100%", height: "100%" }} />
+              <div style={{ width: "100%", height: "100%" }}>
+                <HumanityClass />
+              </div>
               <span style={textStyle}>Humanities</span>
             </button>
           </div>

@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef, Key } from "react";
+import { useState, useEffect, useRef } from "react";
 import { SearchBox } from "@/components/ui/searchbox";
 import BottomNav from "@/containers/navbar";
-import { useLocation } from "react-router-dom";
 import { Info } from "@/components/ui/info";
 
 declare global {
@@ -52,27 +51,12 @@ export function MentorBusPage() {
   const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
-  const location = useLocation();
-  const [showDiv, setShowDiv] = useState(false);
   const [classDataArray, setClassDataArray] = useState<
     { title: string; content: string; date: string; gatherUrl: string }[]
   >([]);
 
   const name = localStorage.getItem("userName");
   const major = localStorage.getItem("major");
-
-  useEffect(() => {
-    const position = localStorage.getItem("position");
-
-    if (
-      location.pathname === "/mentorbus-frontend/mentorbus" &&
-      position === "멘토"
-    ) {
-      setShowDiv(true);
-    } else {
-      setShowDiv(false);
-    }
-  }, [location.pathname]);
 
   const handleEnter = (item: SelectedBox) => {
     if (isSortType(item.sort)) {
@@ -181,40 +165,35 @@ export function MentorBusPage() {
             </div>
 
             <div ref={roadDivRef} className="grid place-items-center">
-              {classDataArray.map(
-                (
-                  classData: {
-                    title: string;
-                    content: string;
-                    date: string;
-                    gatherUrl: string;
-                  },
-                  index: Key | null | undefined
-                ) => (
+              {classDataArray.map((classData, index) => {
+                const itemIndex = typeof index === "number" ? index : -1;
+                const appliedItem = appliedItems[itemIndex];
+
+                return (
                   <div
                     key={index}
                     className="grid place-items-center mt-[0px] h-[120px]"
                   >
                     <SearchBox
-                      gen={appliedItems[index]?.gen || ""}
-                      major={major}
-                      name={name} // Use title from classData
-                      info={classData.title} // Use content from classData
+                      gen={appliedItem?.gen || ""}
+                      major={classData.title}
+                      name={name || ""} // Use title from classData
+                      info={major || ""} // Use content from classData
                       date={classData.date}
                       sort={classData.gatherUrl}
                       variant="default"
                       size="default"
                       onClick={
-                        filter === "entry"
-                          ? () => handleEnter(appliedItems[index])
+                        filter === "entry" && itemIndex !== -1
+                          ? () => handleEnter(appliedItems[itemIndex])
                           : undefined
                       }
                     >
                       {filter === "entry" ? "입장하기" : "진행완료"}
                     </SearchBox>
                   </div>
-                )
-              )}
+                );
+              })}
             </div>
           </div>
           <div ref={growDivRef}></div>
