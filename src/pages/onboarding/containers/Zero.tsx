@@ -31,13 +31,20 @@ const Zero: React.FC<ZeroProps> = () => {
 
   const handleLogin = () => {
     if (isMobile()) {
-      // 간편 로그인을 시도
+      // 모바일에서 간편 로그인을 시도
       window.Kakao.Auth.authorize({
         redirectUri: redirect_uri,
         throughTalk: true, // 간편 로그인을 위해 추가
+        fail: (err: any) => {
+          console.error("Kakao login failed", err);
+          alert("Kakao login failed, please try again.");
+        },
+        success: (authObj: any) => {
+          console.log("Kakao login successful", authObj);
+        },
       });
     } else {
-      // 웹 로그인 처리
+      // 웹에서 로그인 처리
       const webLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${encodeURIComponent(
         redirect_uri
       )}&response_type=code`;
