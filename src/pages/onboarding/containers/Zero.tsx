@@ -1,3 +1,4 @@
+// src/containers/Zero.js
 import { OnboardingTitle } from "@/pages/onboarding/containers/OnboardingTitle";
 import React, { useEffect } from "react";
 import { KakaoBtn } from "@/components/Icons/KakaoBtn";
@@ -15,6 +16,7 @@ declare global {
 
 const Zero: React.FC<ZeroProps> = () => {
   const Rest_api_key = import.meta.env.VITE_KAKAO_REST_API_KEY; // REST API KEY
+  const Native_app_key = import.meta.env.VITE_KAKAO_NATIVE_APP_KEY; // 네이티브 앱 키
   const redirect_uri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
 
   useEffect(() => {
@@ -23,33 +25,25 @@ const Zero: React.FC<ZeroProps> = () => {
     }
   }, [Rest_api_key]);
 
-  const isMobile = () => {
-    const userAgent = navigator.userAgent || navigator.vendor;
-    return /android|iPhone|iPad|iPod/i.test(userAgent);
-  };
-
   const handleLogin = () => {
-    if (isMobile()) {
-      // For mobile devices, initiate Kakao login through the app
-      window.Kakao.Auth.authorize({
-        redirectUri: redirect_uri,
-        throughTalk: true,
-        fail: (err: any) => {
-          console.error("Kakao login failed", err);
-          alert("Kakao login failed, please try again.");
-        },
-        success: (authObj: any) => {
-          console.log("Kakao login successful", authObj);
-        },
-      });
-    } else {
-      // For non-mobile devices, redirect to the login URL
-      const webLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${encodeURIComponent(
-        redirect_uri
-      )}&response_type=code`;
+    const intentUrl = `intent://authorize?client_id=${Native_app_key}&response_type=code&redirect_uri=${encodeURIComponent(
+      redirect_uri
+    )}#Intent;scheme=kakao;package=com.kakao.talk;end`;
+    const webLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${encodeURIComponent(
+      redirect_uri
+    )}&response_type=code`;
 
+    // Try to redirect using the intent URL
+    try {
+      window.location.href = intentUrl;
+    } catch (error) {
+      // Fallback to web login if the intent URL fails
       window.location.href = webLoginUrl;
     }
+    window.Kakao.Auth.authorize({
+      redirectUri: redirect_uri,
+      throughTalk: true, // 간편 로그인을 위해 추가
+    });
   };
 
   return (
