@@ -1,32 +1,23 @@
 import { cn } from "@/libs/utils.ts";
 import React from "react";
 
+export interface MentorInfoProps extends React.HTMLAttributes<HTMLDivElement> {
+  content: string;
+}
 
-export interface QuestionBoxProps extends React.HTMLAttributes<HTMLDivElement> {
-    content: string;
-    order: string;
-   
-  }
-  
-  const MentorInfo = React.forwardRef<HTMLDivElement, QuestionBoxProps>(
-    ({ className, content, order }) => {
-
-        return(
+const MentorInfo = React.forwardRef<HTMLDivElement, MentorInfoProps>(
+  ({ className, content }, ref) => {
+    return (
       <>
-         <div className={cn("text-[13px] not-italic font-semibold leading-[normal] tracking-[-0.52px]",className)}>
-              <div>
-                {content}
-              </div>
-
-              <div>
-                [강연순서]
-              </div>
-
-              <div>
-                {order}
-              </div>
-         </div>
-              
+        <div
+          ref={ref}
+          className={cn(
+            "text-[12px] not-italic font-normal leading-[normal] tracking-[-0.52px] text-[#474747] text-start w-[80%] grid place-content-center",
+            className
+          )}
+        >
+          <div style={{ whiteSpace: "pre-line" }}>{content}</div>
+        </div>
       </>
     );
   }

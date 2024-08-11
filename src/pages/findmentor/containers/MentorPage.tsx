@@ -44,7 +44,7 @@ export function MentorPage() {
             <>
               <div>
                 <FindTitle
-                  title="멘토정보"
+                  title="멘토링 정보"
                   Link={""}
                   back_disable={""}
                   back_work={""}
@@ -67,7 +67,27 @@ export function MentorPage() {
                 </div>
               )}
               <div className="mt-[40px]">
-                <MentorInfo content="안녀ㅑㅇ" order="하이" />
+                <MentorInfo
+                  content="소위 말하는 인서울 대학,
+학교 선생님들이 말씀 하시는 것처럼
+3등급 이하의 학생들은 ‘절대’ 들어갈 수 없는 걸까요?
+
+가끔씩 기적처럼 들려오는 학종 합격 소식들은
+모두 특목고 학생들만의 이야기일까요?
+
+그 기적이 ‘나의 것’이 될 수는 없는 걸까요?
+
+일반고등학교에서 그 기적을 이뤄낸 노하우를 공유합니다.
+
+
+[ 강연 순서 ]
+
+강사 소개
+글로벌미디어학부 전공 소개
+기적처럼 합격하는 생활기록부 만들기
+내신 상향 그래프를 위한 시간 관리법
+Q&A"
+                />
               </div>
             </>
           ) : (

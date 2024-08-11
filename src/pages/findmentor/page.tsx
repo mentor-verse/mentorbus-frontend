@@ -170,10 +170,10 @@ export function FindMentor() {
         <div className="main_content">
           <div style={{ background: "#fff" }}>
             <FindTitle
-              title="멘토버스"
+              title="멘토찾기"
               Link={""}
-              back_disable={""}
-              back_work={""}
+              back_disable={"no"}
+              back_work={"no"}
             />
 
             <div className="flex justify-between mt-[40px]">

@@ -32,7 +32,7 @@ const NotYetPage = React.forwardRef<HTMLDivElement, NotYetPageProps>(
         ref={containerRef}
       >
         <FindTitle
-          title="멘토 찾기"
+          title="멘티 찾기"
           Link={""}
           back_disable={"no"}
           back_work={"no"}

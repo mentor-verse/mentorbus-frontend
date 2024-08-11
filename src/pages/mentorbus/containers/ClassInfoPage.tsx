@@ -8,6 +8,9 @@ export function ClassInfoPage() {
   const navigate = useNavigate();
   const { selectedBox, content } = location.state || {};
 
+  const name = localStorage.getItem("userName") || "";
+  const major = localStorage.getItem("major") || "";
+
   return (
     <div className="main">
       <div
@@ -23,19 +26,19 @@ export function ClassInfoPage() {
           <>
             <div>
               <FindTitle
-                title="멘토정보"
+                title="멘토링 정보"
                 Link={""}
                 back_disable={""}
                 back_work={""}
               />
             </div>
             {selectedBox && (
-              <div className="grid place-content-center mt-[25px] border-b-[0.7px] w-[80%] border-[#C0C0C0] h-[180px]">
+              <div className="grid place-content-center mt-[25px] border-b-[0.7px] w-full border-[#C0C0C0] h-[180px]">
                 <SearchBox
                   gen={selectedBox.gen}
-                  major={selectedBox.major}
-                  name={selectedBox.name}
-                  info={selectedBox.info}
+                  major={selectedBox.name}
+                  name={name || ""}
+                  info={major || ""}
                   date={selectedBox.date}
                   sort={selectedBox.sort}
                   variant="null"
@@ -45,9 +48,11 @@ export function ClassInfoPage() {
                 </SearchBox>
               </div>
             )}
-            <div className="mt-[40px]">
-              <div className="text-[13px] not-italic font-semibold leading-[normal] tracking-[-0.52px]">
-                <div>{content}</div>
+            <div className="mt-[40px] flex justify-center">
+              <div className=" text-[12px] not-italic font-normal leading-[normal] tracking-[-0.52px] text-[#474747] text-start w-[80%] items-center">
+                <div className="w-full" style={{ whiteSpace: "pre-line" }}>
+                  {content}
+                </div>
               </div>
             </div>
           </>

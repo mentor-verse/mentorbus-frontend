@@ -16,6 +16,8 @@ const ApplyAnswerPage = React.forwardRef<HTMLDivElement, ApplyAnswerPageProps>(
     const location = useLocation();
     const [inputValue, setInputValue] = React.useState("");
 
+    // Get the index and userName from the state
+    const idx = location.state?.idx;
     const userName = location.state?.userName || "기본명";
 
     const handleBackClick = () => {
@@ -26,17 +28,7 @@ const ApplyAnswerPage = React.forwardRef<HTMLDivElement, ApplyAnswerPageProps>(
       if (Link) {
         navigate(Link);
       } else {
-        const currentPath = location.pathname;
-
-        if (
-          currentPath === "/Onboarding/Phone" ||
-          currentPath === "/Onboarding/Submit" ||
-          currentPath === "/Onboarding/Underage"
-        ) {
-          // Handle back navigation if needed
-        } else {
-          window.history.back();
-        }
+        window.history.back();
       }
     };
 
@@ -53,34 +45,18 @@ const ApplyAnswerPage = React.forwardRef<HTMLDivElement, ApplyAnswerPageProps>(
     const handleSaveAndNavigate = () => {
       const storedData = JSON.parse(localStorage.getItem("questions") || "[]");
 
-      // Find the specific question and its corresponding answer
-      const questionData = storedData.find(
-        (question: any) => question.question
-      );
-
-      if (!questionData) {
-        // Handle case where no question is found, possibly with an error or default value
-        console.error("No question found in localStorage");
+      // Ensure that the index is within the array bounds
+      if (idx !== undefined && idx !== null && storedData[idx]) {
+        storedData[idx].mentor_answer = inputValue; // Update the mentor_answer field
+      } else {
+        console.error("Invalid index or no question found in localStorage");
         return;
       }
 
-      const updatedData = storedData.map((question: any) => {
-        if (question.question) {
-          return {
-            ...question,
-            mentor_answer: inputValue, // Update the mentor_answer field
-          };
-        }
-        return question;
-      });
+      localStorage.setItem("questions", JSON.stringify(storedData));
 
-      localStorage.setItem("questions", JSON.stringify(updatedData));
-
-      navigate(
-        `/mentorbus-frontend/comment?userName=${encodeURIComponent(
-          userName
-        )}&userQuestion=${encodeURIComponent(questionData.question)}`
-      );
+      // Navigate back to the question/comment page after saving
+      navigate(`/mentorbus-frontend/qabus`);
     };
 
     return (

@@ -4,6 +4,7 @@ import BottomNav from "@/containers/navbar";
 import { UnderArrowBlue } from "@/components/Icons/UnderArrowBlue";
 import { FilterButton } from "@/components/Icons/FilterButton";
 import { useNavigate } from "react-router-dom";
+import { SearchIcon } from "@/components/Icons/MainIcons";
 
 // Define the type for the question boxes
 interface QuestionBoxType {
@@ -28,25 +29,28 @@ export function QAPage() {
 
   const exampleQuestions: QuestionBoxType[] = [
     {
-      question: "What is the best way to learn React?",
+      question: "고2 1학기를 망했는데..",
       answer:
-        "Start with the official documentation, then build small projects.",
+        "고1 1학기 때 3등급을 찍고, 2학기 때 2.4까지 올렸습니다. 근데 고2 1학기 때 너무 망해버려서 3.6까지 떨어져버렸어요...이거 남은 기간 동안 올리면 종합전형 쓸 수 있을까요? 아니면 정시로 갈아타야할까요?",
       star_num: 10,
       comment_num: 2,
       type: "best",
-      major: "Computer Science",
-      userName: "mentorUser1",
+      major: "공학계열",
+      userName: localStorage.getItem("userName"),
       position: "멘토",
+      mentor_answer: "",
     },
     {
-      question: "How do I prepare for technical interviews?",
-      answer: "Practice with coding challenges and mock interviews.",
+      question: "숭실대 컴퓨터학부 VS 숭실대 AI융합학부",
+      answer:
+        "AI가 재미있어서 AI융합학부를 지원할까 하는데, AI는 대학원을 가야한다 해서요. 취업이나 여러 비전을 고려했을 때 어느 학과를 가는 게 좋을까요? 각 학과의 차이는 정확히 무엇인가요?",
       star_num: 15,
       comment_num: 5,
       type: "best",
-      major: "Software Engineering",
-      userName: "mentorUser2",
+      major: "사회계열",
+      userName: localStorage.getItem("userName"),
       position: "멘토",
+      mentor_answer: "",
     },
   ];
 
@@ -126,15 +130,15 @@ export function QAPage() {
     navigate(
       `/mentorbus-frontend/comment?userName=${encodeURIComponent(
         box.userName
-      )}&userQuestion=${encodeURIComponent(box.question)}`,
+      )}&index=${encodeURIComponent(index)}`,
       {
         state: {
-          answer: box.answer,
           question: box.question,
+          answer: box.answer,
           star_num: box.star_num,
           comment_num: box.comment_num,
-          index,
-          mentor_answer: box.mentor_answer,
+          mentor_answer: box.mentor_answer, // Pass mentor_answer here
+          idx: index,
         },
       }
     );
@@ -167,8 +171,16 @@ export function QAPage() {
       <div className="main">
         <div className="main_content">
           <div style={{ background: "#fff" }}>
-            <div className="text-lg not-italic font-bold text-[19px] mt-[20px]">
-              고민버스
+            <div className="flex items-center justify-between w-full text-lg not-italic font-bold text-[19px] mt-[20px]">
+              <a className="ml-[20px]"></a>
+
+              <div className="text-lg not-italic font-bold text-[19px] ml-[20px]">
+                고민버스
+              </div>
+
+              <div className="text-[16px] text-[#333333] font-medium mr-[20px] cursor-pointer">
+                <SearchIcon />
+              </div>
             </div>
             <div className="flex justify-between mt-[40px]">
               <div

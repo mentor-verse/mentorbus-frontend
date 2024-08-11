@@ -27,6 +27,9 @@ const CommentSection = React.forwardRef<HTMLDivElement, CommentSectionProps>(
       }
     };
 
+    const userName = localStorage.getItem("userName");
+    const belong = localStorage.getItem("userName");
+
     return (
       <div
         className={cn(
@@ -38,12 +41,15 @@ const CommentSection = React.forwardRef<HTMLDivElement, CommentSectionProps>(
         <div className="py-4">
           <div className="ml-[30px]">
             <SmallMentorProfile
-              name={"편유나 멘토"}
-              belong={"숭실대학교"}
+              name={userName || "편유나 멘토"}
+              belong={belong || "숭실대학교"}
               gen={"woman"}
             />
           </div>
-          <div className="font-normal text-[12px] w-[80%] h-auto py-3 ml-[30px] text-start">
+          <div
+            className="font-normal text-[12px] w-[80%] h-auto py-3 ml-[30px] text-start"
+            style={{ whiteSpace: "pre-line" }}
+          >
             {mentor_answer}
           </div>
           <div

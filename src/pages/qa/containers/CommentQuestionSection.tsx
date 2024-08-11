@@ -36,7 +36,7 @@ const CommentQuestionSection = React.forwardRef<
     return (
       <div
         className={cn(
-          "item-start text-start  ml-[20px] mt-[40px] w-[80%]",
+          "item-start text-start  ml-[20px] mt-[40px] w-[90%]",
           className
         )}
         ref={ref}
@@ -45,9 +45,7 @@ const CommentQuestionSection = React.forwardRef<
           <p className="text-[#4E98EE] mr-[5px]">Q. </p>
           <p>{question}</p>
         </div>
-        <div className="text-[11px] font-normal px-4 py-3 w-[80%]">
-          {answer}
-        </div>
+        <div className="text-[11px] font-normal px-4 py-3 w-full">{answer}</div>
         <div className={cn("flex text-start items-center mt-[4px]", className)}>
           <div
             className="flex text-start items-center text-blue-500 not-italic font-normal text-[11px]"

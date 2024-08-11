@@ -14,11 +14,13 @@ export interface ApplyAnswerBoxProps
 const ApplyAnswerBox = React.forwardRef<HTMLDivElement, ApplyAnswerBoxProps>(
   ({ className, name, gen }) => {
     const navigate = useNavigate();
+    const queryParams = new URLSearchParams(location.search);
+    const idx = parseInt(queryParams.get("index") || "0", 10); // Convert idx to number, default to 0
 
     const handleClick = () => {
       // 이동할 때 userName을 포함하여 전달
       navigate("/mentorbus-frontend/applyanswer", {
-        state: { userName: name },
+        state: { userName: name, idx },
       });
     };
 
