@@ -6,7 +6,7 @@ import BottomNav from "@/containers/navbar";
 export interface NotYetPageProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const NotYetPage = React.forwardRef<HTMLDivElement, NotYetPageProps>(
-  ({ className }, ref) => {
+  ({ className }) => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
