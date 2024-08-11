@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
 import { OnboardingTitle } from "@/pages/onboarding/containers/OnboardingTitle";
+import React, { useEffect } from "react";
 import { KakaoBtn } from "@/components/Icons/KakaoBtn";
 
 interface ZeroProps {
