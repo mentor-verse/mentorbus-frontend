@@ -33,17 +33,15 @@ function isSortType(value: any): value is SortType {
   return ["인문계열", "예술계열", "IT계열", "공학계열"].includes(value);
 }
 
-// Declare function variable for isSelectedBox
-let isSelectedBox: (item: any) => item is SelectedBox;
-
 const gatherTownUrls: Record<SortType, string> = {
   인문계열: "nJCm-X-RR5OojtQzylwy",
   예술계열: "5RvF4SJkTl6csexWVxQw",
   IT계열: "PsbK1kvsSF2vqKIf-VLj",
   공학계열: "nWPWj7r6T8eRB2mVaUT8",
 };
+// Declare function variable for isSelectedBox
+let isSelectedBox: (item: any) => item is SelectedBox;
 
-// Conditional logic based on position
 if (position === "멘티") {
   isSelectedBox = function (item: any): item is SelectedBox {
     return (
@@ -65,6 +63,19 @@ if (position === "멘티") {
       typeof item.info === "string" &&
       typeof item.date === "string" &&
       typeof item.sort === "string" &&
+      (item.status === "pending" || item.status === "completed")
+    );
+  };
+} else {
+  // Default case when position is not available
+  isSelectedBox = function (item: any): item is SelectedBox {
+    return (
+      typeof item.gen === "string" &&
+      typeof item.major === "string" &&
+      typeof item.name === "string" &&
+      typeof item.info === "string" &&
+      typeof item.date === "string" &&
+      isSortType(item.sort) &&
       (item.status === "pending" || item.status === "completed")
     );
   };

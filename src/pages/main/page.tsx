@@ -11,6 +11,7 @@ import HU from "@/assets/HU.svg";
 import CAU from "@/assets/CAU.svg";
 import BottomNav from "@/containers/navbar";
 import { MentorBox } from "@/components/ui/mentorbox";
+import { MentorScheduleSection } from "@/pages/main/containers/MentorScheduleSection"; // Import the new component
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -42,17 +43,20 @@ export function MainPage() {
   const [userName, setUserName] = useState<string>("");
   const [userMajor, setUserMajor] = useState<string>("");
   const [randomColleges, setRandomColleges] = useState<CollegeType[]>([]);
+  const [position, setPosition] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const position = localStorage.getItem("position");
+    const storedPosition = localStorage.getItem("position");
     const userName = localStorage.getItem("userName");
     const userBelong = localStorage.getItem("userBelong");
     const major = localStorage.getItem("major");
 
-    if (!(position && userName && userBelong && major)) {
+    if (!(storedPosition && userName && userBelong && major)) {
       navigate(`/mentorbus-frontend/`);
+    } else {
+      setPosition(storedPosition);
     }
   }, [navigate]);
 
@@ -80,6 +84,60 @@ export function MainPage() {
     setRandomColleges(getRandomColleges(colleges, 7));
   }, []);
 
+  const renderMentorBoxes = () => (
+    <>
+      <TitleSection title2="대학별" title={""} major={""} title3={""} />
+      <div className="overflow-x-auto ml-[28px] mt-[10px]">
+        <div className="flex" style={{ width: "max-content" }}>
+          {randomColleges.map((college, index) => (
+            <React.Fragment key={index}>
+              <College img={college.img} name={college.name} title={""} />
+              {index < randomColleges.length - 1 && (
+                <div className="ml-[13px]"></div>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+
+      <TitleSection
+        title={userName}
+        title2="님에게 맞는"
+        major={userMajor}
+        title3="멘토"
+      />
+      <div className="flex mt-[20px] overflow-auto">
+        <MentorBox
+          name="편유나"
+          major="숭실대학교 글로벌미디어학부"
+          gen="woman"
+          info="-숭실대학교 재학"
+        />
+        <div className="ml-[13px]"></div>
+        <MentorBox
+          name="편유나"
+          major="숭실대학교 글로벌미디어학부"
+          gen="woman"
+          info="-숭실대학교 재학"
+        />
+        <div className="ml-[13px]"></div>
+        <MentorBox
+          name="편유나"
+          major="숭실대학교 글로벌미디어학부"
+          gen="woman"
+          info="-숭실대학교 재학"
+        />
+        <div className="ml-[13px]"></div>
+        <MentorBox
+          name="편유나"
+          major="숭실대학교 글로벌미디어학부"
+          gen="woman"
+          info="-숭실대학교 재학"
+        />
+      </div>
+    </>
+  );
+
   return (
     <>
       <div className="main">
@@ -91,57 +149,11 @@ export function MainPage() {
               <Banner />
             </div>
 
-            <TitleSection title2="대학별" title={""} major={""} title3={""} />
-
-            <div className="overflow-x-auto ml-[28px] mt-[10px]">
-              <div className="flex" style={{ width: "max-content" }}>
-                {randomColleges.map((college, index) => (
-                  <React.Fragment key={index}>
-                    <College img={college.img} name={college.name} title={""} />
-                    {index < randomColleges.length - 1 && (
-                      <div className="ml-[13px]"></div>
-                    )}
-                  </React.Fragment>
-                ))}
-              </div>
-            </div>
-
-            <TitleSection
-              title={userName}
-              title2="님에게 맞는"
-              major={userMajor}
-              title3="멘토"
-            />
-
-            <div className="flex mt-[20px] overflow-auto">
-              <MentorBox
-                name="편유나"
-                major="숭실대학교 글로벌미디어학부"
-                gen="woman"
-                info="-숭실대학교 재학"
-              />
-              <div className="ml-[13px]"></div>
-              <MentorBox
-                name="편유나"
-                major="숭실대학교 글로벌미디어학부"
-                gen="woman"
-                info="-숭실대학교 재학"
-              />
-              <div className="ml-[13px]"></div>
-              <MentorBox
-                name="편유나"
-                major="숭실대학교 글로벌미디어학부"
-                gen="woman"
-                info="-숭실대학교 재학"
-              />
-              <div className="ml-[13px]"></div>
-              <MentorBox
-                name="편유나"
-                major="숭실대학교 글로벌미디어학부"
-                gen="woman"
-                info="-숭실대학교 재학"
-              />
-            </div>
+            {position === "멘티" ? (
+              renderMentorBoxes()
+            ) : (
+              <MentorScheduleSection />
+            )}
 
             <div className="mt-[120px]"></div>
             <BottomNav />

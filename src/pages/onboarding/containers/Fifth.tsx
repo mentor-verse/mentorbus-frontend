@@ -71,7 +71,7 @@ export function Fifth({ count, sentence }: FifthProps) {
           >
             <OnboardingButton
               className="w-[160px]"
-              title="진로괴민"
+              title="진로고민"
               explain={""}
             />
           </button>
