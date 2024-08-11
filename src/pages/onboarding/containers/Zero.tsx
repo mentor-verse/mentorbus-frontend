@@ -25,25 +25,19 @@ const Zero: React.FC<ZeroProps> = () => {
   }, [Rest_api_key]);
 
   const isMobile = () => {
-    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    const userAgent = navigator.userAgent || navigator.vendor;
     return /android|iPhone|iPad|iPod/i.test(userAgent);
   };
 
   const handleLogin = () => {
     if (isMobile()) {
-      // 모바일 기기인 경우 간편 로그인
-      window.Kakao.Auth.login({
-        success: function (authObj: any) {
-          console.log("Login success:", authObj);
-          window.location.href = redirect_uri; // 로그인 성공 후 리다이렉트
-        },
-        fail: function (err: any) {
-          console.error("Login failed:", err);
-        },
+      // 간편 로그인을 시도
+      window.Kakao.Auth.authorize({
+        redirectUri: redirect_uri,
         throughTalk: true, // 간편 로그인을 위해 추가
       });
     } else {
-      // 모바일이 아닌 경우 웹 로그인 처리
+      // 웹 로그인 처리
       const webLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${encodeURIComponent(
         redirect_uri
       )}&response_type=code`;
