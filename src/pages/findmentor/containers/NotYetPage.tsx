@@ -22,7 +22,7 @@ const NotYetPage = React.forwardRef<HTMLDivElement, NotYetPageProps>(
               </div>
               <div
                 className={cn(
-                  "flex justify-center items-center min-h-screen text-[13px] not-italic font-semibold leading-[normal] tracking-[-0.52px] mb-[20px]",
+                  "flex justify-center items-center text-[13px] not-italic font-semibold leading-[normal] tracking-[-0.52px] max-h-full mt-[50%]",
                   className
                 )}
               >

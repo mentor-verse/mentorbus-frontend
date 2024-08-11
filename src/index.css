@@ -210,6 +210,14 @@ a {
   border-top: 1px solid #d4d4d4;
 }
 
+.middle {
+  position: fixed;
+  bottom: 50vh;
+  left: 0;
+  right: 0;
+  height: 80px;
+}
+
 .bottom_button {
   position: fixed;
   bottom: 0;
