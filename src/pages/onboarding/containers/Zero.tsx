@@ -16,7 +16,6 @@ declare global {
 
 const Zero: React.FC<ZeroProps> = () => {
   const Rest_api_key = import.meta.env.VITE_KAKAO_REST_API_KEY; // REST API KEY
-  const Native_app_key = import.meta.env.VITE_KAKAO_NATIVE_APP_KEY; // 네이티브 앱 키
   const redirect_uri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
 
   useEffect(() => {
@@ -25,25 +24,32 @@ const Zero: React.FC<ZeroProps> = () => {
     }
   }, [Rest_api_key]);
 
-  const handleLogin = () => {
-    const intentUrl = `intent://authorize?client_id=${Native_app_key}&response_type=code&redirect_uri=${encodeURIComponent(
-      redirect_uri
-    )}#Intent;scheme=kakao;package=com.kakao.talk;end`;
-    const webLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${encodeURIComponent(
-      redirect_uri
-    )}&response_type=code`;
+  const isMobile = () => {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    return /android|iPhone|iPad|iPod/i.test(userAgent);
+  };
 
-    // Try to redirect using the intent URL
-    try {
-      window.location.href = intentUrl;
-    } catch (error) {
-      // Fallback to web login if the intent URL fails
+  const handleLogin = () => {
+    if (isMobile()) {
+      // 모바일 기기인 경우 간편 로그인
+      window.Kakao.Auth.login({
+        success: function (authObj: any) {
+          console.log("Login success:", authObj);
+          window.location.href = redirect_uri; // 로그인 성공 후 리다이렉트
+        },
+        fail: function (err: any) {
+          console.error("Login failed:", err);
+        },
+        throughTalk: true, // 간편 로그인을 위해 추가
+      });
+    } else {
+      // 모바일이 아닌 경우 웹 로그인 처리
+      const webLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${encodeURIComponent(
+        redirect_uri
+      )}&response_type=code`;
+
       window.location.href = webLoginUrl;
     }
-    window.Kakao.Auth.authorize({
-      redirectUri: redirect_uri,
-      throughTalk: true, // 간편 로그인을 위해 추가
-    });
   };
 
   return (
