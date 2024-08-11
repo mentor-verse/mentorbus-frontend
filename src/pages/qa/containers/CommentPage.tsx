@@ -101,7 +101,7 @@ const CommentPage = React.forwardRef<HTMLDivElement, CommentPageProps>(
           />
         ) : (
           position === "멘토" && (
-            <ApplyAnswerBox name={userName || "편유나"} gen={"woman"} />
+            <ApplyAnswerBox name={userName || "기본명"} gen={"woman"} />
           )
         )}
 

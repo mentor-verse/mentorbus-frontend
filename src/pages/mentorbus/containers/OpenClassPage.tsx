@@ -5,6 +5,7 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { OpenClassSecond } from "./OpenClassSecond";
 import { OpenClassThird } from "./OpenClassThird";
+import { LeftArrow } from "@/components/Icons/LeftArrow";
 
 export interface OpenClassPageProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -189,15 +190,17 @@ const OpenClassPage = React.forwardRef<HTMLDivElement, OpenClassPageProps>(
                 >
                   {!back_disable && (
                     <a className="ml-[20px]" onClick={handleBackClick}>
-                      <XIcon />
+                      <LeftArrow />
                     </a>
                   )}
                   <div className="text-[19px] text-[#333333] font-bold">
                     멘토링 개설
                   </div>
-                  <div className="text-[16px] text-[#333333] font-medium mr-[20px] cursor-pointer">
-                    작성
-                  </div>
+                  {!back_disable && (
+                    <a className="mr-[20px]" onClick={handleBackClick}>
+                      <XIcon />
+                    </a>
+                  )}
                 </div>
               )}
               {viewState === 0 && (

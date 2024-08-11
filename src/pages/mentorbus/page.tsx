@@ -371,7 +371,7 @@ export function MentorBusPageMentor() {
                   return (
                     <div
                       key={index}
-                      className="grid place-items-center mt-[0px] h-[120px] relative "
+                      className="grid place-items-center w-[80%] mt-[0px] h-[120px] relative "
                       onClick={(e) => {
                         const rect = e.currentTarget.getBoundingClientRect();
                         const clickX = e.clientX - rect.left;

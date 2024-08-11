@@ -12,9 +12,10 @@ interface QuestionBoxType {
   star_num: number;
   comment_num: number;
   type: string;
-  major: string; // Add major to the type
-  userName: string; // Add userName to the type
-  mentor_answer?: string; // Optional field for mentor_answer
+  major: string;
+  userName: string;
+  position: string; // Add position to the type
+  mentor_answer?: string;
 }
 
 export function QAPage() {
@@ -25,7 +26,30 @@ export function QAPage() {
   const roadDivRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  // Use the defined type for searchBoxes
+  const exampleQuestions: QuestionBoxType[] = [
+    {
+      question: "What is the best way to learn React?",
+      answer:
+        "Start with the official documentation, then build small projects.",
+      star_num: 10,
+      comment_num: 2,
+      type: "best",
+      major: "Computer Science",
+      userName: "mentorUser1",
+      position: "멘토",
+    },
+    {
+      question: "How do I prepare for technical interviews?",
+      answer: "Practice with coding challenges and mock interviews.",
+      star_num: 15,
+      comment_num: 5,
+      type: "best",
+      major: "Software Engineering",
+      userName: "mentorUser2",
+      position: "멘토",
+    },
+  ];
+
   const [searchBoxes, setSearchBoxes] = useState<QuestionBoxType[]>(() => {
     const savedQuestions = JSON.parse(
       localStorage.getItem("questions") || "[]"
@@ -33,11 +57,32 @@ export function QAPage() {
     return savedQuestions;
   });
 
-  // Specify uniqueMajors with type string[]
+  // Ensure example questions are saved to localStorage if not already present
+  useEffect(() => {
+    const savedQuestions = JSON.parse(
+      localStorage.getItem("questions") || "[]"
+    ) as QuestionBoxType[];
+
+    const updatedQuestions = [...savedQuestions];
+
+    exampleQuestions.forEach((exampleQuestion) => {
+      const exists = savedQuestions.some(
+        (question) => question.question === exampleQuestion.question
+      );
+
+      if (!exists) {
+        updatedQuestions.push(exampleQuestion);
+      }
+    });
+
+    setSearchBoxes(updatedQuestions);
+    localStorage.setItem("questions", JSON.stringify(updatedQuestions));
+  }, []);
+
   const uniqueMajors: string[] = [
     ...new Set(searchBoxes.map((box) => box.major)),
   ];
-  const loggedInUserName = localStorage.getItem("userName") || ""; // Retrieve the logged-in userName
+  const loggedInUserName = localStorage.getItem("userName") || "";
 
   const filteredBoxes = searchBoxes.filter((box) => {
     if (filter === "entry") {
@@ -47,7 +92,7 @@ export function QAPage() {
       return box.type === "best";
     }
     if (filter === "written") {
-      return box.userName === loggedInUserName; // Filter based on the logged-in user's name
+      return box.userName === loggedInUserName;
     }
     return false;
   });
@@ -123,7 +168,7 @@ export function QAPage() {
         <div className="main_content">
           <div style={{ background: "#fff" }}>
             <div className="text-lg not-italic font-bold text-[19px] mt-[20px]">
-              멘토버스
+              고민버스
             </div>
             <div className="flex justify-between mt-[40px]">
               <div
@@ -185,27 +230,22 @@ export function QAPage() {
             )}
 
             <div className="grid place-items-center">
-              {filteredBoxes.map(
-                (
-                  box,
-                  index: number // Ensure index is typed as number
-                ) => (
-                  <div
-                    className="border-b-[0.6px] border-[#BABABA] w-full grid place-items-center py-6"
-                    key={index}
-                    onClick={() => handleQuestionBoxClick(box, index)} // Convert Key to number
-                  >
-                    <QuestionBox
-                      question={box.question}
-                      answer={box.answer}
-                      star_num={box.star_num}
-                      comment_num={box.comment_num}
-                      className={box.type === "best" ? "best" : ""}
-                      onStarClick={(starred) => handleStarClick(index, starred)} // Convert Key to number
-                    />
-                  </div>
-                )
-              )}
+              {filteredBoxes.map((box, index: number) => (
+                <div
+                  className="border-b-[0.6px] border-[#BABABA] w-full grid place-items-center py-6"
+                  key={index}
+                  onClick={() => handleQuestionBoxClick(box, index)}
+                >
+                  <QuestionBox
+                    question={box.question}
+                    answer={box.answer}
+                    star_num={box.star_num}
+                    comment_num={box.comment_num}
+                    className={box.type === "best" ? "best" : ""}
+                    onStarClick={(starred) => handleStarClick(index, starred)}
+                  />
+                </div>
+              ))}
             </div>
 
             <div ref={growDivRef}></div>

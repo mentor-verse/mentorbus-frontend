@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import {
   Home,
   FindMentor,
+  FindMentee, // FindMentee 아이콘 추가
   MentorBus,
   QABus,
   MyPage,
@@ -19,14 +20,17 @@ const BottomNav = () => {
   const [showPencilBtn, setShowPencilBtn] = useState(false);
   const [showPlusBtn, setshowPlusBtn] = useState(false);
 
+  // 사용자의 위치 정보를 관리하는 state
+  const [position, setPosition] = useState<string | null>(null);
+
   useEffect(() => {
     // 로컬 스토리지에서 position 값을 가져옴
-    const position = localStorage.getItem("position");
+    const storedPosition = localStorage.getItem("position");
+    setPosition(storedPosition);
 
-    // 현재 경로가 "/mentorbus-frontend/qabus"이고, position 값이 "멘티"인 경우에만 PencilBtn을 보여줌
     if (
       location.pathname === "/mentorbus-frontend/qabus" &&
-      position === "멘티"
+      storedPosition === "멘티"
     ) {
       setShowPencilBtn(true);
     } else {
@@ -36,12 +40,11 @@ const BottomNav = () => {
 
   useEffect(() => {
     // 로컬 스토리지에서 position 값을 가져옴
-    const position = localStorage.getItem("position");
+    const storedPosition = localStorage.getItem("position");
 
-    // 현재 경로가 "/mentorbus-frontend/qabus"이고, position 값이 "멘티"인 경우에만 PencilBtn을 보여줌
     if (
       location.pathname === "/mentorbus-frontend/mentorbus" &&
-      position === "멘토"
+      storedPosition === "멘토"
     ) {
       setshowPlusBtn(true);
     } else {
@@ -83,7 +86,11 @@ const BottomNav = () => {
         </div>
         <div>
           <Link to="/mentorbus-frontend/find">
-            <FindMentor color={getColor("/mentorbus-frontend/find")} />
+            {position === "멘토" ? (
+              <FindMentee color={getColor("/mentorbus-frontend/find")} />
+            ) : (
+              <FindMentor color={getColor("/mentorbus-frontend/find")} />
+            )}
           </Link>
         </div>
         <div>
