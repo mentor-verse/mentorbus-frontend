@@ -45,6 +45,9 @@ const ApplyAnswerPage = React.forwardRef<HTMLDivElement, ApplyAnswerPageProps>(
     ) => {
       const value = event.target.value;
       setInputValue(value);
+
+      event.target.style.height = "auto"; // Reset height to auto to calculate correct scrollHeight
+      event.target.style.height = `${event.target.scrollHeight}px`; // Set height to the scrollHeight of the content
     };
 
     const handleSaveAndNavigate = () => {
