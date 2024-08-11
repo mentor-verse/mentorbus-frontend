@@ -18,7 +18,6 @@ const ApplyAnswerPage = React.forwardRef<HTMLDivElement, ApplyAnswerPageProps>(
 
     // Get the index and userName from the state
     const idx = location.state?.idx;
-    const userName = location.state?.userName || "기본명";
 
     const handleBackClick = () => {
       if (back_work === "no") {
