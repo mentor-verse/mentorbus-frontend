@@ -22,11 +22,11 @@ const NotYetPage = React.forwardRef<HTMLDivElement, NotYetPageProps>(
               </div>
               <div
                 className={cn(
-                  "flex justify-center items-center min-h-[90vh] text-[13px] not-italic font-semibold leading-[normal] tracking-[-0.52px] mb-[20px]",
+                  "flex justify-center items-center min-h-screen text-[13px] not-italic font-semibold leading-[normal] tracking-[-0.52px] mb-[20px]",
                   className
                 )}
               >
-                <div className="text-[#333333]">
+                <div className="text-[#333333] mb-[50px]">
                   <div className="text-[79px]">🚧</div>
                   <div className="text-[19px] font-bold">업데이트 예정</div>
                   <div className="text-[12px] font-medium">

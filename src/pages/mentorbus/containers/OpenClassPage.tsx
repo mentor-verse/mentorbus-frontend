@@ -66,6 +66,9 @@ const OpenClassPage = React.forwardRef<HTMLDivElement, OpenClassPageProps>(
     ) => {
       const value = event.target.value;
       setInputValue(value);
+
+      event.target.style.height = "auto"; // Reset height to auto to calculate correct scrollHeight
+      event.target.style.height = `${event.target.scrollHeight}px`; // Set height to the scrollHeight of the content
     };
 
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -153,23 +156,12 @@ const OpenClassPage = React.forwardRef<HTMLDivElement, OpenClassPageProps>(
       }
     };
 
-    const handleInputChange2 = (
-      event: React.ChangeEvent<HTMLTextAreaElement>
-    ) => {
-      const value = event.target.value;
-      setInputValue(value);
-
-      // Adjust the textarea height to fit content
-      event.target.style.height = "auto"; // Reset height
-      event.target.style.height = `${event.target.scrollHeight}px`; // Set height to scroll height
-    };
-
     return (
       <>
         <div className="main">
           <div className="main_content">
             <div style={{ background: "#fff" }}>
-              {(viewState === 0 || viewState === 1) && (
+              {viewState === 0 && (
                 <div
                   className={cn(
                     "flex items-center justify-center text-lg not-italic font-bold text-[19px] mt-[20px] ml-[140px]",
@@ -221,12 +213,12 @@ const OpenClassPage = React.forwardRef<HTMLDivElement, OpenClassPageProps>(
                   />
                   <textarea
                     className={cn(
-                      "text-[13px] text-[#383838] font-normal mt-[20px] flex justify-start ml-[33px] w-[80%] border-none focus:outline-none resize-none overflow-y-hidden",
+                      "text-[13px] text-[#383838] font-normal mt-[20px] flex justify-start ml-[33px] w-[80%] border-none focus:outline-none resize-none min-h-[50px] max-h-[500px] overflow-y-auto",
                       className
                     )}
                     placeholder="내용을 입력하세요"
                     rows={4}
-                    onChange={handleInputChange2}
+                    onChange={handleInputChange}
                     value={inputValue}
                   ></textarea>
                 </>
