@@ -22,7 +22,7 @@ const Profile = React.forwardRef<HTMLDivElement, ProfileProps>(
       >
         <div
           className={cn(
-            "flex items-start stroke-none justify-center w-full -ml-[120px] mt-[20px]",
+            "flex items-start stroke-none justify-start w-full ml-[20%] mt-[20px]",
             className
           )}
         >

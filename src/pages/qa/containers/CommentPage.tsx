@@ -41,6 +41,9 @@ const CommentPage = React.forwardRef<HTMLDivElement, CommentPageProps>(
       }
     }
 
+    // Get the user's position from localStorage
+    const position = localStorage.getItem("position");
+
     const handleBackClick = () => {
       if (back_work === "no") {
         return;
@@ -84,7 +87,12 @@ const CommentPage = React.forwardRef<HTMLDivElement, CommentPageProps>(
             comment_num={0}
           />
         ) : (
-          <ApplyAnswerBox name={userName} gen={"woman"} />
+          position !== "멘티" && (
+            <>
+              <div className="mt-[25px]"></div>
+              <ApplyAnswerBox name={userName} gen={"woman"} />
+            </>
+          )
         )}
 
         <BottomNav />

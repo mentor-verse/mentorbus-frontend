@@ -27,16 +27,16 @@ const ApplyAnswerBox = React.forwardRef<HTMLDivElement, ApplyAnswerBoxProps>(
     return (
       <div
         className={cn(
-          "grid place-items-center border-[#D5D5D5] border-[0.6px] rounded-[8px] w-[90%]",
+          "grid place-items-center border-[#D5D5D5] border-[0.6px] rounded-[8px] w-[85%]",
           className
         )}
       >
-        <div className="flex justify-between  items-center py-3">
+        <div className="flex justify-between w-full items-center py-3">
           <div className="flex items-center text-start">
-            <div className={gen}>
+            <div className={gen} style={{ marginLeft: "19px" }}>
               {gen === "man" ? <SmallMan /> : <SmallWoman />}
             </div>
-            <div className="ml-[10px]">
+            <div className="ml-[10px] w-[50%]">
               <div className="text-xs not-italic text-[12px] text-[#4E98EE] font-medium">
                 {name}멘토님의
               </div>
@@ -46,11 +46,9 @@ const ApplyAnswerBox = React.forwardRef<HTMLDivElement, ApplyAnswerBoxProps>(
             </div>
           </div>
 
-          <div className="ml-[100px]"></div>
-
           <Button
             onClick={handleClick}
-            className="w-[71px] h-[29px] bg-[#2F82E3] text-[12px] font-semibold"
+            className="ml-auto w-[71px] h-[29px] bg-[#2F82E3] text-[12px] font-semibold mr-[19px]"
           >
             답변하기
           </Button>
