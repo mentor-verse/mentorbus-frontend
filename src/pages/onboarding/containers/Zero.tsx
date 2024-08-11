@@ -1,6 +1,5 @@
-// src/containers/Zero.js
-import { OnboardingTitle } from "@/pages/onboarding/containers/OnboardingTitle";
 import React, { useEffect } from "react";
+import { OnboardingTitle } from "@/pages/onboarding/containers/OnboardingTitle";
 import { KakaoBtn } from "@/components/Icons/KakaoBtn";
 
 interface ZeroProps {
@@ -31,6 +30,7 @@ const Zero: React.FC<ZeroProps> = () => {
 
   const handleLogin = () => {
     if (isMobile()) {
+      // For mobile devices, initiate Kakao login through the app
       window.Kakao.Auth.authorize({
         redirectUri: redirect_uri,
         throughTalk: true,
@@ -43,6 +43,7 @@ const Zero: React.FC<ZeroProps> = () => {
         },
       });
     } else {
+      // For non-mobile devices, redirect to the login URL
       const webLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${encodeURIComponent(
         redirect_uri
       )}&response_type=code`;
