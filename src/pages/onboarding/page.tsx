@@ -38,7 +38,7 @@ export function Onboarding() {
       setShowSecondMentor(true);
       setShowSecondMentee(false);
     }
-  }, []);
+  }, [count]);
 
   useEffect(() => {
     // 로컬 스토리지에서 position 값을 가져옴
@@ -51,7 +51,7 @@ export function Onboarding() {
       setShowThirdMentor(true);
       setShowThirdMentee(false);
     }
-  }, []);
+  }, [count]);
 
   useEffect(() => {
     const position = localStorage.getItem("position");
