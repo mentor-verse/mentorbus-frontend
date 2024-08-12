@@ -83,14 +83,14 @@ if (position === "멘티") {
 }
 
 // 멘티용 컴포넌트
+// 멘티용 컴포넌트
 export function MentorBusPageMentee() {
   const [filter, setFilter] = useState("entry");
-  const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
+  const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]); // 초기 상태 빈 배열로 설정
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
 
-  // Data loading function
   const loadAppliedItems = () => {
     const itemsFromStorage = JSON.parse(
       localStorage.getItem("appliedItems") || "[]"
@@ -126,13 +126,7 @@ export function MentorBusPageMentee() {
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
-  }, []);
-
-  useEffect(() => {
-    if (!loading) {
-      console.log("appliedItems updated:", appliedItems);
-    }
-  }, [loading, appliedItems]);
+  }, [appliedItems]);
 
   const handleEnter = (item: SelectedBox) => {
     if (isSortType(item.sort)) {
