@@ -84,7 +84,7 @@ if (position === "멘티") {
 // 멘티용 컴포넌트
 export function MentorBusPageMentee() {
   const [filter, setFilter] = useState("entry");
-  const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
+  const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]); // 초기 상태 빈 배열로 설정
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
 
@@ -93,33 +93,27 @@ export function MentorBusPageMentee() {
       localStorage.getItem("appliedItems") || "[]"
     );
 
-    console.log("itemsFromStorage:", itemsFromStorage);
-
     if (Array.isArray(itemsFromStorage)) {
       const parsedItems: SelectedBox[] = itemsFromStorage
         .map((item: any) => ({
           ...item,
           status: item.status === "completed" ? "completed" : "pending",
         }))
-        .filter((item) => {
-          console.log("isSelectedBox:", isSelectedBox);
-          console.log("item:", item);
-          return isSelectedBox(item);
-        });
+        .filter((item) => isSelectedBox(item));
 
       setAppliedItems(parsedItems);
     } else {
       console.error("appliedItems is not an array:", itemsFromStorage);
       setAppliedItems([]);
     }
-  }, []);
+  }, []); // 빈 배열을 두어 컴포넌트 마운트 시 한 번만 실행되도록 설정
 
   const handleEnter = (item: SelectedBox) => {
     if (isSortType(item.sort)) {
       const url = `https://app.gather.town/invite?token=${
         gatherTownUrls[item.sort]
       }`;
-      console.log("Generated URL: ", url); // URL 로그 출력
+      console.log("Generated URL: ", url);
 
       if (window.ReactNativeWebView) {
         console.log("Posting message to React Native WebView");
