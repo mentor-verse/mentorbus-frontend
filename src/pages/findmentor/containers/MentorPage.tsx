@@ -95,7 +95,13 @@ Q&A"
               </div>
             </>
           ) : (
-            <div className="grid place-items-center  min-h-screen">
+            <div
+              className="flex justify-center items-center"
+              style={{
+                height: "calc(100vh - 56px)", // Adjust based on other elements' height
+                width: "100%",
+              }}
+            >
               <ApplyFinished />
             </div>
           )}
