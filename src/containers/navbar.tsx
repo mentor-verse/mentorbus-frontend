@@ -8,7 +8,7 @@ import {
   MyPage,
 } from "@/components/Icons/Nav";
 import { PencilBtn } from "@/components/Icons/PencilBtn";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { PlusButton } from "@/components/Icons/PlusButton";
 
 const BottomNav = () => {
