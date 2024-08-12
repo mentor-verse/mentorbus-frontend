@@ -37,7 +37,7 @@ const MentorBox = React.forwardRef<HTMLDivElement, MentorBoxProps>(
           </div>
 
           <div
-            className="text-gray-900 not-italic font-normal text-[8px] mt-[13px]"
+            className="text-gray-900 not-italic font-normal text-[8px] text-start mt-[13px]"
             style={{ whiteSpace: "pre-line" }}
           >
             {info}
