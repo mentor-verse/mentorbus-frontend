@@ -102,7 +102,7 @@ Q&A"
               </div>
             </>
           ) : (
-            <div className="flex flex-1 justify-center items-center">
+            <div className="fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
               <ApplyFinished />
             </div>
           )}
