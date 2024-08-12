@@ -93,7 +93,7 @@ Q&A"
               </div>
             </>
           ) : (
-            <div className="grid place-items-center mt-[50%] min-h-screen">
+            <div className="grid place-items-center  min-h-screen">
               <ApplyFinished />
             </div>
           )}
