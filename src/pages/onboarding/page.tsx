@@ -47,13 +47,20 @@ export function Onboarding() {
   }, [count]);
 
   useEffect(() => {
-    const prevCount = prevCountRef.current;
-    prevCountRef.current = count;
-
-    // 로컬 스토리지에서 position 값을 가져옴
     const position = localStorage.getItem("position");
+    console.log(
+      "Current count:",
+      count,
+      "Previous count:",
+      prevCountRef.current,
+      "Position:",
+      position
+    );
 
-    if (count === prevCount + 1 || count === prevCount - 1) {
+    if (
+      count === prevCountRef.current + 1 ||
+      count === prevCountRef.current - 1
+    ) {
       if (position === "멘티") {
         setShowThirdMentor(false);
         setShowThirdMentee(true);
@@ -62,6 +69,9 @@ export function Onboarding() {
         setShowThirdMentee(false);
       }
     }
+
+    // Update previous count
+    prevCountRef.current = count;
   }, [count]);
 
   useEffect(() => {
