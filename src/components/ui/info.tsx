@@ -16,7 +16,7 @@ const Info = React.forwardRef<HTMLDivElement, InfoProps>(
         ref={ref}
       >
         <div className={cn("text-[9px] text-[#333333] font-medium", className)}>
-          📢 {Info}
+          📢 &nbsp; {Info}
         </div>
       </div>
     );

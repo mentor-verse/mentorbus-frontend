@@ -91,6 +91,21 @@ export function MentorBusPageMentee() {
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
 
+  // PencilBtn 표시 여부를 관리하는 state
+  const [InfoBox, setInfoBox] = useState(false);
+
+  const position = localStorage.getItem("position");
+
+  useEffect(() => {
+    // 로컬 스토리지에서 position 값을 가져옴
+
+    if (position === "멘토") {
+      setInfoBox(true);
+    } else {
+      setInfoBox(false);
+    }
+  }, [position]);
+
   const loadAppliedItems = () => {
     const itemsFromStorage = JSON.parse(
       localStorage.getItem("appliedItems") || "[]"
@@ -188,11 +203,13 @@ export function MentorBusPageMentee() {
             </div>
 
             <div className="grid place-items-center mt-3">
-              <Info
-                Info={
-                  "멘토는 자유롭게 수업 입장 가능하며, 멘티들은 수업 시작 10분 전부터 입장이 가능합니다."
-                }
-              />
+              {InfoBox && (
+                <Info
+                  Info={
+                    "멘토는 자유롭게 수업 입장 가능하며, 멘티들은 수업 시작 10분 전부터 입장이 가능합니다."
+                  }
+                />
+              )}
             </div>
 
             <div ref={roadDivRef} className="grid place-items-center">
