@@ -43,7 +43,14 @@ export function MentorPage() {
           minHeight: "100vh",
         }}
       >
-        <div style={{ background: "#fff", flex: "1" }}>
+        <div
+          style={{
+            background: "#fff",
+            flex: "1",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
           {!isApplied ? (
             <>
               <div>
@@ -95,7 +102,7 @@ Q&A"
               </div>
             </>
           ) : (
-            <div className="flex flex-col justify-center items-center flex-1">
+            <div className="flex flex-1 justify-center items-center">
               <ApplyFinished />
             </div>
           )}
