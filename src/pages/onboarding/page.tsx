@@ -21,6 +21,38 @@ export function Onboarding() {
   const roadDivRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
+  const [showSecondMentor, setShowSecondMentor] = useState(true);
+  const [showSecondMentee, setShowSecondMentee] = useState(false);
+
+  const [showThirdMentor, setShowThirdMentor] = useState(true);
+  const [showThirdMentee, setShowThirdMentee] = useState(false);
+
+  useEffect(() => {
+    // 로컬 스토리지에서 position 값을 가져옴
+    const position = localStorage.getItem("position");
+
+    if (position === "멘티") {
+      setShowSecondMentor(false);
+      setShowSecondMentor(true);
+    } else {
+      setShowSecondMentor(true);
+      setShowSecondMentee(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    // 로컬 스토리지에서 position 값을 가져옴
+    const position = localStorage.getItem("position");
+
+    if (position === "멘티") {
+      setShowThirdMentor(false);
+      setShowThirdMentee(true);
+    } else {
+      setShowThirdMentor(true);
+      setShowThirdMentee(false);
+    }
+  }, []);
+
   useEffect(() => {
     const position = localStorage.getItem("position");
     const userName = localStorage.getItem("userName");
@@ -98,21 +130,40 @@ export function Onboarding() {
       case 3:
         return (
           <div className="rendered-component">
-            <Third
-              count={count}
-              setCount={setCount}
-              sentence={"소속대학교/직장을 알려주세요"}
-            />
+            {showSecondMentor && (
+              <Third
+                count={count}
+                setCount={setCount}
+                sentence={"소속대학교/직장을 알려주세요"}
+              />
+            )}
+            {showSecondMentee && (
+              <Third
+                count={count}
+                setCount={setCount}
+                sentence={"소속학교를 알려주세요"}
+              />
+            )}
+            ;
           </div>
         );
       case 4:
         return (
           <div className="rendered-component">
-            <Fourth
-              count={count}
-              setCount={setCount}
-              sentence={"소속 계열을 선택해주세요"}
-            />
+            {showThirdMentor && (
+              <Fourth
+                count={count}
+                setCount={setCount}
+                sentence={"소속 계열을 선택해주세요"}
+              />
+            )}
+            {showThirdMentee && (
+              <Fourth
+                count={count}
+                setCount={setCount}
+                sentence={"관심 계열을 선택해주세요"}
+              />
+            )}
           </div>
         );
       case 5:
