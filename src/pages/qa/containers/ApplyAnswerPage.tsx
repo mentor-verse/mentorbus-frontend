@@ -90,7 +90,7 @@ const ApplyAnswerPage = React.forwardRef<HTMLDivElement, ApplyAnswerPageProps>(
                   "text-[13px] text-[#383838] font-normal mt-[90px] flex justify-start ml-[33px] w-[80%] border-none focus:outline-none resize-none min-h-[50px] max-h-[500px] overflow-y-auto",
                   className
                 )}
-                placeholder="답변을 등록하세요"
+                placeholder="내용을 입력하세요"
                 rows={4}
                 style={{ resize: "none" }}
                 onChange={handleInputChange}

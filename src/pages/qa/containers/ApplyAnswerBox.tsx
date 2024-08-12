@@ -36,7 +36,7 @@ const ApplyAnswerBox = React.forwardRef<HTMLDivElement, ApplyAnswerBoxProps>(
             <div className={gen} style={{ marginLeft: "19px" }}>
               {gen === "man" ? <SmallMan /> : <SmallWoman />}
             </div>
-            <div className="ml-[10px] w-[50%]">
+            <div className="ml-[10px] w-[90%]">
               <div className="text-xs not-italic text-[12px] text-[#4E98EE] font-medium">
                 {name}멘토님의
               </div>
