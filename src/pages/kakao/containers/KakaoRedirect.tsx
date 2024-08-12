@@ -3,7 +3,7 @@
 declare global {
   interface Window {
     Kakao: any;
-    Android: any; // Add this line to declare the Android interface
+    Android: any;
   }
 }
 
@@ -21,18 +21,40 @@ export function KakaoRedirect() {
   const handleLogin = useCallback(
     async (code: string) => {
       try {
+        // Get the transformed user data after Kakao login
         const transformedUserData = await getToken(code);
         console.log("Transformed User Data:", transformedUserData);
 
-        setIsLoggedIn(true);
-        navigate("/mentorbus-frontend/onboarding");
+        // Register the user by sending a POST request to the /users/register endpoint
+        const registrationResponse = await fetch(
+          "https://backend-production-860e.up.railway.app/users/register",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(transformedUserData),
+          }
+        );
+
+        if (!registrationResponse.ok) {
+          throw new Error("Failed to register the user");
+        }
+
+        // Parse the JSON response
+        const registeredUserData = await registrationResponse.json();
+        console.log("Registered User Data:", registeredUserData);
 
         // Notify the Android app about the login success
         if (window.Android) {
           window.Android.onLoginSuccess();
         }
+
+        // Set the logged-in state and navigate to the onboarding page
+        setIsLoggedIn(true);
+        navigate("/mentorbus-frontend/onboarding");
       } catch (error: unknown) {
-        console.error("Error fetching user data:", error);
+        console.error("Error during registration or login:", error);
 
         // Notify the Android app about the login error
         if (window.Android) {

@@ -47,7 +47,7 @@ const Zero: React.FC<ZeroProps> = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col">
       <OnboardingTitle />
       <div onClick={handleLogin} className="grid place-items-center mt-8">
         <KakaoBtn />
