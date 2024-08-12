@@ -53,7 +53,7 @@ export function FindMentor() {
     },
     {
       gen: "man",
-      major: "[진로체험의 날] 글로벌미디어학부",
+      major: "[진로체험의 날] 소프트웨어학부",
       name: "윤영재 멘토",
       info: "한양대학교",
       date: "2024.09.20(화) 18:00",
@@ -62,7 +62,7 @@ export function FindMentor() {
     },
     {
       gen: "man",
-      major: "[진로체험의 날] 글로벌미디어학부",
+      major: "[진로체험의 날] 경영학부",
       name: "윤영재 멘토",
       info: "서울대학교",
       date: "2024.10.20(화) 18:00",
@@ -71,7 +71,7 @@ export function FindMentor() {
     },
     {
       gen: "man",
-      major: "[진로체험의 날] 글로벌미디어학부",
+      major: "[진로체험의 날] 스포츠학부",
       name: "윤영재 멘토",
       info: "세종대학교",
       date: "2024.11.20(화) 18:00",
@@ -80,7 +80,7 @@ export function FindMentor() {
     },
     {
       gen: "man",
-      major: "[진로체험의 날] 글로벌미디어학부",
+      major: "[진로체험의 날] AI학부",
       name: "윤영재 멘토",
       info: "중앙대학교",
       date: "2024.12.20(화) 18:00",
@@ -89,7 +89,7 @@ export function FindMentor() {
     },
     {
       gen: "man",
-      major: "[진로체험의 날] 글로벌미디어학부",
+      major: "[진로체험의 날] 통상무역학부",
       name: "윤영재 멘토",
       info: "경희대학교",
       date: "2025.01.20(화) 18:00",
@@ -98,7 +98,7 @@ export function FindMentor() {
     },
     {
       gen: "man",
-      major: "[진로체험의 날] 글로벌미디어학부",
+      major: "[진로체험의 날] 국어국문학부",
       name: "윤영재 멘토",
       info: "연세대학교",
       date: "2024.11.20(화) 18:00",
@@ -107,7 +107,7 @@ export function FindMentor() {
     },
     {
       gen: "man",
-      major: "[진로체험의 날] 글로벌미디어학부",
+      major: "[진로체험의 날] 불어불문학부",
       name: "윤영재 멘토",
       info: "서울시립대학교",
       date: "2024.11.20(화) 18:00",

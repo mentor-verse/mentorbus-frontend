@@ -111,28 +111,36 @@ export function MainPage() {
           name="편유나"
           major="숭실대학교 글로벌미디어학부"
           gen="woman"
-          info="-숭실대학교 재학"
+          info="• 학생부종합전형 SW 우수인재
+                • IT대학 및 글로벌미디어학부 관심 학생
+                • SW특기자 입시 관심 학생"
         />
         <div className="ml-[13px]"></div>
         <MentorBox
-          name="편유나"
-          major="숭실대학교 글로벌미디어학부"
-          gen="woman"
-          info="-숭실대학교 재학"
+          name="윤재영"
+          major="숭실대학교 컴퓨터학부"
+          gen="man"
+          info="• 학생부종합전형 SSU 미래인재
+                • IT대학 및 컴퓨학부 관심 학생
+                • 창업 및 서비스 기획 직무 관심 학생"
         />
         <div className="ml-[13px]"></div>
         <MentorBox
-          name="편유나"
-          major="숭실대학교 글로벌미디어학부"
+          name="윤수진"
+          major="숭실대학교 경영학부"
           gen="woman"
-          info="-숭실대학교 재학"
+          info="• 학생부종합전형 SSU 미래인재
+                • IT대학 및 경영학부 관심 학생
+                • 창업 및 서비스 기획 직무 관심 학생"
         />
         <div className="ml-[13px]"></div>
         <MentorBox
-          name="편유나"
-          major="숭실대학교 글로벌미디어학부"
-          gen="woman"
-          info="-숭실대학교 재학"
+          name="강우현"
+          major="숭실대학교 법학부"
+          gen="man"
+          info="• 학생부종합전형 SSU 미래인재
+                • 법학부 관심 학생
+          "
         />
       </div>
     </>
