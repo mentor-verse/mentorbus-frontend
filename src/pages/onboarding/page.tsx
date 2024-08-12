@@ -140,7 +140,6 @@ export function Onboarding() {
                 sentence={"소속학교를 알려주세요"}
               />
             )}
-            ;
           </div>
         );
       case 4:
