@@ -39,6 +39,7 @@ const gatherTownUrls: Record<SortType, string> = {
   IT계열: "PsbK1kvsSF2vqKIf-VLj",
   공학계열: "nWPWj7r6T8eRB2mVaUT8",
 };
+
 // Declare function variable for isSelectedBox
 let isSelectedBox: (item: any) => item is SelectedBox;
 
@@ -85,6 +86,7 @@ if (position === "멘티") {
 export function MentorBusPageMentee() {
   const [filter, setFilter] = useState("entry");
   const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]); // 초기 상태 빈 배열로 설정
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
 
@@ -106,14 +108,15 @@ export function MentorBusPageMentee() {
       console.error("appliedItems is not an array:", itemsFromStorage);
       setAppliedItems([]);
     }
+    setLoading(false); // 데이터 로드 완료 후 로딩 상태 변경
   };
 
   useEffect(() => {
-    loadAppliedItems(); // 컴포넌트 마운트 시 적용
+    loadAppliedItems(); // 컴포넌트 마운트 시 데이터 로드
 
     const handleStorageChange = (event: StorageEvent) => {
       if (event.key === "appliedItems") {
-        loadAppliedItems();
+        loadAppliedItems(); // Storage 변경 시 데이터 업데이트
       }
     };
 
@@ -192,34 +195,40 @@ export function MentorBusPageMentee() {
             </div>
 
             <div ref={roadDivRef} className="grid place-items-center">
-              {appliedItems
-                .filter((item) =>
-                  filter === "entry"
-                    ? item.status === "pending"
-                    : item.status === "completed"
-                )
-                .map((item, index) => (
-                  <div
-                    key={index}
-                    className="grid place-items-center mt-[0px] h-[120px]"
-                  >
-                    <SearchBox
-                      gen={item.gen}
-                      major={item.major}
-                      name={item.name}
-                      info={item.info}
-                      date={item.date}
-                      sort={item.sort}
-                      variant="default"
-                      size="default"
-                      onClick={
-                        filter === "entry" ? () => handleEnter(item) : () => {}
-                      }
+              {loading ? (
+                <div className="text-center mt-4">Loading...</div>
+              ) : (
+                appliedItems
+                  .filter((item) =>
+                    filter === "entry"
+                      ? item.status === "pending"
+                      : item.status === "completed"
+                  )
+                  .map((item, index) => (
+                    <div
+                      key={index}
+                      className="grid place-items-center mt-[0px] h-[120px]"
                     >
-                      {filter === "entry" ? "입장하기" : "진행완료"}
-                    </SearchBox>
-                  </div>
-                ))}
+                      <SearchBox
+                        gen={item.gen}
+                        major={item.major}
+                        name={item.name}
+                        info={item.info}
+                        date={item.date}
+                        sort={item.sort}
+                        variant="default"
+                        size="default"
+                        onClick={
+                          filter === "entry"
+                            ? () => handleEnter(item)
+                            : () => {}
+                        }
+                      >
+                        {filter === "entry" ? "입장하기" : "진행완료"}
+                      </SearchBox>
+                    </div>
+                  ))
+              )}
             </div>
           </div>
 
@@ -231,6 +240,7 @@ export function MentorBusPageMentee() {
     </>
   );
 }
+
 export function MentorBusPageMentor() {
   const [filter, setFilter] = useState("entry");
   const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);

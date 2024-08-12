@@ -79,12 +79,12 @@ const BottomNav = () => {
       )}
 
       <nav className="wrapper">
-        <div>
+        <div className="flex justify-center">
           <Link to="/mentorbus-frontend/main">
             <Home color={getColor("/mentorbus-frontend/main")} />
           </Link>
         </div>
-        <div>
+        <div className="flex justify-center">
           <Link to="/mentorbus-frontend/find">
             {position === "멘토" ? (
               <FindMentee color={getColor("/mentorbus-frontend/find")} />
@@ -93,17 +93,17 @@ const BottomNav = () => {
             )}
           </Link>
         </div>
-        <div>
+        <div className="flex justify-center">
           <Link to="/mentorbus-frontend/mentorbus">
             <MentorBus color={getColor("/mentorbus-frontend/mentorbus")} />
           </Link>
         </div>
-        <div>
+        <div className="flex justify-center">
           <Link to="/mentorbus-frontend/qabus">
             <QABus color={getColor("/mentorbus-frontend/qabus")} />
           </Link>
         </div>
-        <div>
+        <div className="flex justify-center">
           <Link to="/mentorbus-frontend/mypage">
             <MyPage color={getColor("/mentorbus-frontend/mypage")} />
           </Link>
