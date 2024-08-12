@@ -95,13 +95,7 @@ Q&A"
               </div>
             </>
           ) : (
-            <div
-              className="flex justify-center items-center"
-              style={{
-                height: "calc(100vh - 56px)", // Adjust based on other elements' height
-                width: "100%",
-              }}
-            >
+            <div className="flex flex-col justify-center items-center flex-1">
               <ApplyFinished />
             </div>
           )}
