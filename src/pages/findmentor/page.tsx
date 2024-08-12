@@ -235,7 +235,7 @@ export function FindMentor() {
                 </div>
               )}
             </div>
-            <div className="mt-[15px] grid place-items-center w-[95%]">
+            <div className="mt-[15px] grid place-content-center w-[95%]">
               {filteredBoxes.map((box, index) => (
                 <div
                   onClick={() => handleSearchBoxClick(box)}
