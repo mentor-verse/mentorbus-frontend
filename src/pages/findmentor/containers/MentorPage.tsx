@@ -14,6 +14,10 @@ export function MentorPage() {
 
   const handleApplyClick = () => {
     setIsApplied(true);
+  };
+
+  const handleRedirectToMentorBus = () => {
+    setIsApplied(true);
     const appliedItems = JSON.parse(
       localStorage.getItem("appliedItems") || "[]"
     );
@@ -24,9 +28,7 @@ export function MentorPage() {
       });
       localStorage.setItem("appliedItems", JSON.stringify(appliedItems));
     }
-  };
 
-  const handleRedirectToMentorBus = () => {
     navigate("/mentorbus-frontend/mentorbus");
   };
 

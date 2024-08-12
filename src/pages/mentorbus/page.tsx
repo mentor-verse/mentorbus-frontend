@@ -88,7 +88,7 @@ export function MentorBusPageMentee() {
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  const loadAppliedItems = () => {
     const itemsFromStorage = JSON.parse(
       localStorage.getItem("appliedItems") || "[]"
     );
@@ -106,7 +106,23 @@ export function MentorBusPageMentee() {
       console.error("appliedItems is not an array:", itemsFromStorage);
       setAppliedItems([]);
     }
-  }, []); // 빈 배열을 두어 컴포넌트 마운트 시 한 번만 실행되도록 설정
+  };
+
+  useEffect(() => {
+    loadAppliedItems(); // 컴포넌트 마운트 시 적용
+
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === "appliedItems") {
+        loadAppliedItems();
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   const handleEnter = (item: SelectedBox) => {
     if (isSortType(item.sort)) {
@@ -215,7 +231,6 @@ export function MentorBusPageMentee() {
     </>
   );
 }
-
 export function MentorBusPageMentor() {
   const [filter, setFilter] = useState("entry");
   const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
