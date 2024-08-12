@@ -39,39 +39,15 @@ export function Onboarding() {
       if (position === "멘티") {
         setShowSecondMentor(false);
         setShowSecondMentee(true);
-      } else {
-        setShowSecondMentor(true);
-        setShowSecondMentee(false);
-      }
-    }
-  }, [count]);
-
-  useEffect(() => {
-    const position = localStorage.getItem("position");
-    console.log(
-      "Current count:",
-      count,
-      "Previous count:",
-      prevCountRef.current,
-      "Position:",
-      position
-    );
-
-    if (
-      count === prevCountRef.current + 1 ||
-      count === prevCountRef.current - 1
-    ) {
-      if (position === "멘티") {
         setShowThirdMentor(false);
         setShowThirdMentee(true);
       } else {
+        setShowSecondMentor(true);
+        setShowSecondMentee(false);
         setShowThirdMentor(true);
         setShowThirdMentee(false);
       }
     }
-
-    // Update previous count
-    prevCountRef.current = count;
   }, [count]);
 
   useEffect(() => {
