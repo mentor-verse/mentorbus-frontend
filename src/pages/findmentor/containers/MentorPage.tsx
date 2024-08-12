@@ -14,7 +14,9 @@ export function MentorPage() {
 
   const handleApplyClick = () => {
     setIsApplied(true);
-    let appliedItems = JSON.parse(localStorage.getItem("appliedItems") || "[]");
+    const appliedItems = JSON.parse(
+      localStorage.getItem("appliedItems") || "[]"
+    );
     if (selectedBox) {
       appliedItems.push({
         ...selectedBox,
@@ -91,7 +93,7 @@ Q&A"
               </div>
             </>
           ) : (
-            <div className="grid place-items-center mt-[45%]">
+            <div className="grid place-items-center mt-[90%]">
               <ApplyFinished />
             </div>
           )}
