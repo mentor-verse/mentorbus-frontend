@@ -1,4 +1,3 @@
-// src/components/Onboarding.tsx
 import { useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { isLoggedInAtom } from "@/atoms/isLoggedInAtom";
@@ -8,7 +7,7 @@ import { Second } from "./containers/Second";
 import { Third } from "./containers/Third";
 import { Fourth } from "./containers/Fourth";
 import { Road } from "@/components/Icons/Road";
-import { ZeroRoad } from "@/components/Icons/ZeroRoad"; // ZeroRoad 컴포넌트를 가져옵니다
+import { ZeroRoad } from "@/components/Icons/ZeroRoad";
 import { useNavigate } from "react-router-dom";
 import { Cloud } from "@/components/Icons/Cloud";
 import { Cloud2 } from "@/components/Icons/Cloud2";
@@ -27,29 +26,41 @@ export function Onboarding() {
   const [showThirdMentor, setShowThirdMentor] = useState(true);
   const [showThirdMentee, setShowThirdMentee] = useState(false);
 
+  const prevCountRef = useRef<number>(count);
+
   useEffect(() => {
+    const prevCount = prevCountRef.current;
+    prevCountRef.current = count;
+
     // 로컬 스토리지에서 position 값을 가져옴
     const position = localStorage.getItem("position");
 
-    if (position === "멘티") {
-      setShowSecondMentor(false);
-      setShowSecondMentor(true);
-    } else {
-      setShowSecondMentor(true);
-      setShowSecondMentee(false);
+    if (count === prevCount + 1 || count === prevCount - 1) {
+      if (position === "멘티") {
+        setShowSecondMentor(false);
+        setShowSecondMentee(true);
+      } else {
+        setShowSecondMentor(true);
+        setShowSecondMentee(false);
+      }
     }
   }, [count]);
 
   useEffect(() => {
+    const prevCount = prevCountRef.current;
+    prevCountRef.current = count;
+
     // 로컬 스토리지에서 position 값을 가져옴
     const position = localStorage.getItem("position");
 
-    if (position === "멘티") {
-      setShowThirdMentor(false);
-      setShowThirdMentee(true);
-    } else {
-      setShowThirdMentor(true);
-      setShowThirdMentee(false);
+    if (count === prevCount + 1 || count === prevCount - 1) {
+      if (position === "멘티") {
+        setShowThirdMentor(false);
+        setShowThirdMentee(true);
+      } else {
+        setShowThirdMentor(true);
+        setShowThirdMentee(false);
+      }
     }
   }, [count]);
 
@@ -58,16 +69,15 @@ export function Onboarding() {
     const userName = localStorage.getItem("userName");
     const userBelong = localStorage.getItem("userBelong");
     const major = localStorage.getItem("major");
-    const kakao = localStorage.getItem("transformedUserData");
 
-    if (position && userName && userBelong && major && kakao) {
+    if (position && userName && userBelong && major) {
       navigate(`/mentorbus-frontend/main?userName=${userName}`);
     }
   }, [navigate]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const specialQuery = urlParams.get("specialQuery"); // 'specialQuery'를 원하는 쿼리 파라미터 이름으로 변경
+    const specialQuery = urlParams.get("specialQuery");
 
     if (specialQuery) {
       setCount(1);
