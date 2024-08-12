@@ -1,4 +1,3 @@
-// src/containers/Zero.js
 import { OnboardingTitle } from "@/pages/onboarding/containers/OnboardingTitle";
 import React, { useEffect } from "react";
 import { KakaoBtn } from "@/components/Icons/KakaoBtn";
@@ -33,17 +32,11 @@ const Zero: React.FC<ZeroProps> = () => {
       redirect_uri
     )}&response_type=code`;
 
-    // Try to redirect using the intent URL
     try {
       window.location.href = intentUrl;
     } catch (error) {
-      // Fallback to web login if the intent URL fails
       window.location.href = webLoginUrl;
     }
-    window.Kakao.Auth.authorize({
-      redirectUri: redirect_uri,
-      throughTalk: true, // 간편 로그인을 위해 추가
-    });
   };
 
   return (
