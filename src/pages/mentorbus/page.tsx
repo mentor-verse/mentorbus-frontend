@@ -85,11 +85,12 @@ if (position === "멘티") {
 // 멘티용 컴포넌트
 export function MentorBusPageMentee() {
   const [filter, setFilter] = useState("entry");
-  const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]); // 초기 상태 빈 배열로 설정
+  const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
 
+  // Data loading function
   const loadAppliedItems = () => {
     const itemsFromStorage = JSON.parse(
       localStorage.getItem("appliedItems") || "[]"
@@ -108,15 +109,15 @@ export function MentorBusPageMentee() {
       console.error("appliedItems is not an array:", itemsFromStorage);
       setAppliedItems([]);
     }
-    setLoading(false); // 데이터 로드 완료 후 로딩 상태 변경
+    setLoading(false); // Data loaded, set loading to false
   };
 
   useEffect(() => {
-    loadAppliedItems(); // 컴포넌트 마운트 시 데이터 로드
+    loadAppliedItems(); // On mount, load data
 
     const handleStorageChange = (event: StorageEvent) => {
       if (event.key === "appliedItems") {
-        loadAppliedItems(); // Storage 변경 시 데이터 업데이트
+        loadAppliedItems(); // On storage change, reload data
       }
     };
 
@@ -126,6 +127,12 @@ export function MentorBusPageMentee() {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      console.log("appliedItems updated:", appliedItems);
+    }
+  }, [loading, appliedItems]);
 
   const handleEnter = (item: SelectedBox) => {
     if (isSortType(item.sort)) {
