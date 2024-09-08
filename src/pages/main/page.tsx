@@ -9,11 +9,11 @@ import SOF from "@/assets/SOU.svg";
 import YU from "@/assets/YU.svg";
 import HU from "@/assets/HU.svg";
 import CAU from "@/assets/CAU.svg";
-import BottomNav from "@/containers/navbar";
 import { MentorBox } from "@/components/ui/mentorbox";
 import { MentorScheduleSection } from "@/pages/main/containers/MentorScheduleSection"; // Import the new component
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import BottomNav from "@/containers/navbar";
 
 // Define the College type
 interface CollegeType {
@@ -161,7 +161,7 @@ export function MainPage() {
               <MentorScheduleSection />
             )}
             <div className="mt-[120px]"></div>
-            {/*<BottomNav />*/}{" "}
+            <BottomNav />
           </div>
         </div>
       </div>

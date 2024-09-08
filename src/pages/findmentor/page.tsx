@@ -2,10 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { SearchBox } from "@/components/ui/searchbox";
 import { FilterButton } from "@/components/Icons/FilterButton";
-import BottomNav from "@/containers/navbar";
 import { UnderArrowBlue } from "@/components/Icons/UnderArrowBlue";
 import FindTitle from "./containers/FindTitle";
 import { NotYetPage } from "./containers/NotYetPage"; // Import NotYetPage
+import BottomNav from "@/containers/navbar";
 
 type SearchBoxType = {
   gen: string;
@@ -257,7 +257,7 @@ export function FindMentor() {
               ))}
             </div>
             <div ref={growDivRef}></div>
-            {/*<BottomNav />*/}{" "}
+            <BottomNav />
           </div>
         </div>
       </div>
