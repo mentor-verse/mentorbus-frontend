@@ -93,9 +93,7 @@ export function MyPage() {
           </div>
         </div>
 
-        <div className="w-full">
-          <BottomNav />
-        </div>
+        <div className="w-full">{/*<BottomNav />*/} </div>
       </div>
     </>
   );

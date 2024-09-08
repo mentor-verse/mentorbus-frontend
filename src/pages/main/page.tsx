@@ -152,19 +152,16 @@ export function MainPage() {
         <div className="main_content overflow-hidden bg-white">
           <div style={{ background: "#fff" }}>
             <Header major={userMajor} className="mt-[50px]" title={""} />
-
             <div className="w-auto mt-[30px]">
               <Banner />
             </div>
-
             {position === "멘티" ? (
               renderMentorBoxes()
             ) : (
               <MentorScheduleSection />
             )}
-
             <div className="mt-[120px]"></div>
-            <BottomNav />
+            {/*<BottomNav />*/}{" "}
           </div>
         </div>
       </div>

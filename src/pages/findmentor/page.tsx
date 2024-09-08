@@ -175,7 +175,6 @@ export function FindMentor() {
               back_disable={"no"}
               back_work={"no"}
             />
-
             <div className="flex justify-between mt-[40px]">
               <div
                 className={`filter_btn_label ${
@@ -194,7 +193,6 @@ export function FindMentor() {
                 학교별 멘토링
               </div>
             </div>
-
             <div
               ref={roadDivRef}
               className="mt-[20px] flex items-center relative ml-4"
@@ -258,10 +256,8 @@ export function FindMentor() {
                 </div>
               ))}
             </div>
-
             <div ref={growDivRef}></div>
-
-            <BottomNav />
+            {/*<BottomNav />*/}{" "}
           </div>
         </div>
       </div>

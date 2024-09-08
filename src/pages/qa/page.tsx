@@ -262,7 +262,7 @@ export function QAPage() {
 
             <div ref={growDivRef}></div>
 
-            <BottomNav />
+           /<BottomNav />
           </div>
         </div>
       </div>
