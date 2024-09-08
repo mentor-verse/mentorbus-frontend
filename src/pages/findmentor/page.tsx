@@ -257,7 +257,6 @@ export function FindMentor() {
               ))}
             </div>
             <div ref={growDivRef}></div>
-            <BottomNav />
           </div>
         </div>
       </div>

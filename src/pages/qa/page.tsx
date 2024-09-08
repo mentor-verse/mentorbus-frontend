@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import { QuestionBox } from "@/components/ui/questionbox";
-import BottomNav from "@/containers/navbar";
 import { UnderArrowBlue } from "@/components/Icons/UnderArrowBlue";
 import { FilterButton } from "@/components/Icons/FilterButton";
 import { useNavigate } from "react-router-dom";
@@ -262,7 +261,7 @@ export function QAPage() {
 
             <div ref={growDivRef}></div>
 
-            <BottomNav />
+            {/*<BottomNav />*/}
           </div>
         </div>
       </div>

@@ -443,7 +443,6 @@ export function MentorBusPageMentor() {
             </div>
           </div>
           <div ref={growDivRef}></div>
-          <BottomNav />
         </div>
       </div>
     </>

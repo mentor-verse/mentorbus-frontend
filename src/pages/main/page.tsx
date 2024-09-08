@@ -160,8 +160,7 @@ export function MainPage() {
             ) : (
               <MentorScheduleSection />
             )}
-            <div className="mt-[120px]"></div>
-            <BottomNav />
+            <div className="mt-[120px]"></div>{" "}
           </div>
         </div>
       </div>
