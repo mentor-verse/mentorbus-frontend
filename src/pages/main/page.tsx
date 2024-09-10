@@ -53,7 +53,7 @@ export function MainPage() {
     const major = localStorage.getItem("major");
 
     if (!(storedPosition && userName && userBelong && major)) {
-      navigate(`/mentorbus-frontend/onboarding`);
+      navigate(`/mentorbus-frontend/onboarding?specialQuery=true`);
     } else {
       setPosition(storedPosition);
     }
