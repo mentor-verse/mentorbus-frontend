@@ -5,7 +5,6 @@ import { FilterButton } from "@/components/Icons/FilterButton";
 import { UnderArrowBlue } from "@/components/Icons/UnderArrowBlue";
 import FindTitle from "./containers/FindTitle";
 import { NotYetPage } from "./containers/NotYetPage"; // Import NotYetPage
-import BottomNav from "@/containers/navbar";
 
 type SearchBoxType = {
   gen: string;

@@ -13,7 +13,6 @@ import { MentorBox } from "@/components/ui/mentorbox";
 import { MentorScheduleSection } from "@/pages/main/containers/MentorScheduleSection"; // Import the new component
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import BottomNav from "@/containers/navbar";
 
 // Define the College type
 interface CollegeType {
@@ -54,7 +53,7 @@ export function MainPage() {
     const major = localStorage.getItem("major");
 
     if (!(storedPosition && userName && userBelong && major)) {
-      navigate(`/mentorbus-frontend/`);
+      navigate(`/mentorbus-frontend/onboarding`);
     } else {
       setPosition(storedPosition);
     }

@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { SearchBox } from "@/components/ui/searchbox";
-import BottomNav from "@/containers/navbar";
 import { Info } from "@/components/ui/info";
 import { useNavigate } from "react-router-dom";
 
