@@ -14,30 +14,38 @@ import { Cloud } from "@/components/Icons/Cloud";
 import { Cloud2 } from "@/components/Icons/Cloud2";
 
 export function MyPage() {
-  const [userName, setUserName] = useState("");
-  const [userBelong, setUserBelong] = useState("");
   const [level] = useState("3"); // 기본값을 설정하거나 필요에 따라 변경 가능
-  const [position, setPosition] = useState("");
+  const [userData, setUserData] = useState(null);
+  const [error, setError] = useState(null);
 
+  // Fetch data from the server
   useEffect(() => {
-    const storedUserName = localStorage.getItem("userName");
-    if (storedUserName) {
-      setUserName(storedUserName);
-    }
+    // 닉네임을 동적으로 설정하거나 하드코딩된 값 사용
+    const nickname = localStorage.getItem("userName");
 
-    const storedUserBelong = localStorage.getItem("userBelong");
-    if (storedUserBelong) {
-      setUserBelong(storedUserBelong);
-    }
+    // 페이지가 렌더링될 때 API 호출
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/mydata/${nickname}`
+        );
 
-    const storedPosition = localStorage.getItem("position");
-    if (storedPosition) {
-      setPosition(storedPosition);
-    }
-  }, []);
+        if (!response.ok) {
+          throw new Error("User data not found");
+        }
+
+        const data = await response.json();
+        setUserData(data);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    fetchData();
+  }, []); // 빈 배열은 컴포넌트가 처음 마운트될 때 한 번만 실행됨
 
   const renderLevelIcon = () => {
-    if (position === "멘토") {
+    if (userData?.position === "멘토") {
       switch (level) {
         case "1":
           return <LevelFirstMentor />;
@@ -83,8 +91,8 @@ export function MyPage() {
             <div className="divMargin"></div>
             <div className="mb-[150px]">
               <Profile
-                name={userName}
-                school={userBelong}
+                name={userData?.nickname}
+                school={userData?.school}
                 level={"3"}
                 gen="man"
               />

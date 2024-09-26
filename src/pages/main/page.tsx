@@ -13,6 +13,7 @@ import { MentorBox } from "@/components/ui/mentorbox";
 import { MentorScheduleSection } from "@/pages/main/containers/MentorScheduleSection"; // Import the new component
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios"; // Import axios to make API requests
 
 // Define the College type
 interface CollegeType {
@@ -45,6 +46,8 @@ export function MainPage() {
   const [position, setPosition] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
+  const [mentorData, setMentorData] = useState<any[]>([]);
+  const [menteeData, setMenteeData] = useState<any[]>([]);
 
   useEffect(() => {
     const storedPosition = localStorage.getItem("position");
@@ -80,8 +83,101 @@ export function MainPage() {
   }, []);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const storedPosition = localStorage.getItem("position");
+        const nickname = localStorage.getItem("userName");
+
+        // Check if user position (mentor/mentee) and nickname are available
+        if (!storedPosition || !nickname) {
+          navigate(`/mentorbus-frontend/onboarding?specialQuery=true`);
+          return;
+        }
+
+        // Fetch data from the appropriate API based on the position
+        let response;
+        if (storedPosition === "멘티") {
+          response = await axios.get(
+            `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/mentee/${nickname}`
+          );
+        } else {
+          response = await axios.get(
+            `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/mentor/${nickname}`
+          );
+        }
+
+        // Check if the API call was successful
+        if (response.status === 200) {
+          const userData = response.data;
+          console.log("userData:", userData);
+          // Update state with user data
+          setUserName(nickname);
+          setUserMajor(userData.major || "");
+        } else {
+          console.error("Failed to fetch user data");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchData();
+  }, [navigate]);
+
+  useEffect(() => {
     setRandomColleges(getRandomColleges(colleges, 7));
   }, []);
+
+  // Fetch mentor data from the server where position is "멘토"
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/mentor/data`
+        );
+
+        console.log("response", response);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch mentor data");
+        }
+
+        const data = await response.json();
+        console.log("data", data);
+        setMentorData(data.mentors); // Only mentor data is returned, so update state accordingly
+      } catch (error) {
+        console.error("Error fetching mentor data:", error);
+      }
+    };
+
+    fetchData();
+  }, []); // Empty array ensures this effect runs only once, when the component mounts
+
+  // Fetch mentor data from the server where position is "멘토"
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/mentee/data`
+        );
+
+        console.log("response", response);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch mentee data");
+        }
+
+        const data = await response.json();
+        console.log("data", data);
+        setMenteeData(data.mentees); // Only mentor data is returned, so update state accordingly
+        console.log("menteeData", menteeData);
+      } catch (error) {
+        console.error("Error fetching mentee data:", error);
+      }
+    };
+
+    fetchData();
+  }, []); // Empty array ensures this effect runs only once, when the component mounts
 
   const renderMentorBoxes = () => (
     <>
@@ -106,41 +202,20 @@ export function MainPage() {
         title3="멘토"
       />
       <div className="flex mt-[20px] overflow-auto">
-        <MentorBox
-          name="편유나"
-          major="숭실대학교 글로벌미디어학부"
-          gen="woman"
-          info="• 학생부종합전형 SW 우수인재
-                • IT대학 및 글로벌미디어학부 관심 학생
-                • SW특기자 입시 관심 학생"
-        />
-        <div className="ml-[13px]"></div>
-        <MentorBox
-          name="윤재영"
-          major="숭실대학교 컴퓨터학부"
-          gen="man"
-          info="• 학생부종합전형 SSU 미래인재
-                • IT대학 및 컴퓨학부 관심 학생
-                • 창업 및 서비스 기획 직무 관심 학생"
-        />
-        <div className="ml-[13px]"></div>
-        <MentorBox
-          name="윤수진"
-          major="숭실대학교 경영학부"
-          gen="woman"
-          info="• 학생부종합전형 SSU 미래인재
-                • IT대학 및 경영학부 관심 학생
-                • 창업 및 서비스 기획 직무 관심 학생"
-        />
-        <div className="ml-[13px]"></div>
-        <MentorBox
-          name="강우현"
-          major="숭실대학교 법학부"
-          gen="man"
-          info="• 학생부종합전형 SSU 미래인재
-                • 법학부 관심 학생
-          "
-        />
+        {Array.isArray(mentorData) &&
+          mentorData.map((mentorData, index) => (
+            <div key={index}>
+              <MentorBox
+                name={mentorData.nickname}
+                major={mentorData.major}
+                gen="woman"
+                info="• 학생부종합전형 SW 우수인재
+              • IT대학 및 글로벌미디어학부 관심 학생
+              • SW특기자 입시 관심 학생"
+              />
+              <div className="ml-[13px]"></div>
+            </div>
+          ))}
       </div>
     </>
   );

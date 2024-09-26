@@ -17,9 +17,74 @@ export function Fifth({ count, sentence }: FifthProps) {
   };
 
   const handleNext = () => {
+    console.log("handleNext");
     const userName = localStorage.getItem("userName");
+    console.log("userName:", userName);
+    const position = localStorage.getItem("position");
+    const userBelong = localStorage.getItem("userBelong");
+    const major = localStorage.getItem("major");
+    const favor = localStorage.getItem("favor");
 
-    navigate(`/mentorbus-frontend/main?userName=${userName}`);
+    if (position === "멘토") {
+      // Mentor data를 POST
+      const mentorData = {
+        nickname: userName,
+        position: position,
+        job: userBelong,
+        major: major,
+      };
+
+      console.log("mentorData:", mentorData);
+
+      fetch(
+        "https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/mentor",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(mentorData),
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Mentor data saved:", data);
+          navigate(`/mentorbus-frontend/main?userName=${userName}`);
+        })
+        .catch((error) => {
+          console.error("Error saving mentor data:", error);
+        });
+    } else if (position === "멘티") {
+      // Mentee data를 POST
+      const menteeData = {
+        nickname: userName,
+        position: position,
+        school: userBelong,
+        interest: major,
+        want: favor,
+      };
+
+      console.log("mentorData:", menteeData);
+
+      fetch(
+        "https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/mentee",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(menteeData),
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Mentee data saved:", data);
+          navigate(`/mentorbus-frontend/main?userName=${userName}`);
+        })
+        .catch((error) => {
+          console.error("Error saving mentee data:", error);
+        });
+    }
   };
 
   return (

@@ -4,7 +4,8 @@ import { SearchBox } from "@/components/ui/searchbox";
 import { FilterButton } from "@/components/Icons/FilterButton";
 import { UnderArrowBlue } from "@/components/Icons/UnderArrowBlue";
 import FindTitle from "./containers/FindTitle";
-import { NotYetPage } from "./containers/NotYetPage"; // Import NotYetPage
+import { NotYetPage } from "./containers/NotYetPage";
+import axios from "axios"; // Import axios
 
 type SearchBoxType = {
   gen: string;
@@ -17,103 +18,66 @@ type SearchBoxType = {
 };
 
 export function FindMentor() {
-  // Check if the 'position' in localStorage is '멘토'
   const position = localStorage.getItem("position");
 
   if (position === "멘토") {
-    return <NotYetPage />; // Render NotYetPage if the position is '멘토'
+    return <NotYetPage />;
   }
 
   const [mainFilter, setMainFilter] = useState("all");
   const [subFilter, setSubFilter] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [searchBoxes, setSearchBoxes] = useState<SearchBoxType[]>([]); // API에서 불러온 데이터를 저장할 state
+  const [loading, setLoading] = useState(true); // 로딩 상태
   const navigate = useNavigate();
-  const { school } = useParams(); // Extract school name from URL
+  const { school } = useParams();
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
 
+  // API에서 데이터를 불러오는 함수
+  const loadClasses = async () => {
+    try {
+      const response = await axios.get(
+        `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/classes`
+      );
+
+      if (response.status === 200) {
+        console.log("response", response);
+        const classesFromApi = Array.isArray(response.data)
+          ? response.data
+          : [response.data];
+        console.log("API response:", classesFromApi); // 데이터를 확인하는 로그
+        setSearchBoxes(classesFromApi); // 데이터를 searchBoxes 상태에 저장
+      } else {
+        console.error(
+          "API에서 가져온 데이터가 배열이 아닙니다:",
+          response.data
+        );
+        setSearchBoxes([]); // 데이터가 배열이 아닐 경우 빈 배열로 설정
+      }
+    } catch (error) {
+      console.error(
+        "API로부터 데이터를 가져오는 중 오류가 발생했습니다:",
+        error
+      );
+      setSearchBoxes([]); // 오류 발생 시 빈 배열로 설정
+    } finally {
+      setLoading(false); // 데이터 로드 완료 후 로딩 상태를 false로 설정
+    }
+  };
+
+  useEffect(() => {
+    loadClasses(); // 컴포넌트가 마운트될 때 API 호출
+  }, []);
+
   useEffect(() => {
     if (school) {
-      const decodedSchool = decodeURIComponent(school); // Decode the URL-encoded school name
+      const decodedSchool = decodeURIComponent(school);
       setMainFilter("school");
       setSubFilter(decodedSchool);
     }
   }, [school]);
 
-  const searchBoxes: SearchBoxType[] = [
-    {
-      gen: "man",
-      major: "[진로체험의 날] 글로벌미디어학부",
-      name: "윤영재 멘토",
-      info: "숭실대학교",
-      date: "2024.08.20(화) 18:00",
-      text: "4/5",
-      sort: "인문계열",
-    },
-    {
-      gen: "man",
-      major: "[진로체험의 날] 소프트웨어학부",
-      name: "윤영재 멘토",
-      info: "한양대학교",
-      date: "2024.09.20(화) 18:00",
-      text: "10/15",
-      sort: "예술계열",
-    },
-    {
-      gen: "man",
-      major: "[진로체험의 날] 경영학부",
-      name: "윤영재 멘토",
-      info: "서울대학교",
-      date: "2024.10.20(화) 18:00",
-      text: "9/12",
-      sort: "예술계열",
-    },
-    {
-      gen: "man",
-      major: "[진로체험의 날] 스포츠학부",
-      name: "윤영재 멘토",
-      info: "세종대학교",
-      date: "2024.11.20(화) 18:00",
-      text: "4/13",
-      sort: "공학계열",
-    },
-    {
-      gen: "man",
-      major: "[진로체험의 날] AI학부",
-      name: "윤영재 멘토",
-      info: "중앙대학교",
-      date: "2024.12.20(화) 18:00",
-      text: "5/9",
-      sort: "예술계열",
-    },
-    {
-      gen: "man",
-      major: "[진로체험의 날] 통상무역학부",
-      name: "윤영재 멘토",
-      info: "경희대학교",
-      date: "2025.01.20(화) 18:00",
-      text: "3/4",
-      sort: "예술계열",
-    },
-    {
-      gen: "man",
-      major: "[진로체험의 날] 국어국문학부",
-      name: "윤영재 멘토",
-      info: "연세대학교",
-      date: "2024.11.20(화) 18:00",
-      text: "4/13",
-      sort: "예술계열",
-    },
-    {
-      gen: "man",
-      major: "[진로체험의 날] 불어불문학부",
-      name: "윤영재 멘토",
-      info: "서울시립대학교",
-      date: "2024.11.20(화) 18:00",
-      text: "4/13",
-      sort: "예술계열",
-    },
-  ];
   const uniqueTypes = [...new Set(searchBoxes.map((box) => box.sort))];
   const uniqueInfos = [...new Set(searchBoxes.map((box) => box.info))];
 
@@ -162,6 +126,10 @@ export function FindMentor() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; // 로딩 상태일 때 표시할 내용
+  }
 
   return (
     <>
@@ -241,16 +209,16 @@ export function FindMentor() {
                 >
                   <SearchBox
                     gen={box.gen}
-                    major={box.major}
+                    major={box.title}
                     name={box.name}
-                    info={box.info}
+                    info={box.major}
                     date={box.date}
-                    variant="state"
+                    variant="num"
                     size="state"
-                    onClick={() => handleSearchBoxClick(box)} // Add onClick handler
+                    onClick={() => handleSearchBoxClick(box)}
                     sort=""
                   >
-                    {box.text}
+                    {box.num}/35
                   </SearchBox>
                 </div>
               ))}

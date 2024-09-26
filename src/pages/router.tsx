@@ -34,6 +34,7 @@ export function MainRouter() {
       <Route path="/mentorbus-frontend/qabus" element={<QAPage />} />
       <Route path="/mentorbus-frontend/mentorinfo" element={<MentorPage />} />
       <Route path="/mentorbus-frontend/mypage" element={<MyPage />} />
+
       <Route
         path="/mentorbus-frontend/mentorbus"
         element={

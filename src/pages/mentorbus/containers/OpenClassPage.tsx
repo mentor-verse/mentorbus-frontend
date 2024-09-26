@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { OpenClassSecond } from "./OpenClassSecond";
 import { OpenClassThird } from "./OpenClassThird";
 import { LeftArrow } from "@/components/Icons/LeftArrow";
+import axios from "axios";
 
 export interface OpenClassPageProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -39,6 +40,8 @@ const OpenClassPage = React.forwardRef<HTMLDivElement, OpenClassPageProps>(
     const [date, setDate] = React.useState("");
     const [maxPeople, setMaxPeople] = React.useState("");
     const [gatherUrl, setGatherUrl] = React.useState("");
+
+    const [updatedAppliedItems, setUpdatedAppliedItems] = React.useState("");
 
     const areFieldsEmpty = () => {
       if (viewState === 0) {
@@ -77,7 +80,7 @@ const OpenClassPage = React.forwardRef<HTMLDivElement, OpenClassPageProps>(
       setTitle(value);
     };
 
-    const handleButtonClick = () => {
+    const handleButtonClick = async () => {
       if (viewState === 2) {
         console.log("Final view state, attempting to navigate...");
 
@@ -115,45 +118,61 @@ const OpenClassPage = React.forwardRef<HTMLDivElement, OpenClassPageProps>(
           const updatedClassData = [...existingClassData, classData];
           localStorage.setItem("ClassData", JSON.stringify(updatedClassData));
 
-          const newSelectedBox: SelectedBox = {
-            gen: "",
-            major: "",
-            name: title,
-            info: inputValue,
-            date: date,
-            sort: gatherUrl,
-            status: "pending",
+          const fetchData = async () => {
+            try {
+              const classDataString = localStorage.getItem("ClassData");
+              if (!classDataString) {
+                navigate(`/mentorbus-frontend/find`);
+                return;
+              }
+
+              const ClassDataArray = JSON.parse(classDataString);
+
+              console.log("classDataString.length", ClassDataArray.length);
+              // 첫 번째 항목에 대해서만 요청 보내기
+              const ClassData = ClassDataArray[ClassDataArray.length];
+              console.log("classData", classData);
+              try {
+                const response = await axios.post(
+                  `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/class/open`,
+                  {
+                    nickname: String(classData.id) || 1726744673383,
+                    title: classData.title,
+                    num: classData.maxPeople,
+                    date: classData.date,
+                    map: classData.gatherUrl,
+                    content: classData.content,
+                    name: localStorage.getItem("userName"),
+                    major: localStorage.getItem("userBelong"),
+                    status: "pending",
+                  }
+                );
+
+                if (response.status === 200) {
+                  const newClass = response.data.comment;
+                  console.log("Class created successfully:", newClass);
+                  navigate(`/mentorbus-frontend/find`);
+                } else {
+                  console.error("Failed to create class for:", ClassData.title);
+                }
+              } catch (error) {
+                console.error(
+                  "Error creating class for:",
+                  ClassData.title,
+                  error
+                );
+              }
+            } catch (error) {
+              console.error("Error processing ClassData:", error);
+            }
           };
 
-          const existingAppliedItemsString =
-            localStorage.getItem("appliedItems") || "[]";
-          let existingAppliedItems: SelectedBox[];
-
-          try {
-            existingAppliedItems = JSON.parse(existingAppliedItemsString);
-            if (!Array.isArray(existingAppliedItems)) {
-              throw new Error("Parsed data is not an array");
-            }
-          } catch (error) {
-            console.error(
-              "Error parsing appliedItems from localStorage:",
-              error
-            );
-            existingAppliedItems = [];
-          }
-
-          const updatedAppliedItems = [...existingAppliedItems, newSelectedBox];
-          localStorage.setItem(
-            "appliedItems",
-            JSON.stringify(updatedAppliedItems)
-          );
-
-          navigate("/mentorbus-frontend/mentorbus");
+          await fetchData();
         } catch (error) {
           console.error("Error saving data or navigating:", error);
         }
       } else {
-        setViewState((prev) => ((prev + 1) % 3) as 0 | 1 | 2); // 수정된 부분
+        setViewState((prev) => ((prev + 1) % 3) as 0 | 1 | 2);
       }
     };
 

@@ -5,17 +5,18 @@ import { FilterButton } from "@/components/Icons/FilterButton";
 import { useNavigate } from "react-router-dom";
 import { SearchIcon } from "@/components/Icons/MainIcons";
 
-// Define the type for the question boxes
 interface QuestionBoxType {
+  id: number;
   question: string;
   answer: string;
   star_num: number;
   comment_num: number;
   type: string;
   major: string;
-  userName: string;
-  position: string; // Add position to the type
+  author: string;
+  position: string;
   mentor_answer?: string;
+  isClick: boolean; // Add this line to match the structure of the data
 }
 
 export function QAPage() {
@@ -26,61 +27,33 @@ export function QAPage() {
   const roadDivRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  const exampleQuestions: QuestionBoxType[] = [
-    {
-      question: "고2 1학기를 망했는데..",
-      answer:
-        "고1 1학기 때 3등급을 찍고, 2학기 때 2.4까지 올렸습니다. 근데 고2 1학기 때 너무 망해버려서 3.6까지 떨어져버렸어요...이거 남은 기간 동안 올리면 종합전형 쓸 수 있을까요? 아니면 정시로 갈아타야할까요?",
-      star_num: 10,
-      comment_num: 2,
-      type: "best",
-      major: "공학계열",
-      userName: localStorage.getItem("userName") || "",
-      position: "멘토",
-      mentor_answer: "",
-    },
-    {
-      question: "숭실대 컴퓨터학부 VS 숭실대 AI융합학부",
-      answer:
-        "AI가 재미있어서 AI융합학부를 지원할까 하는데, AI는 대학원을 가야한다 해서요. 취업이나 여러 비전을 고려했을 때 어느 학과를 가는 게 좋을까요? 각 학과의 차이는 정확히 무엇인가요?",
-      star_num: 15,
-      comment_num: 5,
-      type: "best",
-      major: "사회계열",
-      userName: localStorage.getItem("userName") || "",
-      position: "멘토",
-      mentor_answer: "",
-    },
-  ];
+  // State to hold questions fetched from the server
+  const [searchBoxes, setSearchBoxes] = useState<QuestionBoxType[]>([]);
 
-  const [searchBoxes, setSearchBoxes] = useState<QuestionBoxType[]>(() => {
-    const savedQuestions = JSON.parse(
-      localStorage.getItem("questions") || "[]"
-    );
-    return savedQuestions;
-  });
-
-  // Ensure example questions are saved to localStorage if not already present
-  useEffect(() => {
-    const savedQuestions = JSON.parse(
-      localStorage.getItem("questions") || "[]"
-    ) as QuestionBoxType[];
-
-    const updatedQuestions = [...savedQuestions];
-
-    exampleQuestions.forEach((exampleQuestion) => {
-      const exists = savedQuestions.some(
-        (question) => question.question === exampleQuestion.question
+  // Fetch data from the server
+  const getLetters = async () => {
+    try {
+      const response = await fetch(
+        "https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/letters"
       );
-
-      if (!exists) {
-        updatedQuestions.push(exampleQuestion);
+      if (!response.ok) {
+        throw new Error("Network response was not ok " + response.statusText);
       }
-    });
+      const data = await response.json(); // Assume this is an array of question objects
+      setSearchBoxes(data); // Set the fetched questions to the state
+      console.log(data);
+    } catch (error) {
+      console.error(
+        "There has been a problem with your fetch operation:",
+        error
+      );
+    }
+  };
 
-    setSearchBoxes(updatedQuestions);
-    localStorage.setItem("questions", JSON.stringify(updatedQuestions));
-  }, []);
+  // Fetch the data when the component mounts or filter changes
+  useEffect(() => {
+    getLetters();
+  }, [filter]);
 
   const uniqueMajors: string[] = [
     ...new Set(searchBoxes.map((box) => box.major)),
@@ -92,32 +65,44 @@ export function QAPage() {
       return subFilter ? box.major === subFilter : true;
     }
     if (filter === "applied") {
-      return box.type === "best";
+      return box.isClick === true; // Only return boxes where IsClick is true
     }
     if (filter === "written") {
-      return box.userName === loggedInUserName;
+      return box.author === loggedInUserName;
     }
     return false;
   });
 
-  const handleStarClick = (index: number, starred: boolean) => {
-    setSearchBoxes((prevBoxes) => {
-      const updatedBoxes = [...prevBoxes];
-      const box = updatedBoxes[index];
-      if (starred) {
-        box.star_num += 1;
-        if (box.star_num > 1) {
-          box.type = "best";
+  const handleStarClick = async (index: number) => {
+    const updatedBoxes = [...searchBoxes];
+    const box = updatedBoxes[index];
+
+    // 서버에 PATCH 요청 보내기
+    try {
+      const response = await fetch(
+        `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/letters/${box.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ isClick: true }),
         }
+      );
+
+      const data = await response.json();
+      console.log("서버 응답:", data);
+
+      // 성공적으로 서버에서 업데이트 된 경우
+      if (response.ok) {
+        updatedBoxes[index].isClick = true;
+        setSearchBoxes(updatedBoxes);
       } else {
-        box.star_num -= 1;
-        if (box.star_num <= 1) {
-          box.type = "all";
-        }
+        console.error("업데이트 실패", data.message);
       }
-      localStorage.setItem("questions", JSON.stringify(updatedBoxes));
-      return updatedBoxes;
-    });
+    } catch (error) {
+      console.error("에러 발생:", error);
+    }
   };
 
   const handleSubFilterChange = (filter: string) => {
@@ -132,11 +117,11 @@ export function QAPage() {
       )}&index=${encodeURIComponent(index)}`,
       {
         state: {
-          question: box.question,
-          answer: box.answer,
+          question: box.title,
+          answer: box.question,
           star_num: box.star_num,
           comment_num: box.comment_num,
-          mentor_answer: box.mentor_answer, // Pass mentor_answer here
+          mentor_answer: box.mentor_answer,
           idx: index,
         },
       }
@@ -248,20 +233,19 @@ export function QAPage() {
                   onClick={() => handleQuestionBoxClick(box, index)}
                 >
                   <QuestionBox
-                    question={box.question}
-                    answer={box.answer}
+                    question={box.title}
+                    answer={box.question}
                     star_num={box.star_num}
                     comment_num={box.comment_num}
                     className={box.type === "best" ? "best" : ""}
                     onStarClick={(starred) => handleStarClick(index, starred)}
+                    star_color={box.isClick == true ? "#4E98EE" : "#fff"}
                   />
                 </div>
               ))}
             </div>
 
             <div ref={growDivRef}></div>
-
-            {/*<BottomNav />*/}
           </div>
         </div>
       </div>

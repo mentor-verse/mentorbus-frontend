@@ -13,6 +13,7 @@ const searchBoxVariants = cva(
         default:
           "bg-secondary text-secondary-foreground hover:bg-secondary/90 text-[11px]",
         state: "bg-transparent	text-[#5C5A5A] text-[11px]	",
+        num: "text-[11px] font-medium",
         null: "text-[0px]",
       },
       size: {
@@ -69,7 +70,7 @@ const SearchBox = React.forwardRef<HTMLButtonElement, SearchBoxProps>(
               className
             )}
           >
-            {major}
+            {major} {/* 타이틀임 */}
           </div>
 
           <div
@@ -100,7 +101,7 @@ const SearchBox = React.forwardRef<HTMLButtonElement, SearchBoxProps>(
 
         <div
           className={cn(
-            "ml-auto [text-[#5C5A5A] text-right text-[11px] not-italic font-medium leading-[normal] tracking-[-0.33px]",
+            "ml-auto  [text-[#5C5A5A] text-right text-[11px] not-italic font-medium leading-[normal] tracking-[-0.33px]",
             className
           )}
         >

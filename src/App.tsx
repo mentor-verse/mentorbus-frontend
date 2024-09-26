@@ -32,7 +32,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
-        <BrowserRouter basename={import.meta.env.PUBLIC_URL}>  {/* Ensure this matches the base in vite.config.js */}
+        <BrowserRouter basename={import.meta.env.PUBLIC_URL}>
+          {" "}
+          {/* Ensure this matches the base in vite.config.js */}
           <MainRouter />
           <Toaster />
         </BrowserRouter>

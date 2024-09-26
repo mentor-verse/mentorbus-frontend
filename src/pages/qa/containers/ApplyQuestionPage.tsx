@@ -2,6 +2,7 @@ import * as React from "react";
 import { cn } from "../../../libs/utils.ts";
 import { useLocation, useNavigate } from "react-router-dom";
 import { XIcon } from "@/components/Icons/PlusButton.tsx";
+import axios from "axios";
 
 export interface ApplyQuestionPageProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -72,6 +73,51 @@ const ApplyQuestionPage = React.forwardRef<
     localStorage.setItem("questions", JSON.stringify(storedData));
     setAnswer(inputValue);
     navigate("/mentorbus-frontend/qabus");
+    fetchData();
+  };
+
+  const fetchData = async () => {
+    try {
+      // Get ClassData from localStorage
+      const letterData = localStorage.getItem("questions") || "[]";
+
+      // Convert ClassData to JSON
+      const letterDataJson = JSON.parse(letterData);
+
+      // Check if there's at least one entry
+      if (letterDataJson.length > 0) {
+        try {
+          // POST request for the first entry
+          const response = await axios.post(
+            `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/letters`,
+            {
+              star_num: 0,
+              comment_num: 0,
+              type: "all",
+              major: localStorage.getItem("major") || "공학계열",
+              mentor_answer: "",
+              userName: localStorage.getItem("userName") || "기본명",
+              title: title,
+              question: inputValue,
+              author: localStorage.getItem("userName") || "기본명",
+              isClick : false
+            }
+          );
+
+          // Check if the request was successful
+          if (response.status === 200) {
+            const newClass = response.data.comment;
+            console.log("Letter created successfully:", newClass);
+          } else {
+            console.error("Failed to create letter for:", title);
+          }
+        } catch (error) {
+          console.error("Error creating letter for:", title, error);
+        }
+      }
+    } catch (error) {
+      console.error("Error processing LetterData:", error);
+    }
   };
 
   return (

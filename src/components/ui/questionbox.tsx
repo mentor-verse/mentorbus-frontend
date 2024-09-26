@@ -8,12 +8,21 @@ export interface QuestionBoxProps extends React.HTMLAttributes<HTMLDivElement> {
   answer: string;
   star_num: number;
   comment_num: number;
+  star_color: string;
   onStarClick?: (starred: boolean, star_num: number) => void;
 }
 
 const QuestionBox = React.forwardRef<HTMLDivElement, QuestionBoxProps>(
   (
-    { className, question, answer, star_num, comment_num, onStarClick },
+    {
+      className,
+      question,
+      answer,
+      star_num,
+      comment_num,
+      onStarClick,
+      star_color,
+    },
     ref
   ) => {
     const [stars, setStars] = React.useState(star_num);
@@ -25,7 +34,7 @@ const QuestionBox = React.forwardRef<HTMLDivElement, QuestionBoxProps>(
       setStars(newStars);
       setStarred(newStarred);
       if (onStarClick) {
-        onStarClick(newStarred, newStars); // 현재 상태와 새로운 stars 값을 전달
+        onStarClick(newStarred, newStars); // Send updated starred state and new stars count
       }
     };
 
@@ -49,7 +58,7 @@ const QuestionBox = React.forwardRef<HTMLDivElement, QuestionBoxProps>(
             onClick={handleStarClick}
             style={{ cursor: "pointer" }} // Add cursor style to indicate it's clickable
           >
-            <Star />
+            <Star fill={star_color} />
             <div className="ml-[2px]"></div>
             {stars}
           </div>
