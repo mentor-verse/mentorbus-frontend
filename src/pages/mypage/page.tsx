@@ -22,9 +22,8 @@ interface UserData {
 export function MyPage() {
   const [level] = useState("3"); // 기본값을 설정하거나 필요에 따라 변경 가능
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [, setError] = useState(null);
+  const [, setError] = useState<string | null>(null);
 
-  // Fetch data from the server
   useEffect(() => {
     const nickname = localStorage.getItem("userName");
 
