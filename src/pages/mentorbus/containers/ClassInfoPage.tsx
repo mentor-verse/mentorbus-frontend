@@ -2,14 +2,19 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { SearchBox } from "@/components/ui/searchbox";
 import { Button } from "@/components/ui/button";
 import FindTitle from "@/pages/findmentor/containers/FindTitle";
+import { useEffect } from "react";
 
 export function ClassInfoPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { selectedBox, content } = location.state || {};
+  // Destructure the state object with default values
+  const { selectedBox, content, classData } = location.state || {}; // Destructure with default values
 
-  const name = localStorage.getItem("userName") || "";
-  const major = localStorage.getItem("major") || "";
+  useEffect(() => {
+    console.log("Location state:", location.state);
+    console.log("data:", selectedBox); // Should log the correct data
+    console.log("content:", content); // Should log the content
+  }, [location.state, selectedBox, content]);
 
   return (
     <div className="main">
@@ -36,9 +41,9 @@ export function ClassInfoPage() {
               <div className="grid place-content-center mt-[25px] border-b-[0.7px] w-full border-[#C0C0C0] h-[180px]">
                 <SearchBox
                   gen={selectedBox.gen}
-                  major={selectedBox.name}
-                  name={name || ""}
-                  info={major || ""}
+                  major={selectedBox.title}
+                  name={selectedBox.name || ""}
+                  info={selectedBox.major || ""}
                   date={selectedBox.date}
                   sort={selectedBox.sort}
                   variant="null"
@@ -48,6 +53,7 @@ export function ClassInfoPage() {
                 </SearchBox>
               </div>
             )}
+
             <div className="mt-[40px] flex justify-center">
               <div className=" text-[12px] not-italic font-normal leading-[normal] tracking-[-0.52px] text-[#474747] text-start w-[80%] items-center">
                 <div className="w-full" style={{ whiteSpace: "pre-line" }}>
@@ -62,7 +68,13 @@ export function ClassInfoPage() {
             variant={"default"}
             size={"default"}
             className="w-[342px] h-[56px] text-[#fff] font-semibold"
-            onClick={() => navigate("/mentorbus-frontend/mentorbus")}
+            onClick={() =>
+              navigate("/mentorbus-frontend/openclass", {
+                state: {
+                  classData,
+                },
+              })
+            }
           >
             수정하기
           </Button>

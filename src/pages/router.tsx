@@ -45,6 +45,7 @@ export function MainRouter() {
           )
         }
       />
+
       <Route
         path="/mentorbus-frontend/comment"
         element={<CommentPage Link={""} back_disable={""} back_work={"yes"} />}
@@ -71,12 +72,26 @@ export function MainRouter() {
           />
         }
       />
+
       <Route
         path="/mentorbus-frontend/openclass"
         element={
           <OpenClassPage Link={""} back_disable={""} back_work={"yes"} />
         }
       />
+
+      <Route
+        path="/mentorbus-frontend/openclass/modify"
+        element={
+          <OpenClassPage
+            state={"modify"}
+            Link={""}
+            back_disable={""}
+            back_work={"yes"}
+          />
+        }
+      />
+
       <Route path="/mentorbus-frontend/classinfo" element={<ClassInfoPage />} />
     </Routes>
   );

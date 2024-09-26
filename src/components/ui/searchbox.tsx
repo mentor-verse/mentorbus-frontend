@@ -66,7 +66,7 @@ const SearchBox = React.forwardRef<HTMLButtonElement, SearchBoxProps>(
         <div className="ml-[15px] ">
           <div
             className={cn(
-              "text-[13px] not-italic font-semibold leading-[normal] tracking-[-0.52px] w-[90%]",
+              "text-[13px] not-italic font-semibold leading-[normal] tracking-[-0.52px] w-full",
               className
             )}
           >

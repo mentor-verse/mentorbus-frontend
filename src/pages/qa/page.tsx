@@ -119,10 +119,11 @@ export function QAPage() {
       {
         state: {
           question: box.question, // title 대신 question 사용
-          answer: box.answer,
+          title: box.title,
           star_num: box.star_num,
           comment_num: box.comment_num,
           mentor_answer: box.mentor_answer,
+          position: box.position,
           idx: index,
         },
       }

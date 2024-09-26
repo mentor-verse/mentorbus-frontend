@@ -24,7 +24,8 @@ const CommentPage = React.forwardRef<HTMLDivElement, CommentPageProps>(
     const idx = parseInt(queryParams.get("index") || "0", 10); // Convert idx to number, default to 0
 
     // QAPage로부터 전달받은 state에서 데이터 추출
-    const { answer, question, star_num, comment_num } = location.state || {};
+    const { title, question, star_num, comment_num, position } =
+      location.state || {};
 
     // Get the questions data from localStorage
     const questions = localStorage.getItem("questions");
@@ -42,7 +43,6 @@ const CommentPage = React.forwardRef<HTMLDivElement, CommentPageProps>(
     }
 
     // Get the user's position from localStorage
-    const position = localStorage.getItem("position");
 
     const handleBackClick = () => {
       if (back_work === "no") {
@@ -72,8 +72,8 @@ const CommentPage = React.forwardRef<HTMLDivElement, CommentPageProps>(
 
         <div className="flex text-start justify-start items-start w-[90%] mt-[20px]">
           <CommentQuestionSection
-            answer={answer || "기본 답변"}
-            question={question || "기본 질문"}
+            answer={question || "기본 답변"}
+            question={title || "기본 질문"}
             star_num={star_num || 0}
             comment_num={comment_num || 0}
           />

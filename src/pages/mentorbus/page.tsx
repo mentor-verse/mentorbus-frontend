@@ -230,16 +230,6 @@ export function MentorBusPageMentee() {
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSearchBoxClick = (item: SelectedBox, classData: any) => {
-    navigate("/mentorbus-frontend/classinfo", {
-      state: {
-        selectedBox: item,
-        content: classData.content,
-      },
-    });
-  };
-
   return (
     <>
       <div className="main">
@@ -289,12 +279,14 @@ export function MentorBusPageMentee() {
                   return (
                     <div
                       key={index}
-                      className="grid place-items-center w-[80%] mt-[0px] h-[120px] relative "
+                      className="grid place-items-center w-[80%] mt-[0px] h-[120px] relative"
                       onClick={(e) => {
                         const rect = e.currentTarget.getBoundingClientRect();
                         const clickX = e.clientX - rect.left;
 
-                        // 전체 넓이의 80%까지 클릭 시에만 handleSearchBoxClick 호출
+                        // Log appliedItem for debugging
+                        console.log("appliedItem:", appliedItem);
+
                         if (clickX <= rect.width * 0.8 && filter === "entry") {
                           handleSearchBoxClick(appliedItem, classData);
                         }
@@ -361,6 +353,10 @@ export function MentorBusPageMentor() {
 
   const navigate = useNavigate(); // useNavigate 사용
 
+  useEffect(() => {
+    console.log("appliedItem", appliedItems);
+  });
+
   const loadAppliedItems = async () => {
     try {
       // API로 데이터를 fetch
@@ -373,14 +369,15 @@ export function MentorBusPageMentor() {
         console.log("res:", response);
         console.log(itemsFromApi);
         // 각 아이템을 처리하여 상태를 갱신
+        /*
         const parsedItems: SelectedBox[] = itemsFromApi
           .map((item: any) => ({
             ...item,
             status: item.status === "completed" ? "completed" : "pending",
           }))
           .filter((item) => isSelectedBox(item));
-
-        setAppliedItems(parsedItems);
+*/
+        setAppliedItems(itemsFromApi);
       } else {
         console.error(
           "API에서 가져온 데이터가 배열이 아닙니다:",
@@ -454,11 +451,18 @@ export function MentorBusPageMentor() {
     }
   };
 
-  const handleSearchBoxClick = (item: SelectedBox, classData: any) => {
+  const handleSearchBoxClick = (appliedItems: SelectedBox, classData: any) => {
+    console.log(
+      "Navigating with item:",
+      appliedItems,
+      "and classData:",
+      classData
+    );
     navigate("/mentorbus-frontend/classinfo", {
       state: {
-        selectedBox: item,
-        content: classData.content,
+        selectedBox: appliedItems,
+        content: appliedItems?.content,
+        classData,
       },
     });
   };
@@ -540,8 +544,8 @@ export function MentorBusPageMentor() {
             </div>
 
             <div ref={roadDivRef} className="grid place-items-center">
-              {classDataArray.map((classData, index) => {
-                const appliedItem = appliedItems[index];
+              {appliedItems.map((appliedItem, index) => {
+                const classData = classDataArray[index];
 
                 if (
                   (filter === "entry" && appliedItem?.status !== "completed") ||
@@ -563,11 +567,11 @@ export function MentorBusPageMentor() {
                     >
                       <SearchBox
                         gen={appliedItem?.gen || ""}
-                        major={classData.title}
-                        name={name || ""}
-                        info={major || ""}
-                        date={classData.date}
-                        sort={classData.gatherUrl}
+                        major={appliedItem.title}
+                        name={appliedItem.name || ""}
+                        info={appliedItem.major || ""}
+                        date={appliedItem.date}
+                        sort={appliedItem.map}
                         variant="default"
                         size="default"
                         onClick={
