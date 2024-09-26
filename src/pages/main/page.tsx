@@ -14,6 +14,7 @@ import { MentorScheduleSection } from "@/pages/main/containers/MentorScheduleSec
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios"; // Import axios to make API requests
+import BottomNav from "@/containers/navbar";
 
 // Define the College type
 interface CollegeType {
@@ -234,7 +235,11 @@ export function MainPage() {
             ) : (
               <MentorScheduleSection />
             )}
-            <div className="mt-[120px]"></div>{" "}
+            <div className="mt-[120px]">
+              {" "}
+              <BottomNav />
+            </div>
+            {" "}
           </div>
         </div>
       </div>

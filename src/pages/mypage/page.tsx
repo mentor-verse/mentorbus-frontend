@@ -12,6 +12,7 @@ import { Profile } from "./containers/ProfileSection";
 import { useEffect, useState } from "react";
 import { Cloud } from "@/components/Icons/Cloud";
 import { Cloud2 } from "@/components/Icons/Cloud2";
+import BottomNav from "@/containers/navbar";
 
 interface UserData {
   nickname: string;
@@ -107,7 +108,9 @@ export function MyPage() {
           </div>
         </div>
 
-        <div className="w-full">{/*<BottomNav />*/}</div>
+        <div className="w-full">
+          <BottomNav />
+        </div>
       </div>
     </>
   );

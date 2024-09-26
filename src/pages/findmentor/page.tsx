@@ -6,6 +6,7 @@ import { UnderArrowBlue } from "@/components/Icons/UnderArrowBlue";
 import FindTitle from "./containers/FindTitle";
 import { NotYetPage } from "./containers/NotYetPage";
 import axios from "axios"; // Import axios
+import BottomNav from "@/containers/navbar";
 
 type SearchBoxType = {
   num: string;
@@ -227,6 +228,7 @@ export function FindMentor() {
             </div>
             <div ref={growDivRef}></div>
           </div>
+          <BottomNav />
         </div>
       </div>
     </>

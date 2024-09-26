@@ -4,6 +4,7 @@ import { UnderArrowBlue } from "@/components/Icons/UnderArrowBlue";
 import { FilterButton } from "@/components/Icons/FilterButton";
 import { useNavigate } from "react-router-dom";
 import { SearchIcon } from "@/components/Icons/MainIcons";
+import BottomNav from "@/containers/navbar";
 
 interface QuestionBoxType {
   id: number;
@@ -249,6 +250,7 @@ export function QAPage() {
 
             <div ref={growDivRef}></div>
           </div>
+          <BottomNav />
         </div>
       </div>
     </>

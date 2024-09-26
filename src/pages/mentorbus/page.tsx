@@ -3,6 +3,7 @@ import { SearchBox } from "@/components/ui/searchbox";
 import { Info } from "@/components/ui/info";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import BottomNav from "@/containers/navbar";
 
 declare global {
   interface Window {
@@ -105,8 +106,6 @@ export function MentorBusPageMentee() {
   const [classDataArray] = useState<
     { title: string; content: string; date: string; gatherUrl: string }[]
   >([]);
-
-  const navigate = useNavigate();
 
   const loadAppliedItems = async () => {
     try {
@@ -280,17 +279,6 @@ export function MentorBusPageMentee() {
                     <div
                       key={index}
                       className="grid place-items-center w-[80%] mt-[0px] h-[120px] relative"
-                      onClick={(e) => {
-                        const rect = e.currentTarget.getBoundingClientRect();
-                        const clickX = e.clientX - rect.left;
-
-                        // Log appliedItem for debugging
-                        console.log("appliedItem:", appliedItem);
-
-                        if (clickX <= rect.width * 0.8 && filter === "entry") {
-                          handleSearchBoxClick(appliedItem, classData);
-                        }
-                      }}
                     >
                       <SearchBox
                         gen={appliedItem?.gen || ""} // appliedItem에서 데이터 가져오기
@@ -318,7 +306,7 @@ export function MentorBusPageMentee() {
             </div>
           </div>
           <div ref={growDivRef}></div>
-          {/*<BottomNav />*/}{" "}
+          <BottomNav />{" "}
         </div>
       </div>
     </>
@@ -347,9 +335,6 @@ export function MentorBusPageMentor() {
   const [classDataArray, setClassDataArray] = useState<
     { title: string; content: string; date: string; gatherUrl: string }[]
   >([]);
-
-  const name = localStorage.getItem("userName") || "";
-  const major = localStorage.getItem("major") || "";
 
   const navigate = useNavigate(); // useNavigate 사용
 
