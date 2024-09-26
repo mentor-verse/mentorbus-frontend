@@ -52,7 +52,7 @@ const CommentQuestionSection = React.forwardRef<
             onClick={handleStarClick}
             style={{ cursor: "pointer" }} // Add cursor style to indicate it's clickable
           >
-            <Star />
+            <Star fill={undefined} />
             <div className="ml-[2px]"></div>
             {stars}
           </div>

@@ -1,4 +1,8 @@
-export function Star({ fill }) {
+interface StarProps {
+  fill: string;
+}
+
+export function Star({ fill }: StarProps) {
   return (
     <svg
       width="12"

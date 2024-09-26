@@ -7,6 +7,7 @@ import { SearchIcon } from "@/components/Icons/MainIcons";
 
 interface QuestionBoxType {
   id: number;
+  title: string;
   question: string;
   answer: string;
   star_num: number;
@@ -113,12 +114,12 @@ export function QAPage() {
   const handleQuestionBoxClick = (box: QuestionBoxType, index: number) => {
     navigate(
       `/mentorbus-frontend/comment?userName=${encodeURIComponent(
-        box.userName
+        box.author // userName 대신 author 사용
       )}&index=${encodeURIComponent(index)}`,
       {
         state: {
-          question: box.title,
-          answer: box.question,
+          question: box.question, // title 대신 question 사용
+          answer: box.answer,
           star_num: box.star_num,
           comment_num: box.comment_num,
           mentor_answer: box.mentor_answer,
@@ -238,7 +239,7 @@ export function QAPage() {
                     star_num={box.star_num}
                     comment_num={box.comment_num}
                     className={box.type === "best" ? "best" : ""}
-                    onStarClick={(starred) => handleStarClick(index, starred)}
+                    onStarClick={() => handleStarClick(index)}
                     star_color={box.isClick == true ? "#4E98EE" : "#fff"}
                   />
                 </div>

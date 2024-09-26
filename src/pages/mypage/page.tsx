@@ -13,17 +13,21 @@ import { useEffect, useState } from "react";
 import { Cloud } from "@/components/Icons/Cloud";
 import { Cloud2 } from "@/components/Icons/Cloud2";
 
+interface UserData {
+  nickname: string;
+  school: string;
+  position: string;
+}
+
 export function MyPage() {
   const [level] = useState("3"); // 기본값을 설정하거나 필요에 따라 변경 가능
-  const [userData, setUserData] = useState(null);
-  const [error, setError] = useState(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [, setError] = useState(null);
 
   // Fetch data from the server
   useEffect(() => {
-    // 닉네임을 동적으로 설정하거나 하드코딩된 값 사용
     const nickname = localStorage.getItem("userName");
 
-    // 페이지가 렌더링될 때 API 호출
     const fetchData = async () => {
       try {
         const response = await fetch(
@@ -37,12 +41,16 @@ export function MyPage() {
         const data = await response.json();
         setUserData(data);
       } catch (err) {
-        setError(err.message);
+        if (err instanceof Error) {
+          setError(err.message); // err is now recognized as an Error
+        } else {
+          setError("An unknown error occurred");
+        }
       }
     };
 
     fetchData();
-  }, []); // 빈 배열은 컴포넌트가 처음 마운트될 때 한 번만 실행됨
+  }, []);
 
   const renderLevelIcon = () => {
     if (userData?.position === "멘토") {
@@ -91,8 +99,8 @@ export function MyPage() {
             <div className="divMargin"></div>
             <div className="mb-[150px]">
               <Profile
-                name={userData?.nickname}
-                school={userData?.school}
+                name={userData?.nickname || "Unknown"}
+                school={userData?.school || "Unknown School"}
                 level={"3"}
                 gen="man"
               />

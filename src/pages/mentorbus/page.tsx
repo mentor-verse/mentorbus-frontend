@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { SearchBox } from "@/components/ui/searchbox";
 import { Info } from "@/components/ui/info";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 declare global {
@@ -13,6 +13,8 @@ declare global {
 }
 
 interface SelectedBox {
+  id: any;
+  gen: string;
   major: string;
   name: string;
   info: string;
@@ -37,13 +39,6 @@ type SortType = "인문계열" | "예술계열" | "IT계열" | "공학계열";
 function isSortType(value: any): value is SortType {
   return ["인문계열", "예술계열", "IT계열", "공학계열"].includes(value);
 }
-
-const gatherTownUrls: Record<SortType, string> = {
-  인문계열: "nJCm-X-RR5OojtQzylwy",
-  예술계열: "5RvF4SJkTl6csexWVxQw",
-  IT계열: "PsbK1kvsSF2vqKIf-VLj",
-  공학계열: "nWPWj7r6T8eRB2mVaUT8",
-};
 
 // Declare function variable for isSelectedBox
 let isSelectedBox: (item: any) => item is SelectedBox;
@@ -105,14 +100,11 @@ export function MentorBusPageMentee() {
 
   const [filter, setFilter] = useState("entry");
   const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
-  const [loading, setLoading] = useState(true);
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
-  const [classDataArray, setClassDataArray] = useState<
+  const [classDataArray] = useState<
     { title: string; content: string; date: string; gatherUrl: string }[]
   >([]);
-
-  const major = localStorage.getItem("major") || "";
 
   const navigate = useNavigate();
 
@@ -238,6 +230,16 @@ export function MentorBusPageMentee() {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleSearchBoxClick = (item: SelectedBox, classData: any) => {
+    navigate("/mentorbus-frontend/classinfo", {
+      state: {
+        selectedBox: item,
+        content: classData.content,
+      },
+    });
+  };
+
   return (
     <>
       <div className="main">
@@ -346,7 +348,7 @@ export function MentorBusPageMentee() {
 export function MentorBusPageMentor() {
   const [filter, setFilter] = useState("entry");
   const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
-  const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const [, setLoading] = useState(true); // 로딩 상태 추가
 
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);

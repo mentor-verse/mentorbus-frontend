@@ -8,6 +8,8 @@ import { NotYetPage } from "./containers/NotYetPage";
 import axios from "axios"; // Import axios
 
 type SearchBoxType = {
+  num: string;
+  title: string;
   gen: string;
   major: string;
   name: string;

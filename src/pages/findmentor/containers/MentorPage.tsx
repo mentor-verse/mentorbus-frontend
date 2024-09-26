@@ -14,7 +14,17 @@ export function MentorPage() {
   const selectedBox = location.state?.selectedBox;
 
   // Function to send data to the API
-  const saveClass = async (box) => {
+  const saveClass = async (box: {
+    nickname: any;
+    title: any;
+    num: any;
+    date: any;
+    map: any;
+    content: any;
+    name: any;
+    major: any;
+    status: any;
+  }) => {
     try {
       const response = await axios.post(
         `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/class/save`,

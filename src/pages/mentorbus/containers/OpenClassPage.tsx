@@ -15,17 +15,6 @@ export interface OpenClassPageProps
   back_work: string;
 }
 
-// SelectedBox 타입 정의
-interface SelectedBox {
-  gen: string;
-  major: string;
-  name: string;
-  info: string;
-  date: string;
-  sort: string;
-  status: string;
-}
-
 const OpenClassPage = React.forwardRef<HTMLDivElement, OpenClassPageProps>(
   ({ className, back_disable, back_work, Link }, ref) => {
     const navigate = useNavigate();
@@ -40,8 +29,6 @@ const OpenClassPage = React.forwardRef<HTMLDivElement, OpenClassPageProps>(
     const [date, setDate] = React.useState("");
     const [maxPeople, setMaxPeople] = React.useState("");
     const [gatherUrl, setGatherUrl] = React.useState("");
-
-    const [updatedAppliedItems, setUpdatedAppliedItems] = React.useState("");
 
     const areFieldsEmpty = () => {
       if (viewState === 0) {
