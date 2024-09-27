@@ -24,8 +24,13 @@ export function Fifth({ count, sentence }: FifthProps) {
     const userBelong = localStorage.getItem("userBelong");
     const major = localStorage.getItem("major");
     const favor = localStorage.getItem("favor");
-    const kakaoData = localStorage.getItem("kakaoData");
-    const accesstoken = kakaoData?.accesstoken;
+    const kakaoDataString = localStorage.getItem("kakaoData");
+
+    let accesstoken;
+    if (kakaoDataString) {
+      const kakaoData = JSON.parse(kakaoDataString); // JSON 객체로 변환
+      accesstoken = kakaoData.accesstoken; // accesstoken에 접근
+    }
 
     if (position === "멘토") {
       // Mentor data를 POST

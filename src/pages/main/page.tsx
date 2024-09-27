@@ -70,7 +70,6 @@ export function MainPage() {
         setMentorData(data); // Update the state with the fetched mentor data
       } catch (error) {
         console.error("Error fetching mentor data:", error);
-        setError(error.message);
       }
     };
 

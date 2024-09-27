@@ -18,6 +18,11 @@ interface FormData {
   name: string;
 }
 
+interface MentorData {
+  kakao_id: string;
+  nickname: string;
+}
+
 export function First({ count, setCount, sentence }: FirstProps) {
   const setUserName = useSetRecoilState(userNameAtom);
   const navigate = useNavigate();
@@ -28,7 +33,7 @@ export function First({ count, setCount, sentence }: FirstProps) {
   } = useForm<FormData>();
 
   // 서버에서 가져온 멘토 데이터를 저장할 state
-  const [mentorData, setMentorData] = useState(null);
+  const [mentorData, setMentorData] = useState<MentorData | null>(null); // mentorData 타입 설정
 
   // 폼 제출 처리 함수
   const onSubmit = (data: FormData) => {
