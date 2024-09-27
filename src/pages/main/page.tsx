@@ -41,7 +41,7 @@ const getRandomColleges = (
 };
 
 export function MainPage() {
-  const [userName, setUserName] = useState<string>("");
+  const [userName, setUserName] = useState<string | null>("");
   const [userMajor, setUserMajor] = useState<string>("");
   const [randomColleges, setRandomColleges] = useState<CollegeType[]>([]);
   const [position] = useState<string | null>(null);
@@ -219,7 +219,7 @@ export function MainPage() {
       </div>
 
       <TitleSection
-        title={userName}
+        title={userName || undefined}
         title2="님에게 맞는"
         major={userMajor}
         title3="멘토"

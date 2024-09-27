@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { Cloud } from "@/components/Icons/Cloud";
 import { Cloud2 } from "@/components/Icons/Cloud2";
 import BottomNav from "@/containers/navbar";
+import axios from "axios";
 
 interface UserData {
   nickname: string;
@@ -22,38 +23,29 @@ interface UserData {
 
 export function MyPage() {
   const [level] = useState("3"); // 기본값을 설정하거나 필요에 따라 변경 가능
-  const [userData, setUserData] = useState<UserData | null>(null);
-  const [, setError] = useState<string | null>(null);
+  const [MentorData, setMentorData] = useState<UserData | null>(null);
 
+  // 멘토 데이터를 가져오는 함수
   useEffect(() => {
-    const nickname = localStorage.getItem("userName");
+    const kakao_id = localStorage.getItem("kakao_id");
 
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/mydata/${nickname}`
-        );
-
-        if (!response.ok) {
-          throw new Error("User data not found");
-        }
-
-        const data = await response.json();
-        setUserData(data);
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message); // err is now recognized as an Error
-        } else {
-          setError("An unknown error occurred");
-        }
-      }
-    };
-
-    fetchData();
-  }, []);
+    if (kakao_id) {
+      // 백엔드 API 호출
+      axios
+        .get(`/onboarding/mentor/${kakao_id}`)
+        .then((response) => {
+          // 성공적으로 데이터를 가져왔을 때
+          setMentorData(response.data);
+          console.log("Mentor data:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching mentor data:", error);
+        });
+    }
+  }, []); // []를 사용하여 컴포넌트가 처음 마운트될 때 한 번만 실행
 
   const renderLevelIcon = () => {
-    if (userData?.position === "멘토") {
+    if (MentorData?.position === "멘토") {
       switch (level) {
         case "1":
           return <LevelFirstMentor />;
@@ -99,8 +91,8 @@ export function MyPage() {
             <div className="divMargin"></div>
             <div className="mb-[150px]">
               <Profile
-                name={userData?.nickname || "Unknown"}
-                school={userData?.school || "Unknown School"}
+                name={MentorData?.nickname || "Unknown"}
+                school={MentorData?.school || "Unknown School"}
                 level={"3"}
                 gen="man"
               />
