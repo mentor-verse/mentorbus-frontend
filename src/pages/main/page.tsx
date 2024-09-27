@@ -12,7 +12,7 @@ import CAU from "@/assets/CAU.svg";
 import { MentorBox } from "@/components/ui/mentorbox";
 import { MentorScheduleSection } from "@/pages/main/containers/MentorScheduleSection"; // Import the new component
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import axios from "axios"; // Import axios to make API requests
 import BottomNav from "@/containers/navbar";
 
@@ -46,9 +46,7 @@ export function MainPage() {
   const [randomColleges, setRandomColleges] = useState<CollegeType[]>([]);
   const [position, setPosition] = useState<string | null>(null);
   const location = useLocation();
-  const navigate = useNavigate();
-  const [userData, setUserData] = useState<any[]>([]);
-  const [menteeData, setMenteeData] = useState<any[]>([]);
+  const [userData, setUserData] = useState<any>(null); // 배열 대신 객체(null로 초기화)
 
   // Fetch mentor data from the server where position is "멘토"
 

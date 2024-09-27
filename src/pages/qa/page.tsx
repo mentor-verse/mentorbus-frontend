@@ -18,7 +18,7 @@ interface QuestionBoxType {
   author: string;
   position: string;
   mentor_answer?: string;
-  isClick: boolean; // Add this line to match the structure of the data
+  isClick: boolean;
 }
 
 export function QAPage() {
@@ -32,6 +32,10 @@ export function QAPage() {
   // State to hold questions fetched from the server
   const [searchBoxes, setSearchBoxes] = useState<QuestionBoxType[]>([]);
 
+  // State for search functionality
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [isSearchOpen, setIsSearchOpen] = useState(false); // Toggle search bar visibility
+
   // Fetch data from the server
   const getLetters = async () => {
     try {
@@ -43,22 +47,20 @@ export function QAPage() {
       }
       const data = await response.json();
 
-      // 서버에서 받은 응답이 객체인지 배열인지 확인
       if (Array.isArray(data)) {
         const formattedData = data.map((item) => ({
           ...item,
-          isClick: item.isClick === "1", // "1"을 true로, "0"을 false로 변환
+          isClick: item.isClick === "1",
         }));
-        setSearchBoxes(formattedData); // 배열로 반환된 경우 처리
+        setSearchBoxes(formattedData);
       } else if (typeof data === "object" && data !== null) {
-        // 객체인 경우 배열로 변환해서 처리
         const formattedData = [
           {
             ...data,
-            isClick: data.isClick === "1", // "1"을 true로, "0"을 false로 변환
+            isClick: data.isClick === "1",
           },
         ];
-        setSearchBoxes(formattedData); // 객체를 배열로 변환하여 처리
+        setSearchBoxes(formattedData);
       } else {
         throw new Error("Unexpected data format");
       }
@@ -72,7 +74,6 @@ export function QAPage() {
     }
   };
 
-  // Fetch the data when the component mounts or filter changes
   useEffect(() => {
     getLetters();
   }, [filter]);
@@ -82,24 +83,31 @@ export function QAPage() {
   ];
   const loggedInUserName = localStorage.getItem("userName") || "";
 
-  const filteredBoxes = searchBoxes.filter((box) => {
-    if (filter === "entry") {
-      return subFilter ? box.major === subFilter : true;
-    }
-    if (filter === "applied") {
-      return box.isClick === true; // Only return boxes where IsClick is true
-    }
-    if (filter === "written") {
-      return box.author === loggedInUserName;
-    }
-    return false;
-  });
+  const filteredBoxes = searchBoxes
+    .filter((box) => {
+      if (filter === "entry") {
+        return subFilter ? box.major === subFilter : true;
+      }
+      if (filter === "applied") {
+        return box.isClick === true;
+      }
+      if (filter === "written") {
+        return box.author === loggedInUserName;
+      }
+      return false;
+    })
+    // Apply search query filter
+    .filter(
+      (box) =>
+        searchQuery === "" ||
+        box.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        box.question.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
   const handleStarClick = async (index: number) => {
     const updatedBoxes = [...searchBoxes];
     const box = updatedBoxes[index];
 
-    // 서버에 PATCH 요청 보내기
     try {
       const response = await fetch(
         `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/letters/${box.id}`,
@@ -115,7 +123,6 @@ export function QAPage() {
       const data = await response.json();
       console.log("서버 응답:", data);
 
-      // 성공적으로 서버에서 업데이트 된 경우
       if (response.ok) {
         updatedBoxes[index].isClick = true;
         setSearchBoxes(updatedBoxes);
@@ -135,11 +142,11 @@ export function QAPage() {
   const handleQuestionBoxClick = (box: QuestionBoxType, index: number) => {
     navigate(
       `/mentorbus-frontend/comment?userName=${encodeURIComponent(
-        box.author // userName 대신 author 사용
+        box.author
       )}&index=${encodeURIComponent(index)}`,
       {
         state: {
-          question: box.question, // title 대신 question 사용
+          question: box.question,
           title: box.title,
           star_num: box.star_num,
           comment_num: box.comment_num,
@@ -185,10 +192,27 @@ export function QAPage() {
                 고민버스
               </div>
 
-              <div className="text-[16px] text-[#333333] font-medium mr-[20px] cursor-pointer">
+              <div
+                className="text-[16px] text-[#333333] font-medium mr-[20px] cursor-pointer"
+                onClick={() => setIsSearchOpen(!isSearchOpen)} // Toggle search bar
+              >
                 <SearchIcon />
               </div>
             </div>
+
+            {/* Search Input Field */}
+            {isSearchOpen && (
+              <div className="mt-4 flex justify-center">
+                <input
+                  type="text"
+                  placeholder="Search by title or question..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="p-2 border border-gray-300 rounded w-full max-w-md"
+                />
+              </div>
+            )}
+
             <div className="flex justify-between mt-[40px]">
               <div
                 className={`filter_btn_label ${
