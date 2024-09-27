@@ -76,6 +76,7 @@ export function MainPage() {
     fetchData();
   }, [userName]); // Add userName to the dependency array
 
+  /*
   useEffect(() => {
     const storedPosition = localStorage.getItem("position");
     const userName = localStorage.getItem("userName");
@@ -88,6 +89,7 @@ export function MainPage() {
       setPosition(storedPosition);
     }
   }, [navigate]);
+  '*/
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
