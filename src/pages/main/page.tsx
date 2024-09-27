@@ -44,7 +44,7 @@ export function MainPage() {
   const [userName, setUserName] = useState<string>("");
   const [userMajor, setUserMajor] = useState<string>("");
   const [randomColleges, setRandomColleges] = useState<CollegeType[]>([]);
-  const [position, setPosition] = useState<string | null>(null);
+  const [position] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const [mentorData, setMentorData] = useState<any[]>([]);
@@ -116,12 +116,6 @@ export function MainPage() {
       try {
         const storedPosition = localStorage.getItem("position");
         const nickname = localStorage.getItem("userName");
-
-        // Check if user position (mentor/mentee) and nickname are available
-        if (!storedPosition || !nickname) {
-          navigate(`/mentorbus-frontend/onboarding?specialQuery=true`);
-          return;
-        }
 
         // Fetch data from the appropriate API based on the position
         let response;
