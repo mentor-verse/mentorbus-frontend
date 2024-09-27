@@ -16,7 +16,6 @@ import { useState } from "react";
 import { ApplyQuestionPage } from "./qa/containers/ApplyQuestionPage";
 import { OpenClassPage } from "./mentorbus/containers/OpenClassPage";
 import { ClassInfoPage } from "./mentorbus/containers/ClassInfoPage";
-import BottomNav from "@/containers/navbar";
 
 export function MainRouter() {
   const [, setAnswer] = useState(""); // 상태 선언

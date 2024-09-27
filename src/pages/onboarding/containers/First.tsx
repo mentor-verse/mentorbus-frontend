@@ -1,12 +1,12 @@
-// src/components/First.js
 import { NextButton } from "@/components/Icons/NextButton";
 import { Logo } from "@/components/Icons/Logo";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 import { userNameAtom } from "@/atoms/userNameAtom";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; // Axios로 API 요청하기 위해 추가
 
 interface FirstProps {
   count: number;
@@ -27,22 +27,44 @@ export function First({ count, setCount, sentence }: FirstProps) {
     formState: { errors, isSubmitted, isSubmitting },
   } = useForm<FormData>();
 
+  // 서버에서 가져온 멘토 데이터를 저장할 state
+  const [mentorData, setMentorData] = useState(null);
+
+  // 폼 제출 처리 함수
   const onSubmit = (data: FormData) => {
     setUserName(data.name);
     localStorage.setItem("userName", data.name);
     setCount(count + 1);
   };
 
-  React.useEffect(() => {
-    const position = localStorage.getItem("position");
-    const userName = localStorage.getItem("userName");
-    const userBelong = localStorage.getItem("userBelong");
-    const major = localStorage.getItem("major");
+  // 멘토 데이터를 가져오는 함수
+  useEffect(() => {
+    const kakao_id = localStorage.getItem("kakao_id");
 
-    if (position && userName && userBelong && major) {
+    if (kakao_id) {
+      // 백엔드 API 호출
+      axios
+        .get(`/onboarding/mentor/${kakao_id}`)
+        .then((response) => {
+          // 성공적으로 데이터를 가져왔을 때
+          setMentorData(response.data);
+          console.log("Mentor data:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching mentor data:", error);
+        });
+    }
+  }, []); // []를 사용하여 컴포넌트가 처음 마운트될 때 한 번만 실행
+
+  useEffect(() => {
+    const kakaoId = localStorage.getItem("kakao_id");
+
+    // mentorData가 존재하고 kakao_id가 일치하는지 확인
+    if (mentorData && mentorData.kakao_id === kakaoId) {
+      const userName = mentorData.nickname;
       navigate(`/mentorbus-frontend/main?userName=${userName}`);
     }
-  }, [navigate]);
+  }, [mentorData, navigate]); // mentorData가 업데이트될 때마다 확인
 
   return (
     <>
@@ -57,7 +79,6 @@ export function First({ count, setCount, sentence }: FirstProps) {
           {sentence}
         </div>
       </div>
-
       <div
         className="relative flex justify-center mt-10 "
         style={{ top: "33%" }}

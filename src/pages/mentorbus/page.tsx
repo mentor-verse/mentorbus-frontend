@@ -306,7 +306,7 @@ export function MentorBusPageMentee() {
             </div>
           </div>
           <div ref={growDivRef}></div>
-          <BottomNav />{" "}
+          <BottomNav />
         </div>
       </div>
     </>
@@ -576,6 +576,7 @@ export function MentorBusPageMentor() {
             </div>
           </div>
           <div ref={growDivRef}></div>
+          <BottomNav />
         </div>
       </div>
     </>

@@ -24,6 +24,8 @@ export function Fifth({ count, sentence }: FifthProps) {
     const userBelong = localStorage.getItem("userBelong");
     const major = localStorage.getItem("major");
     const favor = localStorage.getItem("favor");
+    const kakaoData = localStorage.getItem("kakaoData");
+    const accesstoken = kakaoData?.accesstoken;
 
     if (position === "멘토") {
       // Mentor data를 POST
@@ -32,6 +34,7 @@ export function Fifth({ count, sentence }: FifthProps) {
         position: position,
         job: userBelong,
         major: major,
+        accesstoken: accesstoken,
       };
 
       console.log("mentorData:", mentorData);
@@ -64,7 +67,7 @@ export function Fifth({ count, sentence }: FifthProps) {
         want: favor,
       };
 
-      console.log("mentorData:", menteeData);
+      console.log("menteeData:", menteeData);
 
       fetch(
         "https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/mentee",

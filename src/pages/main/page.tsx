@@ -50,6 +50,33 @@ export function MainPage() {
   const [mentorData, setMentorData] = useState<any[]>([]);
   const [menteeData, setMenteeData] = useState<any[]>([]);
 
+  // Fetch mentor data from the server where position is "멘토"
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/api/login/${userName}`
+        );
+
+        console.log("Response:", response);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch mentor data");
+        }
+
+        const data = await response.json();
+        console.log("Data:", data);
+        setMentorData(data); // Update the state with the fetched mentor data
+      } catch (error) {
+        console.error("Error fetching mentor data:", error);
+        setError(error.message);
+      }
+    };
+
+    fetchData();
+  }, [userName]); // Add userName to the dependency array
+
   useEffect(() => {
     const storedPosition = localStorage.getItem("position");
     const userName = localStorage.getItem("userName");
