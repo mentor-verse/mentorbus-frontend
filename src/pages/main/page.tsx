@@ -44,10 +44,10 @@ export function MainPage() {
   const [userName, setUserName] = useState<string | null>("");
   const [userMajor, setUserMajor] = useState<string>("");
   const [randomColleges, setRandomColleges] = useState<CollegeType[]>([]);
-  const [position] = useState<string | null>(null);
+  const [position, setPosition] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const [mentorData, setMentorData] = useState<any[]>([]);
+  const [userData, setUserData] = useState<any[]>([]);
   const [menteeData, setMenteeData] = useState<any[]>([]);
 
   // Fetch mentor data from the server where position is "멘토"
@@ -99,15 +99,18 @@ export function MainPage() {
     if (kakao_id) {
       // 백엔드 API 호출
       axios
-        .get(`/onboarding/mentor/${kakao_id}`)
+        .get(
+          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/userdata/${kakao_id}`
+        )
         .then((response) => {
           // 성공적으로 데이터를 가져왔을 때
-          setMentorData(response.data);
-          console.log("Mentor data:", response.data);
+          setUserData(response.data);
+          console.log("user data:", response.data);
+          console.log("position:", userData.position);
+          setPosition(userData.position);
         })
         .catch((error) => {
           console.error("Error fetching mentor data:", error);
-          navigate(`/mentorbus-frontend/onboarding?specialQuery=true`);
         });
     }
   }, []); // []를 사용하여 컴포넌트가 처음 마운트될 때 한 번만 실행
@@ -133,95 +136,8 @@ export function MainPage() {
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const storedPosition = localStorage.getItem("position");
-        const nickname = localStorage.getItem("userName");
-
-        // Fetch data from the appropriate API based on the position
-        let response;
-        if (storedPosition === "멘티") {
-          response = await axios.get(
-            `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/mentee/${nickname}`
-          );
-        } else {
-          response = await axios.get(
-            `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/mentor/${nickname}`
-          );
-        }
-
-        // Check if the API call was successful
-        if (response.status === 200) {
-          const userData = response.data;
-          console.log("userData:", userData);
-          // Update state with user data
-          setUserName(nickname);
-          setUserMajor(userData.major || "");
-        } else {
-          console.error("Failed to fetch user data");
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchData();
-  }, [navigate]);
-
-  useEffect(() => {
     setRandomColleges(getRandomColleges(colleges, 7));
   }, []);
-
-  // Fetch mentor data from the server where position is "멘토"
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/mentor/data`
-        );
-
-        console.log("response", response);
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch mentor data");
-        }
-
-        const data = await response.json();
-        console.log("data", data);
-        setMentorData(data.mentors); // Only mentor data is returned, so update state accordingly
-      } catch (error) {
-        console.error("Error fetching mentor data:", error);
-      }
-    };
-
-    fetchData();
-  }, []); // Empty array ensures this effect runs only once, when the component mounts
-
-  // Fetch mentor data from the server where position is "멘토"
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/mentee/data`
-        );
-
-        console.log("response", response);
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch mentee data");
-        }
-
-        const data = await response.json();
-        console.log("data", data);
-        setMenteeData(data.mentees); // Only mentor data is returned, so update state accordingly
-        console.log("menteeData", menteeData);
-      } catch (error) {
-        console.error("Error fetching mentee data:", error);
-      }
-    };
-
-    fetchData();
-  }, []); // Empty array ensures this effect runs only once, when the component mounts
 
   const renderMentorBoxes = () => (
     <>
@@ -246,12 +162,12 @@ export function MainPage() {
         title3="멘토"
       />
       <div className="flex mt-[20px] overflow-auto">
-        {Array.isArray(mentorData) &&
-          mentorData.map((mentorData, index) => (
+        {Array.isArray(userData) &&
+          userData.map((userData, index) => (
             <div key={index}>
               <MentorBox
-                name={mentorData.nickname}
-                major={mentorData.major}
+                name={userData.nickname}
+                major={userData.major}
                 gen="woman"
                 info="• 학생부종합전형 SW 우수인재
               • IT대학 및 글로벌미디어학부 관심 학생

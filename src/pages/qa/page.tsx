@@ -41,8 +41,28 @@ export function QAPage() {
       if (!response.ok) {
         throw new Error("Network response was not ok " + response.statusText);
       }
-      const data = await response.json(); // Assume this is an array of question objects
-      setSearchBoxes(data); // Set the fetched questions to the state
+      const data = await response.json();
+
+      // 서버에서 받은 응답이 객체인지 배열인지 확인
+      if (Array.isArray(data)) {
+        const formattedData = data.map((item) => ({
+          ...item,
+          isClick: item.isClick === "1", // "1"을 true로, "0"을 false로 변환
+        }));
+        setSearchBoxes(formattedData); // 배열로 반환된 경우 처리
+      } else if (typeof data === "object" && data !== null) {
+        // 객체인 경우 배열로 변환해서 처리
+        const formattedData = [
+          {
+            ...data,
+            isClick: data.isClick === "1", // "1"을 true로, "0"을 false로 변환
+          },
+        ];
+        setSearchBoxes(formattedData); // 객체를 배열로 변환하여 처리
+      } else {
+        throw new Error("Unexpected data format");
+      }
+
       console.log(data);
     } catch (error) {
       console.error(

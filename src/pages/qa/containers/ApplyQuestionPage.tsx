@@ -96,11 +96,11 @@ const ApplyQuestionPage = React.forwardRef<
               type: "all",
               major: localStorage.getItem("major") || "공학계열",
               mentor_answer: "",
-              userName: localStorage.getItem("userName") || "기본명",
+              kakao_id: localStorage.getItem("kakao_id") || "기본명",
               title: title,
               question: inputValue,
               author: localStorage.getItem("userName") || "기본명",
-              isClick : false
+              isClick: false,
             }
           );
 

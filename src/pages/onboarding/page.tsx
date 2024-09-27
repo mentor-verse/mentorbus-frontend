@@ -8,7 +8,6 @@ import { Third } from "./containers/Third";
 import { Fourth } from "./containers/Fourth";
 import { Road } from "@/components/Icons/Road";
 import { ZeroRoad } from "@/components/Icons/ZeroRoad";
-import { useNavigate } from "react-router-dom";
 import { Cloud } from "@/components/Icons/Cloud";
 import { Cloud2 } from "@/components/Icons/Cloud2";
 import { Fifth } from "./containers/Fifth";
@@ -18,7 +17,6 @@ export function Onboarding() {
   const [count, setCount] = useState(0);
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
 
   const [showSecondMentor, setShowSecondMentor] = useState(true);
   const [showSecondMentee, setShowSecondMentee] = useState(false);

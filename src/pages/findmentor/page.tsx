@@ -41,7 +41,7 @@ export function FindMentor() {
   const loadClasses = async () => {
     try {
       const response = await axios.get(
-        `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/classes`
+        `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/class/open`
       );
 
       if (response.status === 200) {

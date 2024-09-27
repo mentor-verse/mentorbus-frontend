@@ -132,6 +132,7 @@ const OpenClassPage = React.forwardRef<HTMLDivElement, OpenClassPageProps>(
                     name: localStorage.getItem("userName"),
                     major: localStorage.getItem("userBelong"),
                     status: "pending",
+                    kakao_id: localStorage.getItem("kakao_id"),
                   }
                 );
 

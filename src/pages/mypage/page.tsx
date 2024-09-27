@@ -23,7 +23,7 @@ interface UserData {
 
 export function MyPage() {
   const [level] = useState("3"); // 기본값을 설정하거나 필요에 따라 변경 가능
-  const [MentorData, setMentorData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
 
   // 멘토 데이터를 가져오는 함수
   useEffect(() => {
@@ -32,20 +32,22 @@ export function MyPage() {
     if (kakao_id) {
       // 백엔드 API 호출
       axios
-        .get(`/onboarding/mentor/${kakao_id}`)
+        .get(
+          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/userdata/${kakao_id}`
+        )
         .then((response) => {
           // 성공적으로 데이터를 가져왔을 때
-          setMentorData(response.data);
-          console.log("Mentor data:", response.data);
+          setUserData(response.data);
+          console.log("User data:", response.data);
         })
         .catch((error) => {
-          console.error("Error fetching mentor data:", error);
+          console.error("Error fetching userData data:", error);
         });
     }
   }, []); // []를 사용하여 컴포넌트가 처음 마운트될 때 한 번만 실행
 
   const renderLevelIcon = () => {
-    if (MentorData?.position === "멘토") {
+    if (userData?.position === "멘토") {
       switch (level) {
         case "1":
           return <LevelFirstMentor />;
@@ -91,8 +93,8 @@ export function MyPage() {
             <div className="divMargin"></div>
             <div className="mb-[150px]">
               <Profile
-                name={MentorData?.nickname || "Unknown"}
-                school={MentorData?.school || "Unknown School"}
+                name={userData?.nickname || "Unknown"}
+                school={userData?.school || "Unknown School"}
                 level={"3"}
                 gen="man"
               />
