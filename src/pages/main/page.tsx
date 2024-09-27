@@ -91,6 +91,26 @@ export function MainPage() {
   }, [navigate]);
   '*/
 
+  // 멘토 데이터를 가져오는 함수
+  useEffect(() => {
+    const kakao_id = localStorage.getItem("kakao_id");
+
+    if (kakao_id) {
+      // 백엔드 API 호출
+      axios
+        .get(`/onboarding/mentor/${kakao_id}`)
+        .then((response) => {
+          // 성공적으로 데이터를 가져왔을 때
+          setMentorData(response.data);
+          console.log("Mentor data:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching mentor data:", error);
+          navigate(`/mentorbus-frontend/onboarding?specialQuery=true`);
+        });
+    }
+  }, []); // []를 사용하여 컴포넌트가 처음 마운트될 때 한 번만 실행
+
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const storedUserName = searchParams.get("userName");
