@@ -51,17 +51,6 @@ export function Onboarding() {
   }, [count]);
 
   useEffect(() => {
-    const position = localStorage.getItem("position");
-    const userName = localStorage.getItem("userName");
-    const userBelong = localStorage.getItem("userBelong");
-    const major = localStorage.getItem("major");
-
-    if (position && userName && userBelong && major) {
-      navigate(`/mentorbus-frontend/main?userName=${userName}`);
-    }
-  }, [navigate]);
-
-  useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const specialQuery = urlParams.get("specialQuery");
 

@@ -52,6 +52,7 @@ export function MainPage() {
 
   // Fetch mentor data from the server where position is "멘토"
 
+  /*
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -75,7 +76,7 @@ export function MainPage() {
 
     fetchData();
   }, [userName]); // Add userName to the dependency array
-
+*/
   /*
   useEffect(() => {
     const storedPosition = localStorage.getItem("position");
