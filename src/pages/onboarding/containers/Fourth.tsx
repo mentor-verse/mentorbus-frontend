@@ -28,13 +28,12 @@ export function Fourth({ count, setCount, sentence }: FourthProps) {
     }
   }, [location.search]);
 
-  const handleNext = () => {
+  const handleNext = (major: string) => {
     localStorage.setItem("major", major); // Store the major in localStorage
     const position = localStorage.getItem("position");
     const userName = localStorage.getItem("userName");
     console.log("userName:", userName);
     const userBelong = localStorage.getItem("userBelong");
-    const major = localStorage.getItem("major");
 
     if (position === "멘토") {
       // Mentor data를 POST
