@@ -53,6 +53,23 @@
         }
       })(window.location);
     </script>
+
+    <script>
+      // Check if kakao_id is already available in the localStorage
+      const savedKakaoId = localStorage.getItem("kakao_id");
+      if (savedKakaoId) {
+        console.log("kakao_id found in localStorage:", savedKakaoId);
+      } else {
+        console.log("No kakao_id found in localStorage.");
+      }
+
+      // Display the kakao_id variable if it's been set by the WebView
+      if (window.kakaoId) {
+        console.log("Received kakao_id from WebView:", window.kakaoId);
+      } else {
+        console.log("No kakao_id received from WebView.");
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
