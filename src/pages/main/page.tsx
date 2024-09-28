@@ -15,7 +15,6 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios"; // Import axios to make API requests
 import BottomNav from "@/containers/navbar";
-
 // Define the College type
 interface CollegeType {
   img: string;
@@ -47,91 +46,48 @@ export function MainPage() {
   const [position, setPosition] = useState<string | null>(null);
   const location = useLocation();
   const [userData, setUserData] = useState<any>(null); // 배열 대신 객체(null로 초기화)
-  const [kakao_id, setKakaoId] = useState<any>(null); // 배열 대신 객체(null로 초기화)
+  const [kakaoId, setKakaoId] = useState<string | null>(null); // kakaoId 상태값으로 설정
 
-  // Fetch mentor data from the server where position is "멘토"
-
-  /*
+  // URL에서 kakaoId를 가져오는 함수
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/api/login/${userName}`
-        );
-
-        console.log("Response:", response);
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch mentor data");
-        }
-
-        const data = await response.json();
-        console.log("Data:", data);
-        setMentorData(data); // Update the state with the fetched mentor data
-      } catch (error) {
-        console.error("Error fetching mentor data:", error);
-      }
-    };
-
-    fetchData();
-  }, [userName]); // Add userName to the dependency array
-*/
-  /*
-  useEffect(() => {
-    const storedPosition = localStorage.getItem("position");
-    const userName = localStorage.getItem("userName");
-    const userBelong = localStorage.getItem("userBelong");
-    const major = localStorage.getItem("major");
-
-    if (!(storedPosition && userName && userBelong && major)) {
-      navigate(`/mentorbus-frontend/onboarding?specialQuery=true`);
+    const searchParams = new URLSearchParams(location.search);
+    const urlKakaoId = searchParams.get("userId"); // URL에서 userId 파라미터로 kakaoId 추출
+    if (urlKakaoId) {
+      setKakaoId(urlKakaoId); // 상태 업데이트
+      localStorage.setItem("kakao_id", urlKakaoId); // localStorage에 저장
     } else {
-      setPosition(storedPosition);
+      const storedKakaoId = localStorage.getItem("kakao_id");
+      if (storedKakaoId) {
+        setKakaoId(storedKakaoId);
+      }
     }
-  }, [navigate]);
-  '*/
+  }, [location.search]);
 
-  //사용자 데이터를 가져오는 함수
-
+  // kakaoId가 있을 때 백엔드 API 호출
   useEffect(() => {
-    const kakaoId = localStorage.getItem("kakao_id");
-    console.log("Kakao ID from localStorage:", kakaoId);
-    setKakaoId(kakaoId);
-  }, []);
-
-  useEffect(() => {
-    if (kakao_id) {
+    if (kakaoId) {
       // 백엔드 API 호출
       axios
         .get(
-          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/userdata/${kakao_id}`
+          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/userdata/${kakaoId}`
         )
         .then((response) => {
           // 성공적으로 데이터를 가져왔을 때
           setUserData(response.data);
-          console.log("user data:", response.data);
-          console.log("position:", userData.position);
-          setPosition(userData.position);
-          localStorage.setItem("kakao_id", kakao_id);
+          setPosition(response.data.position);
         })
         .catch((error) => {
-          console.error("Error fetching mentor data:", error);
+          console.error("Error fetching user data:", error);
         });
     }
-  }, []); // []를 사용하여 컴포넌트가 처음 마운트될 때 한 번만 실행
+  }, [kakaoId]); // kakaoId가 변경될 때마다 실행
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const storedUserName = searchParams.get("userName");
+    const storedUserName = localStorage.getItem("userName");
     if (storedUserName) {
       setUserName(storedUserName);
-    } else {
-      const localUserName = localStorage.getItem("userName");
-      if (localUserName) {
-        setUserName(localUserName);
-      }
     }
-  }, [location.search]);
+  }, []);
 
   useEffect(() => {
     const storedUserMajor = localStorage.getItem("major");
