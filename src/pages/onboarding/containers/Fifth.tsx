@@ -56,7 +56,7 @@ export function Fifth({ count, sentence }: FifthProps) {
         position: position,
         job: userBelong,
         major: major,
-        accesstoken: accesstoken,
+        kakao_id: kakaoId,
       };
 
       console.log("mentorData:", mentorData);
@@ -87,6 +87,7 @@ export function Fifth({ count, sentence }: FifthProps) {
         school: userBelong,
         interest: major,
         want: favor,
+        kakao_id: kakaoId,
       };
 
       console.log("menteeData:", menteeData);
