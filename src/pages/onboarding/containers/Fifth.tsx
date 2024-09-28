@@ -41,13 +41,6 @@ export function Fifth({ count, sentence }: FifthProps) {
     const userBelong = localStorage.getItem("userBelong");
     const major = localStorage.getItem("major");
     const favor = localStorage.getItem("favor");
-    const kakaoDataString = localStorage.getItem("kakaoData");
-
-    let accesstoken;
-    if (kakaoDataString) {
-      const kakaoData = JSON.parse(kakaoDataString); // JSON 객체로 변환
-      accesstoken = kakaoData.accesstoken; // accesstoken에 접근
-    }
 
     if (position === "멘토") {
       // Mentor data를 POST
@@ -105,7 +98,7 @@ export function Fifth({ count, sentence }: FifthProps) {
         .then((response) => response.json())
         .then((data) => {
           console.log("Mentee data saved:", data);
-          navigate(`/mentorbus-frontend/main?userName=${userName}`);
+          navigate(`/mentorbus-frontend/main?userId=${kakaoId}`);
         })
         .catch((error) => {
           console.error("Error saving mentee data:", error);
