@@ -47,6 +47,7 @@ export function MainPage() {
   const [position, setPosition] = useState<string | null>(null);
   const location = useLocation();
   const [userData, setUserData] = useState<any>(null); // 배열 대신 객체(null로 초기화)
+  const [kakao_id, setKakaoId] = useState<any>(null); // 배열 대신 객체(null로 초기화)
 
   // Fetch mentor data from the server where position is "멘토"
 
@@ -90,10 +91,15 @@ export function MainPage() {
   }, [navigate]);
   '*/
 
-  // 멘토 데이터를 가져오는 함수
-  useEffect(() => {
-    const kakao_id = localStorage.getItem("kakao_id");
+  //사용자 데이터를 가져오는 함수
 
+  useEffect(() => {
+    const kakaoId = localStorage.getItem("kakao_id");
+    console.log("Kakao ID from localStorage:", kakaoId);
+    setKakaoId(kakaoId);
+  }, []);
+
+  useEffect(() => {
     if (kakao_id) {
       // 백엔드 API 호출
       axios
@@ -106,6 +112,7 @@ export function MainPage() {
           console.log("user data:", response.data);
           console.log("position:", userData.position);
           setPosition(userData.position);
+          localStorage.setItem("kakao_id", kakao_id);
         })
         .catch((error) => {
           console.error("Error fetching mentor data:", error);
