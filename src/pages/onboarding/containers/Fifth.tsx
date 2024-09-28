@@ -1,6 +1,7 @@
 import { Logo } from "@/components/Icons/Logo";
 import { NextButton } from "@/components/Icons/NextButton";
 import { OnboardingButton } from "@/components/ui/onboardingbutton";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface FifthProps {
@@ -11,10 +12,26 @@ interface FifthProps {
 
 export function Fifth({ count, sentence }: FifthProps) {
   const navigate = useNavigate();
+  const [kakaoId, setKakaoId] = useState<string | null>(null); // kakaoId 상태값으로 설정
 
   const handleFavor = (favor: string) => {
     localStorage.setItem("favor", favor); // Store the major in localStorage
   };
+
+  // URL에서 kakaoId를 가져오는 함수
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const urlKakaoId = searchParams.get("userId"); // URL에서 userId 파라미터로 kakaoId 추출
+    if (urlKakaoId) {
+      setKakaoId(urlKakaoId); // 상태 업데이트
+      localStorage.setItem("kakao_id", urlKakaoId); // localStorage에 저장
+    } else {
+      const storedKakaoId = localStorage.getItem("kakao_id");
+      if (storedKakaoId) {
+        setKakaoId(storedKakaoId);
+      }
+    }
+  }, [location.search]);
 
   const handleNext = () => {
     console.log("handleNext");
@@ -56,8 +73,8 @@ export function Fifth({ count, sentence }: FifthProps) {
       )
         .then((response) => response.json())
         .then((data) => {
-          console.log("Mentor data saved:", data);
-          navigate(`/mentorbus-frontend/main?userName=${userName}`);
+          console.log("User data saved:", data);
+          navigate(`/mentorbus-frontend/main?userId=${kakaoId}`);
         })
         .catch((error) => {
           console.error("Error saving mentor data:", error);
@@ -94,7 +111,6 @@ export function Fifth({ count, sentence }: FifthProps) {
         });
     }
   };
-  
 
   return (
     <div className="relative flex flex-col items-center text-[#fff]">
