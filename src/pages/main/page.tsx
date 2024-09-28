@@ -12,7 +12,7 @@ import CAU from "@/assets/CAU.svg";
 import { MentorBox } from "@/components/ui/mentorbox";
 import { MentorScheduleSection } from "@/pages/main/containers/MentorScheduleSection"; // Import the new component
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios"; // Import axios to make API requests
 import BottomNav from "@/containers/navbar";
 // Define the College type
@@ -47,6 +47,7 @@ export function MainPage() {
   const location = useLocation();
   const [userData, setUserData] = useState<any>(null); // 배열 대신 객체(null로 초기화)
   const [kakaoId, setKakaoId] = useState<string | null>(null); // kakaoId 상태값으로 설정
+  const navigate = useNavigate();
 
   // URL에서 kakaoId를 가져오는 함수
   useEffect(() => {
@@ -78,6 +79,7 @@ export function MainPage() {
         })
         .catch((error) => {
           console.error("Error fetching user data:", error);
+          navigate("/mentorbus-frontend/onboarding?specialQuery=true");
         });
     }
   }, [kakaoId]); // kakaoId가 변경될 때마다 실행
