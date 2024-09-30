@@ -40,16 +40,16 @@ const FindTitle: FC<FindTitleProps> = ({
   };
   return (
     <>
-      <div className="flex justify-center items-center text-lg not-italic font-bold text-[19px] mt-[20px] mr-[140px]">
+      <div className="flex justify-center items-center text-lg not-italic font-bold text-[19px] mt-[20px] mr-[140px] ">
         {!back_disable && (
           <a onClick={handleBackClick}>
             <LeftArrow />
           </a>
         )}
 
-        <div className="ml-[140px]"></div>
+        <div className="ml-[180px]"></div>
 
-        <div>{title}</div>
+        <div className="w-20">{title}</div>
       </div>
     </>
   );

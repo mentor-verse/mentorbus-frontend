@@ -3,6 +3,7 @@ import { cn } from "../../../libs/utils.ts";
 import { SmallMentorProfile } from "../../../components/ui/smallmentorprofile.tsx";
 import { Good } from "@/components/Icons/Comment.tsx";
 import { Comment } from "@/components/Icons/Comment";
+import axios from "axios";
 
 export interface CommentSectionProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -13,22 +14,40 @@ export interface CommentSectionProps
 }
 
 const CommentSection = React.forwardRef<HTMLDivElement, CommentSectionProps>(
-  ({ className, mentor_answer, star_num, comment_num, onStarClick }, ref) => {
-    const [stars, setStars] = React.useState(star_num);
-    const [starred, setStarred] = React.useState(false);
+  ({ className, mentor_answer }, ref) => {
+    const [letter_id, setLetterId] = React.useState<string | null>(null); // kakaoId 상태값으로 설정
+    const [comment_id, setCommentId] = React.useState<string | null>(null); // kakaoId 상태값으로 설정
 
-    const handleStarClick = () => {
-      const newStarred = !starred;
-      const newStars = newStarred ? stars + 1 : stars - 1;
-      setStars(newStars);
-      setStarred(newStarred);
-      if (onStarClick) {
-        onStarClick(newStarred, newStars); // 현재 상태와 새로운 stars 값을 전달
+    // URL에서 kakaoId를 가져오는 함수
+    React.useEffect(() => {
+      const searchParams = new URLSearchParams(location.search);
+      const urlLetterId = searchParams.get("letter_id"); // URL에서 letter_id 파라미터로 kakaoId 추출
+      console.log("urlLetterId", urlLetterId);
+      setLetterId(urlLetterId); // 상태 업데이트
+    }, [location.search]); // Make sure to listen to location.search to handle URL changes
+
+    // letter_id가 업데이트될 때 실행
+    React.useEffect(() => {
+      if (letter_id) {
+        console.log("letter_id_find", letter_id);
       }
-    };
+    }, [letter_id]); // Add letter_id as a dependency to trigger when it's updated
 
-    const userName = localStorage.getItem("userName");
-    const belong = localStorage.getItem("userName");
+    React.useEffect(() => {
+      if (letter_id) {
+        axios
+          .get(
+            `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/comments/${letter_id}`
+          )
+          .then((response) => {
+            setCommentId(response.data);
+            console.log("Comment data:", response.data);
+          })
+          .catch((error) => {
+            console.error("Error fetching comment data:", error);
+          });
+      }
+    }, [letter_id]); // letter_id가 변경될 때만 실행
 
     return (
       <div
@@ -41,8 +60,16 @@ const CommentSection = React.forwardRef<HTMLDivElement, CommentSectionProps>(
         <div className="py-4">
           <div className="ml-[30px]">
             <SmallMentorProfile
-              name={userName || "편유나 멘토"}
-              belong={belong || "숭실대학교"}
+              name={
+                Array.isArray(comment_id) && comment_id.length > 0
+                  ? comment_id[0]?.userName
+                  : "편유나 멘토"
+              }
+              belong={
+                Array.isArray(comment_id) && comment_id.length > 0
+                  ? comment_id[0]?.position
+                  : "숭실대학교"
+              }
               gen={"woman"}
             />
           </div>
@@ -57,22 +84,7 @@ const CommentSection = React.forwardRef<HTMLDivElement, CommentSectionProps>(
               "flex text-start items-center mt-[4px] ml-[30px]",
               className
             )}
-          >
-            <div
-              className="flex text-start items-center justify-center text-blue-500 not-italic font-normal text-[11px] border-[0.4px] border-[#CCCCCC] w-[43px] py-1 rounded-[50px]"
-              onClick={handleStarClick}
-              style={{ cursor: "pointer" }} // Add cursor style to indicate it's clickable
-            >
-              <Good />
-              <div className="ml-[2px]"></div>
-              {stars}
-            </div>
-            <div className="flex text-start items-center  justify-center text-gray-600 not-italic font-normal text-[11px] ml-[5px] border-[0.4px] border-[#CCCCCC] w-[43px] py-1 rounded-[50px]">
-              <Comment />
-              <div className="ml-[2px]"></div>
-              {comment_num}
-            </div>
-          </div>
+          ></div>
         </div>
       </div>
     );

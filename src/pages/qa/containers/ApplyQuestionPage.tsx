@@ -72,14 +72,16 @@ const ApplyQuestionPage = React.forwardRef<
     storedData.push(newQuestion);
     localStorage.setItem("questions", JSON.stringify(storedData));
     setAnswer(inputValue);
-    navigate("/mentorbus-frontend/qabus");
     fetchData();
+
+    navigate("/mentorbus-frontend/qabus");
   };
 
   const fetchData = async () => {
     try {
       // Get ClassData from localStorage
       const letterData = localStorage.getItem("questions") || "[]";
+      const comment_id = null; // Initialize comment_id to null or assign a value
 
       // Convert ClassData to JSON
       const letterDataJson = JSON.parse(letterData);
@@ -101,6 +103,7 @@ const ApplyQuestionPage = React.forwardRef<
               question: inputValue,
               author: localStorage.getItem("userName") || "기본명",
               isClick: false,
+              comment_id: comment_id || null,
             }
           );
 

@@ -18,7 +18,7 @@ const SmallMentorProfile = React.forwardRef<
     <div className={cn("flex text-start items-center", className)}>
       <div className={gen}>{gen === "man" ? <SmallMan /> : <SmallWoman />}</div>
       <div className="ml-[10px]">
-        <div className="text-xs not-italic font-semibold">{name}</div>
+        <div className="text-xs not-italic font-semibold">{name} 멘토</div>
         <div className="not-italic font-normal text-[11px] text-[#676767]">
           {belong}
         </div>

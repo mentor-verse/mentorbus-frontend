@@ -228,6 +228,15 @@ a {
   background: transparent;
 }
 
+.above_wrapper_channel {
+  position: fixed;
+  top: 80%;
+  left: 80%;
+  right: 0;
+  height: 80px;
+  background: transparent;
+}
+
 nav {
   overflow: hidden;
   border-top: 2px solid grey;

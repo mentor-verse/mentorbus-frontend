@@ -5,6 +5,7 @@ import { FilterButton } from "@/components/Icons/FilterButton";
 import { useNavigate } from "react-router-dom";
 import { SearchIcon } from "@/components/Icons/MainIcons";
 import BottomNav from "@/containers/navbar";
+import axios from "axios";
 
 interface QuestionBoxType {
   id: number;
@@ -28,6 +29,7 @@ export function QAPage() {
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const [userData, setUserData] = useState();
 
   // State to hold questions fetched from the server
   const [searchBoxes, setSearchBoxes] = useState<QuestionBoxType[]>([]);
@@ -35,7 +37,6 @@ export function QAPage() {
   // State for search functionality
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isSearchOpen, setIsSearchOpen] = useState(false); // Toggle search bar visibility
-
   // Fetch data from the server
   const getLetters = async () => {
     try {
@@ -143,7 +144,7 @@ export function QAPage() {
     navigate(
       `/mentorbus-frontend/comment?userName=${encodeURIComponent(
         box.author
-      )}&index=${encodeURIComponent(index)}`,
+      )}&letter_id=${encodeURIComponent(box.id)}`,
       {
         state: {
           question: box.question,
@@ -180,6 +181,29 @@ export function QAPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const kakaoId = localStorage.getItem("kakao_id");
+
+  useEffect(() => {
+    if (kakaoId) {
+      // 백엔드 API 호출
+      axios
+        .get(
+          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/userdata/${kakaoId}`
+        )
+        .then((response) => {
+          // 성공적으로 데이터를 가져왔을 때
+          setUserData(response.data);
+          console.log("userData (response)", response.data);
+          console.log("userData", userData);
+          localStorage.setItem("userName", response.data.nickname);
+          localStorage.setItem("userBelong", response.data.school);
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+    }
+  }, []); // kakaoId가 변경될 때마다 실행
+
   return (
     <>
       <div className="main">
@@ -200,15 +224,16 @@ export function QAPage() {
               </div>
             </div>
 
-            {/* Search Input Field */}
             {isSearchOpen && (
               <div className="mt-4 flex justify-center">
                 <input
                   type="text"
-                  placeholder="Search by title or question..."
+                  placeholder="궁금한 고민을 검색해보세요"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="p-2 border border-gray-300 rounded w-full max-w-md"
+                  onFocus={(e) => (e.target.style.border = "none")} // 클릭 시 border 비활성화
+                  onBlur={(e) => (e.target.style.border = "1px solid #D1D5DB")} // 포커스 해제 시 원래 border로 복구
+                  className="p-2 border border-gray-300  w-[90%] max-w-md rounded-lg "
                 />
               </div>
             )}

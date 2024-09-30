@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import {
   Home,
   FindMentor,
-  FindMentee, // FindMentee 아이콘 추가
+  FindMentee,
   MentorBus,
   QABus,
   MyPage,
@@ -10,21 +10,21 @@ import {
 import { PencilBtn } from "@/components/Icons/PencilBtn";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PlusButton } from "@/components/Icons/PlusButton";
+import { Channel } from "@/components/Icons/Channel";
 
 const BottomNav = () => {
-  // 현재 선택된 아이콘을 관리하는 state
   const location = useLocation();
   const navigate = useNavigate();
 
-  // PencilBtn 표시 여부를 관리하는 state
   const [showPencilBtn, setShowPencilBtn] = useState(false);
   const [showPlusBtn, setshowPlusBtn] = useState(false);
-
-  // 사용자의 위치 정보를 관리하는 state
+  const [channelBtn, setChannelBtn] = useState(false);
   const [position, setPosition] = useState<string | null>(null);
 
+  // mentee_id 상태 추가
+  const mentee_id = localStorage.getItem("kakao_id");
+
   useEffect(() => {
-    // 로컬 스토리지에서 position 값을 가져옴
     const storedPosition = localStorage.getItem("position");
     setPosition(storedPosition);
 
@@ -39,9 +39,7 @@ const BottomNav = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    // 로컬 스토리지에서 position 값을 가져옴
     const storedPosition = localStorage.getItem("position");
-
     if (
       location.pathname === "/mentorbus-frontend/mentorbus" &&
       storedPosition === "멘토"
@@ -49,6 +47,14 @@ const BottomNav = () => {
       setshowPlusBtn(true);
     } else {
       setshowPlusBtn(false);
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (location.pathname === "/mentorbus-frontend/main") {
+      setChannelBtn(true);
+    } else {
+      setChannelBtn(false);
     }
   }, [location.pathname]);
 
@@ -78,6 +84,14 @@ const BottomNav = () => {
         </div>
       )}
 
+      {channelBtn && (
+        <div className="above_wrapper_channel">
+          <button className="custom-button-1">
+            <Channel />
+          </button>
+        </div>
+      )}
+
       <nav className="wrapper">
         <div className="flex justify-center">
           <a href="/mentorbus-frontend/main">
@@ -94,7 +108,8 @@ const BottomNav = () => {
           </a>
         </div>
         <div className="flex justify-center">
-          <a href="/mentorbus-frontend/mentorbus">
+          {/* mentee_id 변수를 사용하여 href 속성에 적용 */}
+          <a href={`/mentorbus-frontend/mentorbus?mentee_id=${mentee_id}`}>
             <MentorBus color={getColor("/mentorbus-frontend/mentorbus")} />
           </a>
         </div>

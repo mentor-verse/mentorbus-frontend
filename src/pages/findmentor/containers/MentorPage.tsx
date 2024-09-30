@@ -11,6 +11,8 @@ export function MentorPage() {
   const [isApplied, setIsApplied] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const [mentee_id, setMenteeId] = useState(false);
+
   const selectedBox = location.state?.selectedBox;
 
   // Function to send data to the API
@@ -38,11 +40,20 @@ export function MentorPage() {
           name: box.name,
           major: box.major,
           status: box.status,
+          mentee_id: localStorage.getItem("kakao_id"),
         }
       );
       console.log("Class saved successfully:", response.data);
+      console.log("Class saved response:", response);
+      setMenteeId(response.data.result.data.mentee_id);
+      console.log(
+        "response.data.result.data.mentee_id",
+        response.data.result.data.mentee_id
+      );
     } catch (error) {
       console.error("Error saving class:", error);
+      alert("이미 신청한 수업입니다.");
+      navigate("/mentorbus-frontend/find");
     }
   };
 
@@ -66,7 +77,9 @@ export function MentorPage() {
       localStorage.setItem("appliedItems", JSON.stringify(appliedItems));
     }
 
-    navigate(`/mentorbus-frontend/mentorbus?name=${selectedBox.name}`);
+    navigate(
+      `/mentorbus-frontend/mentorbus?name=${selectedBox.name}&mentee_id=${mentee_id}`
+    );
     console.log("selectedBox", selectedBox);
   };
 

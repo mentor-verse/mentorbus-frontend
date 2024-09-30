@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { LeftArrow } from "@/components/Icons/LeftArrow.tsx";
 import BottomNav from "@/containers/navbar.tsx";
 import { ApplyAnswerBox } from "@/pages/qa/containers/ApplyAnswerBox.tsx";
+import axios from "axios";
 
 export interface CommentPageProps extends React.HTMLAttributes<HTMLDivElement> {
   Link: string;
@@ -17,6 +18,9 @@ const CommentPage = React.forwardRef<HTMLDivElement, CommentPageProps>(
   ({ className, back_disable, back_work, Link }, ref) => {
     const navigate = useNavigate();
     const location = useLocation();
+    const [letter_id, setLetterId] = React.useState<string | null>(null); // kakaoId 상태값으로 설정
+    const [comment_id, setCommentId] = React.useState<string | null>(null); // kakaoId 상태값으로 설정
+    const [mentor_answer, setMentorAnswer] = React.useState(false); // kakaoId 상태값으로 설정
 
     // Extract userName and idx from the query parameters or state
     const queryParams = new URLSearchParams(location.search);
@@ -26,21 +30,6 @@ const CommentPage = React.forwardRef<HTMLDivElement, CommentPageProps>(
     // QAPage로부터 전달받은 state에서 데이터 추출
     const { title, question, star_num, comment_num, position } =
       location.state || {};
-
-    // Get the questions data from localStorage
-    const questions = localStorage.getItem("questions");
-    let mentor_answer = null;
-
-    if (questions) {
-      const questionsData = JSON.parse(questions);
-
-      // 해당 인덱스의 question 및 mentor_answer 가져오기
-      if (idx >= 0 && idx < questionsData.length) {
-        mentor_answer = questionsData[idx].mentor_answer;
-      } else {
-        console.error("Invalid index or question data not found.");
-      }
-    }
 
     // Get the user's position from localStorage
 
@@ -55,6 +44,39 @@ const CommentPage = React.forwardRef<HTMLDivElement, CommentPageProps>(
         window.history.back();
       }
     };
+
+    // URL에서 kakaoId를 가져오는 함수
+    React.useEffect(() => {
+      const searchParams = new URLSearchParams(location.search);
+      const urlLetterId = searchParams.get("letter_id"); // URL에서 letter_id 파라미터로 kakaoId 추출
+      console.log("urlLetterId", urlLetterId);
+      setLetterId(urlLetterId); // 상태 업데이트
+    }, [location.search]); // Make sure to listen to location.search to handle URL changes
+
+    // letter_id가 업데이트될 때 실행
+    React.useEffect(() => {
+      if (letter_id) {
+        console.log("letter_id_find", letter_id);
+      }
+    }, [letter_id]); // Add letter_id as a dependency to trigger when it's updated
+
+    React.useEffect(() => {
+      if (letter_id) {
+        axios
+          .get(
+            `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/comments/${letter_id}`
+          )
+          .then((response) => {
+            setCommentId(response.data);
+            console.log("Comment data:", response.data);
+            setMentorAnswer(true);
+          })
+          .catch((error) => {
+            console.error("Error fetching comment data:", error);
+            setMentorAnswer(false);
+          });
+      }
+    }, [letter_id]); // letter_id가 변경될 때만 실행
 
     return (
       <div className={cn("grid place-items-center", className)} ref={ref}>
@@ -79,21 +101,29 @@ const CommentPage = React.forwardRef<HTMLDivElement, CommentPageProps>(
           />
         </div>
 
-        {/* Conditional rendering */}
-        {mentor_answer ? (
-          <CommentSection
-            mentor_answer={mentor_answer}
-            star_num={0}
-            comment_num={0}
-          />
-        ) : (
-          position !== "멘티" && (
-            <>
-              <div className="mt-[25px]"></div>
-              <ApplyAnswerBox name={userName} gen={"woman"} />
-            </>
-          )
-        )}
+        {mentor_answer
+          ? comment_id?.map(
+              (
+                comment: {
+                  content: string;
+                  replyCount: string;
+                },
+                index: React.Key | null | undefined
+              ) => (
+                <CommentSection
+                  key={index}
+                  mentor_answer={comment.content} // 각 댓글의 replyCount를 표시
+                  star_num={0}
+                  comment_num={0}
+                />
+              )
+            )
+          : position !== "멘티" && (
+              <>
+                <div className="mt-[25px]"></div>
+                <ApplyAnswerBox name={userName} gen={"woman"} />
+              </>
+            )}
 
         <BottomNav />
       </div>

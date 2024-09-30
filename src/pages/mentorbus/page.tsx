@@ -86,6 +86,7 @@ if (position === "멘티") {
 // 멘티용 컴포넌트
 export function MentorBusPageMentee() {
   const [InfoBox, setInfoBox] = useState(false);
+  const [mentee_id, setMenteeId] = useState<string | null>("");
 
   const position = localStorage.getItem("position");
 
@@ -107,32 +108,41 @@ export function MentorBusPageMentee() {
     { title: string; content: string; date: string; gatherUrl: string }[]
   >([]);
 
+  // URL에서 kakaoId를 가져오는 함수
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const menteeId = searchParams.get("mentee_id"); // URL에서 userId 파라미터로 kakaoId 추출
+    setMenteeId(menteeId); // 상태 업데이트
+  }, [location.search]);
+
+  // Fetch applied items whenever mentee_id changes
+  useEffect(() => {
+    if (mentee_id) {
+      loadAppliedItems(); // Fetch data on mentee_id change
+    }
+  }, [mentee_id]);
+
+  // Fetch applied items whenever mentee_id changes
+  useEffect(() => {
+    loadAppliedItems(); // Fetch data on mentee_id change
+  }, []);
+
   const loadAppliedItems = async () => {
     try {
       const response = await axios.get(
-        `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/classes/myClass`
+        `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/classes/myClass/${mentee_id}`
       );
 
       console.log("Full Response Object:", response);
 
       if (response.status === 200) {
-        // Check if response.data is an object, and wrap it in an array
         const itemsFromApi = Array.isArray(response.data)
           ? response.data
           : [response.data];
 
         console.log("itemsFromApi:", itemsFromApi);
 
-        const parsedItems: SelectedBox[] = itemsFromApi
-          .map((item: any) => ({
-            ...item,
-            status: item.status === "completed" ? "completed" : "pending",
-          }))
-          .filter((item) => isSelectedBox(item));
-
-        console.log(parsedItems);
-
-        setAppliedItems(itemsFromApi);
+        setAppliedItems(itemsFromApi); // Update with parsed items
         console.log(appliedItems);
       } else {
         console.error("Unexpected response status:", response.status);
@@ -145,9 +155,6 @@ export function MentorBusPageMentee() {
   };
 
   useEffect(() => {
-    loadAppliedItems(); // Fetch data on mount
-    console.log("appliedItem", appliedItems);
-
     const handleStorageChange = (event: StorageEvent) => {
       if (event.key === "appliedItems") {
         loadAppliedItems(); // Refetch data when localStorage changes
@@ -155,11 +162,10 @@ export function MentorBusPageMentee() {
     };
 
     window.addEventListener("storage", handleStorageChange);
-
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
-  }, [name]); // Run the effect when id changes
+  }, []); // Run this effect only once on mount
 
   const handleEnter = async (item: SelectedBox, classData: any) => {
     console.log(
@@ -195,7 +201,9 @@ export function MentorBusPageMentee() {
       // 서버에 PATCH 요청 보내기
       try {
         const response = await fetch(
-          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/classes/${item.id}`,
+          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/classes/${
+            item.id + 1
+          }/status`,
           {
             method: "PATCH",
             headers: {
@@ -328,7 +336,6 @@ export function MentorBusPageMentee() {
 export function MentorBusPageMentor() {
   const [filter, setFilter] = useState("entry");
   const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
-  const [, setLoading] = useState(true); // 로딩 상태 추가
 
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
@@ -344,60 +351,45 @@ export function MentorBusPageMentor() {
 
   const loadAppliedItems = async () => {
     try {
-      // API로 데이터를 fetch
       const response = await axios.get(
-        "https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/classes"
+        `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/classes/myClass/${mentee_id}`
       );
 
-      if (response.status === 200 && Array.isArray(response.data)) {
-        const itemsFromApi = response.data;
-        console.log("res:", response);
-        console.log(itemsFromApi);
-        // 각 아이템을 처리하여 상태를 갱신
-        /*
-        const parsedItems: SelectedBox[] = itemsFromApi
-          .map((item: any) => ({
-            ...item,
-            status: item.status === "completed" ? "completed" : "pending",
-          }))
-          .filter((item) => isSelectedBox(item));
-*/
-        setAppliedItems(itemsFromApi);
+      console.log("Full Response Object:", response);
+
+      if (response.status === 200) {
+        const itemsFromApi = Array.isArray(response.data)
+          ? response.data
+          : [response.data];
+
+        console.log("itemsFromApi:", itemsFromApi);
+
+        setAppliedItems(itemsFromApi); // Update with parsed items
+        console.log(appliedItems);
       } else {
-        console.error(
-          "API에서 가져온 데이터가 배열이 아닙니다:",
-          response.data
-        );
+        console.error("Unexpected response status:", response.status);
         setAppliedItems([]);
       }
     } catch (error) {
-      console.error(
-        "API로부터 데이터를 가져오는 중 오류가 발생했습니다:",
-        error
-      );
+      console.error("Error fetching data from API:", error);
       setAppliedItems([]);
     }
-
-    setLoading(false); // Data loaded, set loading to false
   };
 
   useEffect(() => {
-    loadAppliedItems(); // 컴포넌트가 처음 마운트될 때만 실행
-
     const handleStorageChange = (event: StorageEvent) => {
       if (event.key === "appliedItems") {
-        loadAppliedItems(); // 로컬 스토리지 변화 감지 시만 실행
+        loadAppliedItems(); // Refetch data when localStorage changes
       }
     };
 
     window.addEventListener("storage", handleStorageChange);
-
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
-  }, []); // 의존성 배열에서 appliedItems 제거
+  }, []); // Run this effect only once on mount
 
-  const handleEnter = (item: SelectedBox, classData: any) => {
+  const handleEnter = async (item: SelectedBox, classData: any) => {
     console.log(
       "handleEnter called with item:",
       item,
@@ -405,9 +397,8 @@ export function MentorBusPageMentor() {
       classData
     );
 
-    // classData.gatherUrl이 유효한지 확인
-    if (classData.gatherUrl) {
-      const url = `https://app.gather.town/invite?token=${classData.gatherUrl}`;
+    if (item.map) {
+      const url = `https://app.gather.town/invite?token=${item.map}`;
       console.log("Generated URL: ", url);
 
       if (window.ReactNativeWebView) {
@@ -428,6 +419,38 @@ export function MentorBusPageMentor() {
       setAppliedItems(updatedItems);
       localStorage.setItem("appliedItems", JSON.stringify(updatedItems));
       setFilter("applied");
+
+      // 서버에 PATCH 요청 보내기
+      try {
+        const response = await fetch(
+          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/classes/${
+            item.id + 1
+          }/status`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ status: "completed" }),
+          }
+        );
+
+        const data = await response.json();
+        console.log("서버 응답:", data);
+        console.log("updatedItems", updatedItems);
+        console.log("updatedItems.length", updatedItems.length);
+
+        // 성공적으로 서버에서 업데이트 된 경우
+        if (response.ok) {
+          updatedItems[updatedItems.length].status = "completed";
+
+          setAppliedItems(updatedItems);
+        } else {
+          console.error("업데이트 실패", data.message);
+        }
+      } catch (error) {
+        console.error("에러 발생:", error);
+      }
     } else {
       console.error(
         "classData.gatherUrl is missing or invalid:",

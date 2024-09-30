@@ -14,14 +14,34 @@ export interface ApplyAnswerBoxProps
 const ApplyAnswerBox = React.forwardRef<HTMLDivElement, ApplyAnswerBoxProps>(
   ({ className, name, gen }) => {
     const navigate = useNavigate();
-    const queryParams = new URLSearchParams(location.search);
+    const [letter_id, setLetterId] = React.useState<string | null>(null);
+    const queryParams = new URLSearchParams(window.location.search);
     const idx = parseInt(queryParams.get("index") || "0", 10); // Convert idx to number, default to 0
 
+    // URL에서 letter_id를 가져오는 함수
+    React.useEffect(() => {
+      const searchParams = new URLSearchParams(window.location.search);
+      console.log("window.location.search:", window.location.search); // Log full search string for debugging
+
+      const urlLetterId = searchParams.get("letter_id"); // Get the letter_id parameter
+      console.log("Extracted letter_id:", urlLetterId); // Log to see the extracted letter_id
+
+      if (urlLetterId) {
+        setLetterId(urlLetterId); // 상태 업데이트
+      } else {
+        console.error("letter_id not found in the URL");
+      }
+    }, []);
+
     const handleClick = () => {
-      // 이동할 때 userName을 포함하여 전달
-      navigate("/mentorbus-frontend/applyanswer", {
-        state: { userName: name, idx },
-      });
+      if (letter_id) {
+        // 이동할 때 letter_id와 userName을 포함하여 전달
+        navigate(`/mentorbus-frontend/applyanswer?letter_id=${letter_id}`, {
+          state: { userName: name, idx },
+        });
+      } else {
+        console.error("letter_id is null, cannot navigate");
+      }
     };
 
     return (
