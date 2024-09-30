@@ -1,14 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { SearchBox } from "@/components/ui/searchbox";
 import { FilterButton } from "@/components/Icons/FilterButton";
 import { UnderArrowBlue } from "@/components/Icons/UnderArrowBlue";
-import FindTitle from "./containers/FindTitle";
 import { NotYetPage } from "./containers/NotYetPage";
 import axios from "axios"; // Import axios
 import BottomNav from "@/containers/navbar";
 import { SearchIcon } from "@/components/Icons/MainIcons";
-import { LeftArrow } from "@/components/Icons/LeftArrow";
 
 type SearchBoxType = {
   num: string;
@@ -165,35 +163,13 @@ export function FindMentor() {
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
 
-  const handleBackClick = () => {
-    if (back_work === "no") {
-      return;
-    }
-
-    if (Link) {
-      navigate(Link);
-    } else {
-      const currentPath = location.pathname;
-
-      if (
-        currentPath === "/Onboarding/Phone" ||
-        currentPath === "/Onboarding/Submit" ||
-        currentPath === "/Onboarding/Underage"
-      ) {
-        // Handle back navigation if needed
-      } else {
-        window.history.back();
-      }
-    }
-  };
-
   return (
     <>
       <div className="main">
         <div className="main_content">
           <div style={{ background: "#fff" }}>
             <div className="flex justify-center text-lg not-italic font-bold text-[19px] mt-[20px] items-center align-middle  w-full ">
-              <a onClick={handleBackClick} className="mr-auto ml-3"></a>
+              <a className="mr-auto ml-3"></a>
 
               <div className="w-30 pl-8">멘토찾기</div>
 

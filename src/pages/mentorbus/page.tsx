@@ -345,6 +345,8 @@ export function MentorBusPageMentor() {
 
   const navigate = useNavigate(); // useNavigate 사용
 
+  const mentee_id = localStorage.getItem("kakao_id");
+
   useEffect(() => {
     console.log("appliedItem", appliedItems);
   });

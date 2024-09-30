@@ -1,8 +1,7 @@
 import * as React from "react";
 import { cn } from "../../../libs/utils.ts";
 import { SmallMentorProfile } from "../../../components/ui/smallmentorprofile.tsx";
-import { Good } from "@/components/Icons/Comment.tsx";
-import { Comment } from "@/components/Icons/Comment";
+
 import axios from "axios";
 
 export interface CommentSectionProps

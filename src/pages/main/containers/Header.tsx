@@ -1,10 +1,6 @@
 import * as React from "react";
 import { cn } from "@/libs/utils.ts";
-import {
-  UnderArrow,
-  SearchIcon,
-  Notification,
-} from "@/components/Icons/MainIcons";
+import { UnderArrow } from "@/components/Icons/MainIcons";
 
 export interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;

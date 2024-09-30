@@ -25,7 +25,6 @@ const CommentPage = React.forwardRef<HTMLDivElement, CommentPageProps>(
     // Extract userName and idx from the query parameters or state
     const queryParams = new URLSearchParams(location.search);
     const userName = queryParams.get("userName") || "기본명"; // Default value if userName is null
-    const idx = parseInt(queryParams.get("index") || "0", 10); // Convert idx to number, default to 0
 
     // QAPage로부터 전달받은 state에서 데이터 추출
     const { title, question, star_num, comment_num, position } =
@@ -101,8 +100,8 @@ const CommentPage = React.forwardRef<HTMLDivElement, CommentPageProps>(
           />
         </div>
 
-        {mentor_answer
-          ? comment_id?.map(
+        {mentor_answer && Array.isArray(comment_id) // comment_id가 배열일 경우만 map 실행
+          ? comment_id.map(
               (
                 comment: {
                   content: string;

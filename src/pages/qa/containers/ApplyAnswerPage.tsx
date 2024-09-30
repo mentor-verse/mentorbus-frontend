@@ -17,7 +17,6 @@ const ApplyAnswerPage = React.forwardRef<HTMLDivElement, ApplyAnswerPageProps>(
     const location = useLocation();
     const [inputValue, setInputValue] = React.useState("");
     const [letter_id, setLetterId] = React.useState<string | null>(null); // kakaoId 상태값으로 설정
-    const [userData, setUserData] = React.useState<string | null>(null); // kakaoId 상태값으로 설정
 
     const handleBackClick = () => {
       if (back_work === "no") {
