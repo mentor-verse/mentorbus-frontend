@@ -79,6 +79,9 @@ export function MainPage() {
         })
         .catch((error) => {
           console.error("Error fetching user data:", error);
+          navigate(
+            `/mentorbus-frontend/onboarding?specialQuery=true?userId=${kakaoId}`
+          );
         });
     }
   }, [kakaoId]); // kakaoId가 변경될 때마다 실행
