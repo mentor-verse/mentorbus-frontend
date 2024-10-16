@@ -56,6 +56,8 @@ export function First({ count, setCount, sentence }: FirstProps) {
           // 성공적으로 데이터를 가져왔을 때
           setMentorData(response.data);
           console.log("Mentor data:", response.data);
+          const userName = response.data.nickname;
+          navigate(`/mentorbus-frontend/main?userName=${userName}`);
         })
         .catch((error) => {
           console.error("Error fetching mentor data:", error);
