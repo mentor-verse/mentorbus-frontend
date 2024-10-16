@@ -345,7 +345,7 @@ export function MentorBusPageMentor() {
 
   const navigate = useNavigate(); // useNavigate 사용
 
-  const mentee_id = localStorage.getItem("kakao_id");
+  const mentor_id = localStorage.getItem("kakao_id");
 
   useEffect(() => {
     console.log("appliedItem", appliedItems);
@@ -354,7 +354,7 @@ export function MentorBusPageMentor() {
   const loadAppliedItems = async () => {
     try {
       const response = await axios.get(
-        `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/classes/myClass/${mentee_id}`
+        `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/classes/myClass/${mentor_id}`
       );
 
       console.log("Full Response Object:", response);
