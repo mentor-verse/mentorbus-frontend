@@ -50,7 +50,7 @@ export function First({ count, setCount, sentence }: FirstProps) {
       // 백엔드 API 호출
       axios
         .get(
-          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/mentor/${kakao_id}`
+          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/userdata/${kakao_id}`
         )
         .then((response) => {
           // 성공적으로 데이터를 가져왔을 때
