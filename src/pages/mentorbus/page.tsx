@@ -155,7 +155,16 @@ export function MentorBusPageMentee() {
   };
 
   useEffect(() => {
-    loadAppliedItems(); // Refetch data when localStorage changes
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === "appliedItems") {
+        loadAppliedItems(); // Refetch data when localStorage changes
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
   }, []); // Run this effect only once on mount
 
   const handleEnter = async (item: SelectedBox, classData: any) => {
@@ -370,18 +379,8 @@ export function MentorBusPageMentor() {
   };
 
   useEffect(() => {
-    const handleStorageChange = (event: StorageEvent) => {
-      if (event.key === "appliedItems") {
-        loadAppliedItems(); // Refetch data when localStorage changes
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []); // Run this effect only once on mount
-
+    loadAppliedItems(); // Fetch data on mentee_id change
+  }, []);
   const handleEnter = async (item: SelectedBox, classData: any) => {
     console.log(
       "handleEnter called with item:",
