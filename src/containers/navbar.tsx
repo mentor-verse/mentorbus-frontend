@@ -20,9 +20,15 @@ const BottomNav = () => {
   const [showPlusBtn, setshowPlusBtn] = useState(false);
   const [channelBtn, setChannelBtn] = useState(false);
   const [position, setPosition] = useState<string | null>(null);
+  const [mentee_id, setMenteeId] = useState<string | null>(null);
+  const [mentor_id, setMentorId] = useState<string | null>(null);
 
-  // mentee_id 상태 추가
-  const mentee_id = localStorage.getItem("kakao_id");
+  if (position == "멘티") {
+    setMenteeId(localStorage.getItem("kakao_id"));
+  }
+  {
+    setMentorId(localStorage.getItem("kakao_id"));
+  }
 
   useEffect(() => {
     const storedPosition = localStorage.getItem("position");
@@ -109,9 +115,15 @@ const BottomNav = () => {
         </div>
         <div className="flex justify-center">
           {/* mentee_id 변수를 사용하여 href 속성에 적용 */}
-          <a href={`/mentorbus-frontend/mentorbus?mentee_id=${mentee_id}`}>
-            <MentorBus color={getColor("/mentorbus-frontend/mentorbus")} />
-          </a>
+          {position === "멘토" ? (
+            <a href={`/mentorbus-frontend/mentorbus?mentor_id=${mentor_id}`}>
+              <MentorBus color={getColor("/mentorbus-frontend/mentorbus")} />
+            </a>
+          ) : (
+            <a href={`/mentorbus-frontend/mentorbus?mentee_id=${mentee_id}`}>
+              <MentorBus color={getColor("/mentorbus-frontend/mentorbus")} />
+            </a>
+          )}
         </div>
         <div className="flex justify-center">
           <a href="/mentorbus-frontend/qabus">
