@@ -155,16 +155,7 @@ export function MentorBusPageMentee() {
   };
 
   useEffect(() => {
-    const handleStorageChange = (event: StorageEvent) => {
-      if (event.key === "appliedItems") {
-        loadAppliedItems(); // Refetch data when localStorage changes
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
+    loadAppliedItems(); // Refetch data when localStorage changes
   }, []); // Run this effect only once on mount
 
   const handleEnter = async (item: SelectedBox, classData: any) => {
