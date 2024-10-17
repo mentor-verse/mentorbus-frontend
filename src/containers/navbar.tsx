@@ -23,12 +23,14 @@ const BottomNav = () => {
   const [mentee_id, setMenteeId] = useState<string | null>(null);
   const [mentor_id, setMentorId] = useState<string | null>(null);
 
-  if (position == "멘티") {
-    setMenteeId(localStorage.getItem("kakao_id"));
-  }
-  {
-    setMentorId(localStorage.getItem("kakao_id"));
-  }
+  useEffect(() => {
+    if (position == "멘티") {
+      setMenteeId(localStorage.getItem("kakao_id"));
+    }
+    {
+      setMentorId(localStorage.getItem("kakao_id"));
+    }
+  }, []);
 
   useEffect(() => {
     const storedPosition = localStorage.getItem("position");
