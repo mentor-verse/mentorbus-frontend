@@ -1,4 +1,4 @@
-import { Logo, Logo2 } from "@/components/Icons/Logo";
+import { Logo2 } from "@/components/Icons/Logo";
 import { NextButton } from "@/components/Icons/NextButton";
 import { OnboardingButton } from "@/components/ui/onboardingbutton";
 import { useEffect, useState } from "react";

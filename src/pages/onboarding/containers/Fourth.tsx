@@ -1,4 +1,4 @@
-import { Logo, Logo2 } from "@/components/Icons/Logo";
+import { Logo2 } from "@/components/Icons/Logo";
 import { OnboardingButton } from "@/components/ui/onboardingbutton";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";

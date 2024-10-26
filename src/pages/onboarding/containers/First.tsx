@@ -1,5 +1,5 @@
 import { NextButton } from "@/components/Icons/NextButton";
-import { Logo, Logo2 } from "@/components/Icons/Logo";
+import { Logo2 } from "@/components/Icons/Logo";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";

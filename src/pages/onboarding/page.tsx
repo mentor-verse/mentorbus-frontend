@@ -7,7 +7,6 @@ import { Second } from "./containers/Second";
 import { Third } from "./containers/Third";
 import { Fourth } from "./containers/Fourth";
 import { Road } from "@/components/Icons/Road";
-import { ZeroRoad } from "@/components/Icons/ZeroRoad";
 import { Cloud } from "@/components/Icons/Cloud";
 import { Cloud2 } from "@/components/Icons/Cloud2";
 import { Fifth } from "./containers/Fifth";
