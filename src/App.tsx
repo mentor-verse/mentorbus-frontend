@@ -1,4 +1,4 @@
-import { BrowserRouter, Router } from "react-router-dom";
+import { HashRouter as Router } from "react-router-dom";
 import { MainRouter } from "./pages/router";
 import { Toaster } from "./components/ui/sonner";
 import { RecoilRoot } from "recoil";
@@ -32,7 +32,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
-        <Router basename={import.meta.env.PUBLIC_URL}>
+        <Router>
           {" "}
           {/* Ensure this matches the base in vite.config.js */}
           <MainRouter />
