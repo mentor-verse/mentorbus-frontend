@@ -176,21 +176,12 @@ export function Onboarding() {
         </div>
         {renderComponent()}
         <div ref={growDivRef}></div>
-        {count === 0 ? (
-          <div ref={roadDivRef} className="w-full">
-            <div className="w-[120%] -ml-[20%] grid place-items-center">
-              <ZeroRoad />
-            </div>
+
+        <div ref={roadDivRef} className="w-full">
+          <div className="grid place-items-center">
+            <Road />
           </div>
-        ) : (
-          count !== 0 && (
-            <div ref={roadDivRef} className="w-full">
-              <div className="grid place-items-center">
-                <Road />
-              </div>
-            </div>
-          )
-        )}
+        </div>
       </div>
     </div>
   );

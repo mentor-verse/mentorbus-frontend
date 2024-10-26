@@ -1,4 +1,4 @@
-import { Logo } from "@/components/Icons/Logo";
+import { Logo, Logo2 } from "@/components/Icons/Logo";
 import { OnboardingButton } from "@/components/ui/onboardingbutton";
 import React from "react";
 
@@ -21,7 +21,7 @@ export function Second({ count, setCount, sentence }: SecondProps) {
           {count}/4
         </div>
         <div className="w-[320px] justify-start flex items-start text-[26px] font-bold ">
-          <Logo width={"175"} height="auto" /> <div>에서</div>
+          <Logo2 width={"175"} height="auto" /> <div>에서</div>
         </div>
         <div className="w-[320px] justify-start flex items-start text-[26px] font-bold w-max">
           {sentence}

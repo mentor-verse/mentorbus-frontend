@@ -1,8 +1,8 @@
 import * as React from "react";
 import { cn } from "@/libs/utils.ts";
 import { Slot } from "@radix-ui/react-slot";
-import { Man } from "@/components/Icons/Man";
-import { Woman } from "@/components/Icons/Woman";
+import { Man, ManGreen } from "@/components/Icons/Man";
+import { Woman, WomanGreen } from "@/components/Icons/Woman";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const searchBoxVariants = cva(
@@ -61,7 +61,9 @@ const SearchBox = React.forwardRef<HTMLButtonElement, SearchBoxProps>(
 
     return (
       <div className={cn("flex text-start items-center w-full", className)}>
-        <div className={gen}>{gen === "man" ? <Man /> : <Woman />}</div>
+        <div className={gen}>
+          {gen === "man" ? <ManGreen /> : <WomanGreen />}
+        </div>
 
         <div className="ml-[15px] ">
           <div

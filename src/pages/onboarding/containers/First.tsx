@@ -1,5 +1,5 @@
 import { NextButton } from "@/components/Icons/NextButton";
-import { Logo } from "@/components/Icons/Logo";
+import { Logo, Logo2 } from "@/components/Icons/Logo";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
@@ -82,7 +82,7 @@ export function First({ count, setCount, sentence }: FirstProps) {
           {count}/4
         </div>
         <div className="w-[300px] flex justify-start items-start text-start">
-          <Logo width={"175"} height="auto" />
+          <Logo2 width={"175"} height="auto" />
         </div>
         <div className="w-[300px] flex items-start mt-[13px] justify-start text-[26px] font-bold text-start">
           {sentence}

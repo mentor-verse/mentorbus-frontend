@@ -1,4 +1,4 @@
-import { Logo } from "@/components/Icons/Logo";
+import { Logo, Logo2 } from "@/components/Icons/Logo";
 import { OnboardingButton } from "@/components/ui/onboardingbutton";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -79,7 +79,7 @@ export function Fourth({ count, setCount, sentence }: FourthProps) {
           {count}/4
         </div>
         <div className="w-[320px] justify-start flex items-start text-[26px] font-bold ">
-          <Logo width={"175"} height="auto" /> <div>에서</div>
+          <Logo2 width={"175"} height="auto" /> <div>에서</div>
         </div>
         <div className="w-[320px] justify-start flex items-start text-[26px] font-bold text-center">
           {sentence}

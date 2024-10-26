@@ -1,4 +1,4 @@
-import { Banner } from "@/components/Icons/Banner";
+import { Banner, Banner2 } from "@/components/Icons/Banner";
 import { Header } from "./containers/Header";
 import { TitleSection } from "./containers/TitleSection";
 import { College } from "@/components/ui/college";
@@ -152,7 +152,7 @@ export function MainPage() {
           <div style={{ background: "#fff" }}>
             <Header major={userMajor} className="mt-[50px]" title={""} />
             <div className="w-auto mt-[30px]">
-              <Banner />
+              <Banner2 />
             </div>
             {position === "멘티" ? (
               renderMentorBoxes()

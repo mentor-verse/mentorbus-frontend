@@ -10,7 +10,7 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 201, 77%, 59%;
+    --primary: 178, 77%, 53%;
     --primary-foreground: 210 40% 98%;
     --secondary: 200, 100%, 96%;
     --secondary-foreground: 201, 66%, 56%;
@@ -133,10 +133,7 @@ a {
 }
 
 .main {
-  background: var(
-    --blue-GD,
-    linear-gradient(180deg, #1485c4 7.08%, #55abdc 38.5%, #fff 127.13%)
-  );
+  background: #61b6b1;
   font-family: "Pretendard";
   letter-spacing: -0.08rem;
   max-width: 840px;

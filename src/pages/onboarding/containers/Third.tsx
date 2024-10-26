@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { NextButton } from "@/components/Icons/NextButton";
-import { Logo } from "@/components/Icons/Logo";
+import { Logo, Logo2 } from "@/components/Icons/Logo";
 import React from "react";
 
 interface FormData {
@@ -33,7 +33,7 @@ export function Third({ count, setCount, sentence }: ThirdProps) {
           {count}/4
         </div>
         <div className="w-[300px] justify-start flex items-start text-[26px] ">
-          <Logo width={"175"} height="auto" />
+          <Logo2 width={"175"} height="auto" />
         </div>
         <div className="w-[300px] justify-start flex items-start text-[26px] font-bold  text-center">
           {sentence}
