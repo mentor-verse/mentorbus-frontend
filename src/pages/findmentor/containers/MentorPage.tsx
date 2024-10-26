@@ -53,7 +53,7 @@ export function MentorPage() {
     } catch (error) {
       console.error("Error saving class:", error);
       alert("이미 신청한 수업입니다.");
-      navigate("/mentorbus-frontend/find");
+      navigate("/find");
     }
   };
 
@@ -77,9 +77,7 @@ export function MentorPage() {
       localStorage.setItem("appliedItems", JSON.stringify(appliedItems));
     }
 
-    navigate(
-      `/mentorbus-frontend/mentorbus?name=${selectedBox.name}&mentee_id=${mentee_id}`
-    );
+    navigate(`/mentorbus?name=${selectedBox.name}&mentee_id=${mentee_id}`);
     console.log("selectedBox", selectedBox);
   };
 

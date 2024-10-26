@@ -60,7 +60,7 @@ export function Fourth({ count, setCount, sentence }: FourthProps) {
         .then((response) => response.json())
         .then((data) => {
           console.log("User data saved:", data);
-          navigate(`/mentorbus-frontend/main?userId=${kakaoId}`);
+          navigate(`/main?userId=${kakaoId}`);
         })
         .catch((error) => {
           console.error("Error saving mentor data:", error);

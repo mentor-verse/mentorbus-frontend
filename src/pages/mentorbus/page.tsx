@@ -458,7 +458,7 @@ export function MentorBusPageMentor() {
       "and classData:",
       classData
     );
-    navigate("/mentorbus-frontend/classinfo", {
+    navigate("/classinfo", {
       state: {
         selectedBox: appliedItems,
         content: appliedItems?.content,

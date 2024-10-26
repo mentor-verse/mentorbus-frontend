@@ -98,7 +98,7 @@ export function Fifth({ count, sentence }: FifthProps) {
         .then((response) => response.json())
         .then((data) => {
           console.log("Mentee data saved:", data);
-          navigate(`/mentorbus-frontend/main?userId=${kakaoId}`);
+          navigate(`/main?userId=${kakaoId}`);
         })
         .catch((error) => {
           console.error("Error saving mentee data:", error);

@@ -44,7 +44,7 @@ const ApplyAnswerPage = React.forwardRef<HTMLDivElement, ApplyAnswerPageProps>(
       // Navigate back to the question/comment page after saving
       fetchData();
       updateData();
-      navigate(`/mentorbus-frontend/qabus`);
+      navigate(`/qabus`);
     };
 
     // URL에서 kakaoId를 가져오는 함수

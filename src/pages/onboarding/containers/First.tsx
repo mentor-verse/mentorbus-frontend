@@ -57,7 +57,7 @@ export function First({ count, setCount, sentence }: FirstProps) {
           setMentorData(response.data);
           console.log("Mentor data:", response.data);
           const userName = response.data.nickname;
-          navigate(`/mentorbus-frontend/main?userName=${userName}`);
+          navigate(`/main?userName=${userName}`);
         })
         .catch((error) => {
           console.error("Error fetching mentor data:", error);
@@ -71,7 +71,7 @@ export function First({ count, setCount, sentence }: FirstProps) {
     // mentorData가 존재하고 kakao_id가 일치하는지 확인
     if (mentorData && mentorData.kakao_id === kakaoId) {
       const userName = mentorData.nickname;
-      navigate(`/mentorbus-frontend/main?userName=${userName}`);
+      navigate(`/main?userName=${userName}`);
     }
   }, [mentorData, navigate]); // mentorData가 업데이트될 때마다 확인
 
