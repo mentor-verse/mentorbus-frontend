@@ -264,10 +264,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:7.25.7", {\
-        "packageLocation": "../../../../.yarn/berry/cache/@babel-helper-string-parser-npm-7.25.7-352069de58-10c0.zip/node_modules/@babel/helper-string-parser/",\
+      ["npm:7.25.9", {\
+        "packageLocation": "../../../../.yarn/berry/cache/@babel-helper-string-parser-npm-7.25.9-eade578078-10c0.zip/node_modules/@babel/helper-string-parser/",\
         "packageDependencies": [\
-          ["@babel/helper-string-parser", "npm:7.25.7"]\
+          ["@babel/helper-string-parser", "npm:7.25.9"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -280,10 +280,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:7.25.7", {\
-        "packageLocation": "../../../../.yarn/berry/cache/@babel-helper-validator-identifier-npm-7.25.7-1c758f0472-10c0.zip/node_modules/@babel/helper-validator-identifier/",\
+      ["npm:7.25.9", {\
+        "packageLocation": "../../../../.yarn/berry/cache/@babel-helper-validator-identifier-npm-7.25.9-2634b947a4-10c0.zip/node_modules/@babel/helper-validator-identifier/",\
         "packageDependencies": [\
-          ["@babel/helper-validator-identifier", "npm:7.25.7"]\
+          ["@babel/helper-validator-identifier", "npm:7.25.9"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -326,7 +326,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../../.yarn/berry/cache/@babel-parser-npm-7.24.7-79d233f3d1-10c0.zip/node_modules/@babel/parser/",\
         "packageDependencies": [\
           ["@babel/parser", "npm:7.24.7"],\
-          ["@babel/types", "npm:7.25.8"]\
+          ["@babel/types", "npm:7.26.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -429,13 +429,12 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:7.25.8", {\
-        "packageLocation": "../../../../.yarn/berry/cache/@babel-types-npm-7.25.8-44acfff5f6-10c0.zip/node_modules/@babel/types/",\
+      ["npm:7.26.0", {\
+        "packageLocation": "../../../../.yarn/berry/cache/@babel-types-npm-7.26.0-ae81de0a93-10c0.zip/node_modules/@babel/types/",\
         "packageDependencies": [\
-          ["@babel/types", "npm:7.25.8"],\
-          ["@babel/helper-string-parser", "npm:7.25.7"],\
-          ["@babel/helper-validator-identifier", "npm:7.25.7"],\
-          ["to-fast-properties", "npm:2.0.0"]\
+          ["@babel/types", "npm:7.26.0"],\
+          ["@babel/helper-string-parser", "npm:7.25.9"],\
+          ["@babel/helper-validator-identifier", "npm:7.25.9"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -3412,7 +3411,7 @@ const RAW_RUNTIME_STATE =
           ["minipass-fetch", "npm:3.0.5"],\
           ["minipass-flush", "npm:1.0.5"],\
           ["minipass-pipeline", "npm:1.2.4"],\
-          ["negotiator", "npm:0.6.3"],\
+          ["negotiator", "npm:0.6.4"],\
           ["proc-log", "npm:4.2.0"],\
           ["promise-retry", "npm:2.0.1"],\
           ["ssri", "npm:10.0.6"]\
@@ -3695,10 +3694,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["negotiator", [\
-      ["npm:0.6.3", {\
-        "packageLocation": "../../../../.yarn/berry/cache/negotiator-npm-0.6.3-9d50e36171-10c0.zip/node_modules/negotiator/",\
+      ["npm:0.6.4", {\
+        "packageLocation": "../../../../.yarn/berry/cache/negotiator-npm-0.6.4-4a96086720-10c0.zip/node_modules/negotiator/",\
         "packageDependencies": [\
-          ["negotiator", "npm:0.6.3"]\
+          ["negotiator", "npm:0.6.4"]\
         ],\
         "linkType": "HARD"\
       }]\
