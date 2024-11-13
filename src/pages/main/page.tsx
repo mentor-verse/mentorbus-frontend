@@ -72,7 +72,7 @@ export function MainPage() {
         .get(
           `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/userdata/${kakaoId}`
         )
-        .then((response) => {
+        .then((response: { data: { position: any } }) => {
           // 성공적으로 데이터를 가져왔을 때
           setUserData(response.data);
           setPosition(response.data.position);
