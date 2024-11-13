@@ -69,6 +69,12 @@ export function KakaoRedirect() {
 
       const result = await response.json();
       console.log("Server response:", result);
+      console.log("data", data);
+
+      if (result.message === "Kakao login data already exists") {
+        // 조건이 만족되면 /main으로 이동
+        navigate("/main");
+      }
 
       // 서버 응답에서 kakao_id를 로컬 스토리지에 저장
       if (result?.id) {

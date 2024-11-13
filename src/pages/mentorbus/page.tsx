@@ -336,6 +336,7 @@ export function MentorBusPageMentee() {
 export function MentorBusPageMentor() {
   const [filter, setFilter] = useState("entry");
   const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
+  const [kakao_id, setKakaoId] = useState<string | null>("");
 
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
@@ -345,7 +346,12 @@ export function MentorBusPageMentor() {
 
   const navigate = useNavigate(); // useNavigate 사용
 
-  const kakao_id = localStorage.getItem("kakao_id");
+  // URL에서 kakaoId를 가져오는 함수
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const kakao_id = searchParams.get("mentor_id"); // URL에서 userId 파라미터로 kakaoId 추출
+    setKakaoId(kakao_id); // 상태 업데이트
+  }, [location.search]);
 
   useEffect(() => {
     console.log("appliedItem", appliedItems);
