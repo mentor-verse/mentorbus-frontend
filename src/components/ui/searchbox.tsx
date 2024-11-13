@@ -1,8 +1,8 @@
 import * as React from "react";
 import { cn } from "@/libs/utils.ts";
 import { Slot } from "@radix-ui/react-slot";
-import { Man, ManGreen } from "@/components/Icons/Man";
-import { Woman, WomanGreen } from "@/components/Icons/Woman";
+import { Man } from "@/components/Icons/Man";
+import { Woman } from "@/components/Icons/Woman";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const searchBoxVariants = cva(

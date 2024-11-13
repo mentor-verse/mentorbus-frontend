@@ -11,12 +11,14 @@ import { ZeroRoad } from "@/components/Icons/ZeroRoad";
 import { Cloud } from "@/components/Icons/Cloud";
 import { Cloud2 } from "@/components/Icons/Cloud2";
 import { Fifth } from "./containers/Fifth";
+import { useNavigate } from "react-router-dom";
 
 export function Onboarding() {
   const isLoggedIn = useRecoilValue(isLoggedInAtom);
   const [count, setCount] = useState(0);
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate(); // Initialize navigate hook
 
   const [showSecondMentor, setShowSecondMentor] = useState(true);
   const [showSecondMentee, setShowSecondMentee] = useState(false);
@@ -26,6 +28,19 @@ export function Onboarding() {
 
   const prevCountRef = useRef<number>(count);
 
+  useEffect(() => {
+    const kakaoId = localStorage.getItem("kakaoId");
+
+    if (kakaoId) {
+      console.log("Kakao login data already exists");
+      navigate(`/main?userId=${kakaoId}`);
+    } else if (isLoggedIn || localStorage.getItem("kakaoToken")) {
+      setCount(1);
+    } else {
+      setCount(0);
+    }
+  }, [isLoggedIn, navigate]);
+  
   useEffect(() => {
     const prevCount = prevCountRef.current;
     prevCountRef.current = count;

@@ -1,5 +1,5 @@
 import { NextButton } from "@/components/Icons/NextButton";
-import { Logo2 } from "@/components/Icons/Logo";
+import { Logo } from "@/components/Icons/Logo";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
@@ -42,10 +42,10 @@ export function First({ count, setCount, sentence }: FirstProps) {
     setCount(count + 1);
   };
 
+  const kakao_id = localStorage.getItem("kakao_id");
+
   // 멘토 데이터를 가져오는 함수
   useEffect(() => {
-    const kakao_id = localStorage.getItem("kakao_id");
-
     if (kakao_id) {
       // 백엔드 API 호출
       axios
@@ -63,7 +63,7 @@ export function First({ count, setCount, sentence }: FirstProps) {
           console.error("Error fetching mentor data:", error);
         });
     }
-  }, []); // []를 사용하여 컴포넌트가 처음 마운트될 때 한 번만 실행
+  }, [kakao_id]); // []를 사용하여 컴포넌트가 처음 마운트될 때 한 번만 실행
 
   useEffect(() => {
     const kakaoId = localStorage.getItem("kakao_id");
@@ -82,7 +82,7 @@ export function First({ count, setCount, sentence }: FirstProps) {
           {count}/4
         </div>
         <div className="w-[300px] flex justify-start items-start text-start">
-          <Logo2 width={"175"} height="auto" />
+          <Logo width={"175"} height="auto" />
         </div>
         <div className="w-[300px] flex items-start mt-[13px] justify-start text-[26px] font-bold text-start">
           {sentence}

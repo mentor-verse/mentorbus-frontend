@@ -1,4 +1,4 @@
-import { Logo2 } from "@/components/Icons/Logo";
+import { Logo } from "@/components/Icons/Logo";
 import { NextButton } from "@/components/Icons/NextButton";
 import { OnboardingButton } from "@/components/ui/onboardingbutton";
 import { useEffect, useState } from "react";
@@ -113,7 +113,7 @@ export function Fifth({ count, sentence }: FifthProps) {
           {count}/5
         </div>
         <div className="w-[320px] justify-start flex items-start text-[26px] font-bold ">
-          <Logo2 width={"175"} height="auto" /> <div>에서</div>
+          <Logo width={"175"} height="auto" /> <div>에서</div>
         </div>
         <div className="w-[320px] justify-start flex items-start text-[26px] font-bold text-center">
           {sentence}
