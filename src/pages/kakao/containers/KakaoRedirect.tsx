@@ -7,7 +7,7 @@ declare global {
   }
 }
 
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { resolvePath, useNavigate, useSearchParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { useEffect, useCallback, useState } from "react";
 import { isLoggedInAtom } from "@/atoms/isLoggedInAtom";
@@ -91,17 +91,34 @@ export function KakaoRedirect() {
       }
 
       if (result.message === "Kakao login data already exists") {
+        console.log("kakaoId", kakaoId);
         // 조건이 만족되면 /main으로 이동
         // 백엔드 API 호출
         axios
           .get(
             `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/userdata/${data?.data?.id}`
           )
-          .then((response: { data: { position: any } }) => {
-            // 성공적으로 데이터를 가져왔을 때
-            console.log(response.data);
-            navigate("/main");
-          })
+          .then(
+            (response: {
+              data: {
+                school: string;
+                want: string;
+                major: string;
+                nickname: string;
+                position: string;
+              };
+            }) => {
+              // 성공적으로 데이터를 가져왔을 때
+              console.log(response.data);
+              localStorage.setItem("userName", response.data.nickname);
+              localStorage.setItem("userBelong", response.data.school);
+              localStorage.setItem("position", response.data.position);
+              localStorage.setItem("major", response.data.major);
+              localStorage.setItem("favor", response.data.want);
+
+              navigate("/main");
+            }
+          )
           .catch((error) => {
             console.error("Error fetching user data:", error);
           });
