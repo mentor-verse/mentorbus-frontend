@@ -74,7 +74,7 @@ const ApplyQuestionPage = React.forwardRef<
     setAnswer(inputValue);
     fetchData();
 
-    navigate("/qabus");
+    window.location.href = "/qabus"; // This will navigate and refresh the page
   };
 
   const fetchData = async () => {

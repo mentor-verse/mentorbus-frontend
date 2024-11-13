@@ -47,7 +47,7 @@ const FindTitle: FC<FindTitleProps> = ({
           </a>
         )}
 
-        <div className="ml-[180px]"></div>
+        <div className="ml-[140px]"></div>
 
         <div className="w-20">{title}</div>
       </div>
