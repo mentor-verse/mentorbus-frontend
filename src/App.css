@@ -134,7 +134,10 @@ a {
 }
 
 .main {
-  background: #61b6b1;
+  background: var(
+    --blue-GD,
+    linear-gradient(180deg, #1485c4 7.08%, #55abdc 38.5%, #fff 127.13%)
+  );
   font-family: "Pretendard";
   font-family: "Pretendard";
   letter-spacing: -0.08rem;

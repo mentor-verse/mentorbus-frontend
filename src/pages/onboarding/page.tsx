@@ -7,6 +7,7 @@ import { Second } from "./containers/Second";
 import { Third } from "./containers/Third";
 import { Fourth } from "./containers/Fourth";
 import { Road } from "@/components/Icons/Road";
+import { ZeroRoad } from "@/components/Icons/ZeroRoad";
 import { Cloud } from "@/components/Icons/Cloud";
 import { Cloud2 } from "@/components/Icons/Cloud2";
 import { Fifth } from "./containers/Fifth";
@@ -175,12 +176,21 @@ export function Onboarding() {
         </div>
         {renderComponent()}
         <div ref={growDivRef}></div>
-
-        <div ref={roadDivRef} className="w-full">
-          <div className="grid place-items-center">
-            <Road />
+        {count === 0 ? (
+          <div ref={roadDivRef} className="w-full">
+            <div className="w-[120%] -ml-[20%] grid place-items-center">
+              <ZeroRoad />
+            </div>
           </div>
-        </div>
+        ) : (
+          count !== 0 && (
+            <div ref={roadDivRef} className="w-full">
+              <div className="grid place-items-center">
+                <Road />
+              </div>
+            </div>
+          )
+        )}
       </div>
     </div>
   );
