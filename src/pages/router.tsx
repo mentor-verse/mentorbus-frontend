@@ -23,20 +23,20 @@ export function MainRouter() {
 
   return (
     <Routes>
-      <Route path="/mentorbus-frontend" element={<Onboarding />} />
-      <Route path="/mentorbus-frontend/onboarding" element={<Onboarding />} />
-      <Route path="/mentorbus-frontend/kakao" element={<Kakao />} />
-      <Route path="/mentorbus-frontend/oauth" element={<KakaoRedirect />} />
-      <Route path="/mentorbus-frontend/profile" element={<Profile />} />
-      <Route path="/mentorbus-frontend/main" element={<MainPage />} />
-      <Route path="/mentorbus-frontend/find" element={<FindMentor />} />
-      <Route path="/mentorbus-frontend/find/:school" element={<FindMentor />} />
-      <Route path="/mentorbus-frontend/qabus" element={<QAPage />} />
-      <Route path="/mentorbus-frontend/mentorinfo" element={<MentorPage />} />
-      <Route path="/mentorbus-frontend/mypage" element={<MyPage />} />
+      <Route path="/" element={<Onboarding />} />
+      <Route path="/onboarding" element={<Onboarding />} />
+      <Route path="/kakao" element={<Kakao />} />
+      <Route path="/oauth" element={<KakaoRedirect />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/main" element={<MainPage />} />
+      <Route path="/find" element={<FindMentor />} />
+      <Route path="/find/:school" element={<FindMentor />} />
+      <Route path="/qabus" element={<QAPage />} />
+      <Route path="/mentorinfo" element={<MentorPage />} />
+      <Route path="/mypage" element={<MyPage />} />
 
       <Route
-        path={`/mentorbus-frontend/mentorbus`}
+        path={`/mentorbus`}
         element={
           position === "멘티" ? (
             <MentorBusPageMentee />
@@ -47,22 +47,22 @@ export function MainRouter() {
       />
 
       <Route
-        path="/mentorbus-frontend/comment"
+        path="/comment"
         element={<CommentPage Link={""} back_disable={""} back_work={"yes"} />}
       />
       <Route
-        path="/mentorbus-frontend/comment/:index"
+        path="/comment/:index"
         element={<CommentPage Link={""} back_disable={""} back_work={"yes"} />}
       />
-      <Route path="/mentorbus-frontend/sam" element={<Sam />} />
+      <Route path="/sam" element={<Sam />} />
       <Route
-        path="/mentorbus-frontend/applyanswer"
+        path="/applyanswer"
         element={
           <ApplyAnswerPage Link={""} back_disable={""} back_work={"yes"} />
         }
       />
       <Route
-        path="/mentorbus-frontend/applyquestion"
+        path="/applyquestion"
         element={
           <ApplyQuestionPage
             setAnswer={setAnswer}
@@ -74,20 +74,20 @@ export function MainRouter() {
       />
 
       <Route
-        path="/mentorbus-frontend/openclass"
+        path="/openclass"
         element={
           <OpenClassPage Link={""} back_disable={""} back_work={"yes"} />
         }
       />
 
       <Route
-        path="/mentorbus-frontend/openclass/modify"
+        path="/openclass/modify"
         element={
           <OpenClassPage Link={""} back_disable={""} back_work={"yes"} />
         }
       />
 
-      <Route path="/mentorbus-frontend/classinfo" element={<ClassInfoPage />} />
+      <Route path="/classinfo" element={<ClassInfoPage />} />
     </Routes>
   );
 }

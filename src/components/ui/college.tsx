@@ -13,14 +13,18 @@ const College = React.forwardRef<HTMLDivElement, CollegeProps>(
 
     const handleClick = () => {
       // Ensure `img` is properly escaped or sanitized if necessary
-      navigate(`/mentorbus-frontend/find/${name}`);
+      navigate(`/find/${name}`);
     };
 
     return (
       <button className="w-[64px]" onClick={handleClick}>
         <div ref={ref} className={cn(className)}>
-          <div><img src={img} alt={name} /></div>
-          <div className="mt-[10px] text-[#535353] not-italic font-medium text-[9px]">{name}</div>
+          <div>
+            <img src={img} alt={name} />
+          </div>
+          <div className="mt-[10px] text-[#535353] not-italic font-medium text-[9px]">
+            {name}
+          </div>
         </div>
       </button>
     );

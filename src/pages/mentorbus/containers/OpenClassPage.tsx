@@ -109,7 +109,7 @@ const OpenClassPage = React.forwardRef<HTMLDivElement, OpenClassPageProps>(
             try {
               const classDataString = localStorage.getItem("ClassData");
               if (!classDataString) {
-                navigate(`/mentorbus-frontend/find`);
+                navigate(`/find`);
                 return;
               }
 
@@ -139,7 +139,7 @@ const OpenClassPage = React.forwardRef<HTMLDivElement, OpenClassPageProps>(
                 if (response.status === 200) {
                   const newClass = response.data.comment;
                   console.log("Class created successfully:", newClass);
-                  navigate(`/mentorbus-frontend/find`);
+                  navigate(`/find`);
                 } else {
                   console.error("Failed to create class for:", ClassData.title);
                 }

@@ -1,5 +1,5 @@
 import { NextButton } from "@/components/Icons/NextButton";
-import { Logo } from "@/components/Icons/Logo";
+import { Logo2 } from "@/components/Icons/Logo";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
@@ -57,7 +57,7 @@ export function First({ count, setCount, sentence }: FirstProps) {
           setMentorData(response.data);
           console.log("Mentor data:", response.data);
           const userName = response.data.nickname;
-          navigate(`/mentorbus-frontend/main?userName=${userName}`);
+          navigate(`/main?userName=${userName}`);
         })
         .catch((error) => {
           console.error("Error fetching mentor data:", error);
@@ -71,7 +71,7 @@ export function First({ count, setCount, sentence }: FirstProps) {
     // mentorData가 존재하고 kakao_id가 일치하는지 확인
     if (mentorData && mentorData.kakao_id === kakaoId) {
       const userName = mentorData.nickname;
-      navigate(`/mentorbus-frontend/main?userName=${userName}`);
+      navigate(`/main?userName=${userName}`);
     }
   }, [mentorData, navigate]); // mentorData가 업데이트될 때마다 확인
 
@@ -82,7 +82,7 @@ export function First({ count, setCount, sentence }: FirstProps) {
           {count}/4
         </div>
         <div className="w-[300px] flex justify-start items-start text-start">
-          <Logo width={"175"} height="auto" />
+          <Logo2 width={"175"} height="auto" />
         </div>
         <div className="w-[300px] flex items-start mt-[13px] justify-start text-[26px] font-bold text-start">
           {sentence}

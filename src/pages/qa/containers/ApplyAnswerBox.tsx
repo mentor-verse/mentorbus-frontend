@@ -36,7 +36,7 @@ const ApplyAnswerBox = React.forwardRef<HTMLDivElement, ApplyAnswerBoxProps>(
     const handleClick = () => {
       if (letter_id) {
         // 이동할 때 letter_id와 userName을 포함하여 전달
-        navigate(`/mentorbus-frontend/applyanswer?letter_id=${letter_id}`, {
+        navigate(`/applyanswer?letter_id=${letter_id}`, {
           state: { userName: name, idx },
         });
       } else {

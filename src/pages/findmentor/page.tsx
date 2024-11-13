@@ -132,7 +132,7 @@ export function FindMentor() {
   };
 
   const handleSearchBoxClick = (box: SearchBoxType) => {
-    navigate("/mentorbus-frontend/mentorinfo", { state: { selectedBox: box } });
+    navigate("/mentorinfo", { state: { selectedBox: box } });
   };
 
   useEffect(() => {

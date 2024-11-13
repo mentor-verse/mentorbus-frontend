@@ -69,7 +69,7 @@ export function ClassInfoPage() {
             size={"default"}
             className="w-[342px] h-[56px] text-[#fff] font-semibold"
             onClick={() =>
-              navigate("/mentorbus-frontend/openclass", {
+              navigate("/openclass", {
                 state: {
                   classData,
                 },

@@ -36,10 +36,7 @@ const BottomNav = () => {
     const storedPosition = localStorage.getItem("position");
     setPosition(storedPosition);
 
-    if (
-      location.pathname === "/mentorbus-frontend/qabus" &&
-      storedPosition === "멘티"
-    ) {
+    if (location.pathname === "/qabus" && storedPosition === "멘티") {
       setShowPencilBtn(true);
     } else {
       setShowPencilBtn(false);
@@ -48,10 +45,7 @@ const BottomNav = () => {
 
   useEffect(() => {
     const storedPosition = localStorage.getItem("position");
-    if (
-      location.pathname === "/mentorbus-frontend/mentorbus" &&
-      storedPosition === "멘토"
-    ) {
+    if (location.pathname === "/mentorbus" && storedPosition === "멘토") {
       setshowPlusBtn(true);
     } else {
       setshowPlusBtn(false);
@@ -59,7 +53,7 @@ const BottomNav = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (location.pathname === "/mentorbus-frontend/main") {
+    if (location.pathname === "/main") {
       setChannelBtn(true);
     } else {
       setChannelBtn(false);
@@ -71,11 +65,11 @@ const BottomNav = () => {
   };
 
   const handleClick = () => {
-    navigate("/mentorbus-frontend/applyquestion");
+    navigate("/applyquestion");
   };
 
   const handleClick2 = () => {
-    navigate("/mentorbus-frontend/openclass");
+    navigate("/openclass");
   };
 
   return (
@@ -102,39 +96,39 @@ const BottomNav = () => {
 
       <nav className="wrapper">
         <div className="flex justify-center">
-          <a href="/mentorbus-frontend/main">
-            <Home color={getColor("/mentorbus-frontend/main")} />
+          <a href="/main">
+            <Home color={getColor("/main")} />
           </a>
         </div>
         <div className="flex justify-center">
-          <a href="/mentorbus-frontend/find">
+          <a href="/find">
             {position === "멘토" ? (
-              <FindMentee color={getColor("/mentorbus-frontend/find")} />
+              <FindMentee color={getColor("/find")} />
             ) : (
-              <FindMentor color={getColor("/mentorbus-frontend/find")} />
+              <FindMentor color={getColor("/find")} />
             )}
           </a>
         </div>
         <div className="flex justify-center">
           {/* mentee_id 변수를 사용하여 href 속성에 적용 */}
           {position === "멘토" ? (
-            <a href={`/mentorbus-frontend/mentorbus?mentor_id=${mentor_id}`}>
-              <MentorBus color={getColor("/mentorbus-frontend/mentorbus")} />
+            <a href={`/mentorbus?mentor_id=${mentor_id}`}>
+              <MentorBus color={getColor("/mentorbus")} />
             </a>
           ) : (
-            <a href={`/mentorbus-frontend/mentorbus?mentee_id=${mentee_id}`}>
-              <MentorBus color={getColor("/mentorbus-frontend/mentorbus")} />
+            <a href={`/mentorbus?mentee_id=${mentee_id}`}>
+              <MentorBus color={getColor("/mentorbus")} />
             </a>
           )}
         </div>
         <div className="flex justify-center">
-          <a href="/mentorbus-frontend/qabus">
-            <QABus color={getColor("/mentorbus-frontend/qabus")} />
+          <a href="/qabus">
+            <QABus color={getColor("/qabus")} />
           </a>
         </div>
         <div className="flex justify-center">
-          <a href="/mentorbus-frontend/mypage">
-            <MyPage color={getColor("/mentorbus-frontend/mypage")} />
+          <a href="/mypage">
+            <MyPage color={getColor("/mypage")} />
           </a>
         </div>
       </nav>

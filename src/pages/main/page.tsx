@@ -1,4 +1,4 @@
-import { Banner } from "@/components/Icons/Banner";
+import { Banner2 } from "@/components/Icons/Banner";
 import { Header } from "./containers/Header";
 import { TitleSection } from "./containers/TitleSection";
 import { College } from "@/components/ui/college";
@@ -72,16 +72,14 @@ export function MainPage() {
         .get(
           `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/userdata/${kakaoId}`
         )
-        .then((response) => {
+        .then((response: { data: { position: any } }) => {
           // 성공적으로 데이터를 가져왔을 때
           setUserData(response.data);
           setPosition(response.data.position);
         })
         .catch((error) => {
           console.error("Error fetching user data:", error);
-          navigate(
-            `/mentorbus-frontend/onboarding?specialQuery=true?userId=${kakaoId}`
-          );
+          navigate(`/onboarding?specialQuery=true?userId=${kakaoId}`);
         });
     }
   }, [kakaoId]); // kakaoId가 변경될 때마다 실행
@@ -152,7 +150,7 @@ export function MainPage() {
           <div style={{ background: "#fff" }}>
             <Header major={userMajor} className="mt-[50px]" title={""} />
             <div className="w-auto mt-[30px]">
-              <Banner />
+              <Banner2 />
             </div>
             {position === "멘티" ? (
               renderMentorBoxes()

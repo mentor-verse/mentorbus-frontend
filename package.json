@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://mentor-verse.github.io/mentorbus-frontend",
+  "homepage": "https://mentorbus.app/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -17,6 +17,7 @@
     "@tanstack/react-query": "^5.50.1",
     "@types/es6-promise": "^3.3.0",
     "autoprefixer": "^10.4.19",
+    "axios": "1.7.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "endpoint-client": "^0.1.1",
@@ -46,7 +47,7 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
-    "gh-pages": "6.2.0",
+    "gh-pages": "^6.2.0",
     "typescript": "^5.5.4",
     "vite": "^5.3.1",
     "vite-tsconfig-paths": "^4.3.2"

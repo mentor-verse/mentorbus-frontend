@@ -74,7 +74,7 @@ const ApplyQuestionPage = React.forwardRef<
     setAnswer(inputValue);
     fetchData();
 
-    navigate("/mentorbus-frontend/qabus");
+    navigate("/qabus");
   };
 
   const fetchData = async () => {

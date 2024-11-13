@@ -142,7 +142,7 @@ export function QAPage() {
 
   const handleQuestionBoxClick = (box: QuestionBoxType, index: number) => {
     navigate(
-      `/mentorbus-frontend/comment?userName=${encodeURIComponent(
+      `/comment?userName=${encodeURIComponent(
         box.author
       )}&letter_id=${encodeURIComponent(box.id)}`,
       {

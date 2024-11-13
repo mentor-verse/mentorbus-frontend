@@ -26,7 +26,7 @@ export function KakaoRedirect() {
 
         // 로그인 성공 시 상태 업데이트 및 페이지 이동
         setIsLoggedIn(true);
-        navigate("/mentorbus-frontend/onboarding");
+        navigate("/onboarding");
 
         // 서버에 로그인 데이터 전송
         await sendLoginDataToServer(transformedUserData);
