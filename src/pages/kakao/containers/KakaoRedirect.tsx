@@ -7,7 +7,7 @@ declare global {
   }
 }
 
-import { resolvePath, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { useEffect, useCallback, useState } from "react";
 import { isLoggedInAtom } from "@/atoms/isLoggedInAtom";
@@ -101,6 +101,7 @@ export function KakaoRedirect() {
           .then(
             (response: {
               data: {
+                interest: string;
                 school: string;
                 want: string;
                 major: string;
@@ -113,7 +114,7 @@ export function KakaoRedirect() {
               localStorage.setItem("userName", response.data.nickname);
               localStorage.setItem("userBelong", response.data.school);
               localStorage.setItem("position", response.data.position);
-              localStorage.setItem("major", response.data.major);
+              localStorage.setItem("major", response.data.interest);
               localStorage.setItem("favor", response.data.want);
 
               navigate("/main");
