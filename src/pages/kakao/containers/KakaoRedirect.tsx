@@ -75,11 +75,11 @@ export function KakaoRedirect() {
 
       setKakaoId(data?.data?.id);
       // kakaoId가 있을 때 백엔드 API 호출
-      if (kakaoId) {
+      if (data?.data?.id) {
         // 백엔드 API 호출
         axios
           .get(
-            `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/userdata/${kakaoId}`
+            `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/userdata/${data?.data?.id}`
           )
           .then((response: { data: { position: any } }) => {
             // 성공적으로 데이터를 가져왔을 때
@@ -92,21 +92,19 @@ export function KakaoRedirect() {
 
       if (result.message === "Kakao login data already exists") {
         // 조건이 만족되면 /main으로 이동
-        if (kakaoId) {
-          // 백엔드 API 호출
-          axios
-            .get(
-              `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/userdata/${kakaoId}`
-            )
-            .then((response: { data: { position: any } }) => {
-              // 성공적으로 데이터를 가져왔을 때
-              console.log(response.data);
-              navigate("/main");
-            })
-            .catch((error) => {
-              console.error("Error fetching user data:", error);
-            });
-        }
+        // 백엔드 API 호출
+        axios
+          .get(
+            `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/userdata/${data?.data?.id}`
+          )
+          .then((response: { data: { position: any } }) => {
+            // 성공적으로 데이터를 가져왔을 때
+            console.log(response.data);
+            navigate("/main");
+          })
+          .catch((error) => {
+            console.error("Error fetching user data:", error);
+          });
       }
 
       // 서버 응답에서 kakao_id를 로컬 스토리지에 저장
