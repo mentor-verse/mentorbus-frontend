@@ -120,6 +120,8 @@ export function FindMentor() {
         box.major.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+  console.log("filteredBoxes", filteredBoxes);
+
   const handleMainFilterChange = (filter: string) => {
     setMainFilter(filter);
     setSubFilter("");

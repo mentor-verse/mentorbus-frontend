@@ -152,7 +152,7 @@ export function QAPage() {
           star_num: box.star_num,
           comment_num: box.comment_num,
           mentor_answer: box.mentor_answer,
-          position: box.position,
+          position: localStorage.getItem("position"),
           idx: index,
         },
       }

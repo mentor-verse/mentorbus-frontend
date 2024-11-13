@@ -47,7 +47,7 @@ const QuestionBox = React.forwardRef<HTMLDivElement, QuestionBoxProps>(
           )}
         >
           <p className="text-[#4E98EE] mr-[5px]">Q. </p>
-          <p>{question}</p>
+          <div>{question}</div>
         </div>
         <div className="not-italic font-normal text-[11px] w-[300px] mt-[4px]">
           {answer}
