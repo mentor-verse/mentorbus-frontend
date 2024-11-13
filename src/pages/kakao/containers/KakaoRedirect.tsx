@@ -9,14 +9,16 @@ declare global {
 
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import { isLoggedInAtom } from "@/atoms/isLoggedInAtom";
 import getToken from "../containers/apis/getToken";
+import axios from "axios";
 
 export function KakaoRedirect() {
   const navigate = useNavigate();
   const setIsLoggedIn = useSetRecoilState(isLoggedInAtom);
   const [searchParams] = useSearchParams();
+  const [kakaoId, setKakaoId] = useState();
 
   const handleLogin = useCallback(
     async (code: string) => {
@@ -69,11 +71,42 @@ export function KakaoRedirect() {
 
       const result = await response.json();
       console.log("Server response:", result);
-      console.log("data", data);
+      console.log("data", data?.data?.id);
+
+      setKakaoId(data?.data?.id);
+      // kakaoId가 있을 때 백엔드 API 호출
+      if (kakaoId) {
+        // 백엔드 API 호출
+        axios
+          .get(
+            `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/userdata/${kakaoId}`
+          )
+          .then((response: { data: { position: any } }) => {
+            // 성공적으로 데이터를 가져왔을 때
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.error("Error fetching user data:", error);
+          });
+      }
 
       if (result.message === "Kakao login data already exists") {
         // 조건이 만족되면 /main으로 이동
-        navigate("/main");
+        if (kakaoId) {
+          // 백엔드 API 호출
+          axios
+            .get(
+              `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/userdata/${kakaoId}`
+            )
+            .then((response: { data: { position: any } }) => {
+              // 성공적으로 데이터를 가져왔을 때
+              console.log(response.data);
+              navigate("/main");
+            })
+            .catch((error) => {
+              console.error("Error fetching user data:", error);
+            });
+        }
       }
 
       // 서버 응답에서 kakao_id를 로컬 스토리지에 저장
