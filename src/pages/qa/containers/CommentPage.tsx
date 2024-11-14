@@ -23,8 +23,7 @@ const CommentPage = React.forwardRef<HTMLDivElement, CommentPageProps>(
     const [mentor_answer, setMentorAnswer] = React.useState(false); // kakaoId 상태값으로 설정
 
     // Extract userName and idx from the query parameters or state
-    const queryParams = new URLSearchParams(location.search);
-    const userName = queryParams.get("userName") || "기본명"; // Default value if userName is null
+    const userName = localStorage.getItem("userName") || "기본명"; // Default value if userName is null
 
     // QAPage로부터 전달받은 state에서 데이터 추출
     const { title, question, star_num, comment_num, position } =
