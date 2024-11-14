@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FindTitle from "./FindTitle";
 import { MentorInfo } from "./MentorInfo";
@@ -15,6 +15,9 @@ export function MentorPage() {
 
   const selectedBox = location.state?.selectedBox;
 
+  useEffect(() => {
+    console.log("selectedBox", selectedBox);
+  }, []);
   // Function to send data to the API
   const saveClass = async (box: {
     nickname: any;

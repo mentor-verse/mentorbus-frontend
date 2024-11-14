@@ -46,6 +46,7 @@ export function FindMentor() {
       );
 
       if (response.status === 200) {
+        console.log("response", response);
         const classesFromApi = Array.isArray(response.data)
           ? response.data
           : [response.data];
@@ -68,6 +69,8 @@ export function FindMentor() {
       );
 
       if (response.status === 200) {
+        console.log("response", response);
+
         const classesFromApi = Array.isArray(response.data)
           ? response.data
           : [response.data];
