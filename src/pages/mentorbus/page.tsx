@@ -346,16 +346,18 @@ export function MentorBusPageMentor() {
 
   const navigate = useNavigate(); // useNavigate 사용
 
-  // URL에서 kakaoId를 가져오는 함수
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const kakao_id = searchParams.get("mentor_id"); // URL에서 userId 파라미터로 kakaoId 추출
-    setKakaoId(kakao_id); // 상태 업데이트
+    const kakao_id = searchParams.get("mentor_id");
+    setKakaoId(kakao_id);
+    console.log("kakao_id", kakao_id);
   }, [location.search]);
 
   useEffect(() => {
-    console.log("appliedItem", appliedItems);
-  });
+    if (kakao_id) {
+      loadAppliedItems();
+    }
+  }, [kakao_id]);
 
   const loadAppliedItems = async () => {
     try {
@@ -372,8 +374,7 @@ export function MentorBusPageMentor() {
 
         console.log("itemsFromApi:", itemsFromApi);
 
-        setAppliedItems(itemsFromApi); // Update with parsed items
-        console.log(appliedItems);
+        setAppliedItems(itemsFromApi);
       } else {
         console.error("Unexpected response status:", response.status);
         setAppliedItems([]);
@@ -384,9 +385,6 @@ export function MentorBusPageMentor() {
     }
   };
 
-  useEffect(() => {
-    loadAppliedItems(); // Fetch data on mentee_id change
-  }, []);
   const handleEnter = async (item: SelectedBox, classData: any) => {
     console.log(
       "handleEnter called with item:",

@@ -111,11 +111,18 @@ export function KakaoRedirect() {
             }) => {
               // 성공적으로 데이터를 가져왔을 때
               console.log(response.data);
-              localStorage.setItem("userName", response.data.nickname);
-              localStorage.setItem("userBelong", response.data.school);
-              localStorage.setItem("position", response.data.position);
-              localStorage.setItem("major", response.data.interest);
-              localStorage.setItem("favor", response.data.want);
+              if (response.data.position == "멘티") {
+                localStorage.setItem("userName", response.data.nickname);
+                localStorage.setItem("userBelong", response.data.school);
+                localStorage.setItem("position", response.data.position);
+                localStorage.setItem("major", response.data.interest);
+                localStorage.setItem("favor", response.data.want);
+              } else {
+                localStorage.setItem("userName", response.data.nickname);
+                localStorage.setItem("userBelong", response.data.job);
+                localStorage.setItem("position", response.data.position);
+                localStorage.setItem("major", response.data.major);
+              }
 
               navigate("/main");
             }
