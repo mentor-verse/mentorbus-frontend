@@ -179,8 +179,18 @@ export function FindMentor() {
 
   if (loading) {
     return (
-      <div style={{ color: "#f2f2f2", fontSize: "25px", marginTop: "100px" }}>
-        <div style={{ width: "300px" }}>⏰</div>
+      <div
+        style={{
+          color: "#f2f2f2",
+          fontSize: "25px",
+          marginTop: "100px",
+        }}
+      >
+        <div
+          style={{ width: "800px", display: "flex", justifyContent: "center" }}
+        >
+          ⏰
+        </div>
         로딩 중입니다<br></br>잠시 기다려주세요
       </div>
     ); // 로딩 상태일 때 표시할 내용

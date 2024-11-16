@@ -54,12 +54,12 @@ const CommentQuestionSection = React.forwardRef<
           >
             <Star fill={"#fff"} />
             <div className="ml-[2px]"></div>
-            {stars}
+            <div>{stars}</div>
           </div>
           <div className="flex text-start items-center text-gray-600 not-italic font-normal text-[11px] ml-[5px]">
             <Comment />
             <div className="ml-[2px]"></div>
-            {comment_num}
+            <div>{comment_num}</div>
           </div>
         </div>
       </div>
