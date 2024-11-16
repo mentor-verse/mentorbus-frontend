@@ -101,6 +101,7 @@ export function KakaoRedirect() {
           .then(
             (response: {
               data: {
+                job: string;
                 interest: string;
                 school: string;
                 want: string;

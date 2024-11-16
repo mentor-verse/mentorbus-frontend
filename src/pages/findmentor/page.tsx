@@ -96,8 +96,6 @@ export function FindMentor() {
 
   // mainFilter와 subFilter가 변경될 때마다 적절한 데이터를 로드
   useEffect(() => {
-    setLoading(true);
-
     if (mainFilter === "all") {
       loadClasses();
     } else if (mainFilter === "school" && subFilter) {
@@ -131,10 +129,14 @@ export function FindMentor() {
     setDropdownOpen(false);
   };
 
+  {
+    /*
   const handleSubFilterChange = (filter: string) => {
     setSubFilter(filter); // subFilter 값에 info 값을 설정
     setDropdownOpen(false);
   };
+  */
+  }
 
   const handleSearchBoxClick = (box: SearchBoxType) => {
     navigate("/mentorinfo", { state: { selectedBox: box } });
@@ -222,6 +224,7 @@ export function FindMentor() {
               ref={roadDivRef}
               className="mt-[20px] flex items-center relative ml-4"
             >
+              {/*
               <button onClick={() => setDropdownOpen(!dropdownOpen)}>
                 <FilterButton />
               </button>
@@ -261,8 +264,9 @@ export function FindMentor() {
                     )}
                 </div>
               )}
+              */}
             </div>
-            <div className="mt-[15px] grid place-content-center w-[95%]">
+            <div className="mt-[5px] grid place-content-center w-[95%]">
               {filteredBoxes.map((box, index) => (
                 <div
                   onClick={() => handleSearchBoxClick(box)}
