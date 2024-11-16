@@ -1,8 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { SearchBox } from "@/components/ui/searchbox";
+{
+  /*
 import { FilterButton } from "@/components/Icons/FilterButton";
 import { UnderArrowBlue } from "@/components/Icons/UnderArrowBlue";
+*/
+}
 import { NotYetPage } from "./containers/NotYetPage";
 import axios from "axios"; // Import axios
 import BottomNav from "@/containers/navbar";
@@ -28,7 +32,12 @@ export function FindMentor() {
 
   const [mainFilter, setMainFilter] = useState("all");
   const [subFilter, setSubFilter] = useState("");
+  {
+    /*
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
+*/
+  }
   const [searchBoxes, setSearchBoxes] = useState<SearchBoxType[]>([]); // API에서 불러온 데이터를 저장할 state
   const [loading, setLoading] = useState(true); // 로딩 상태
   const navigate = useNavigate();
@@ -126,7 +135,11 @@ export function FindMentor() {
   const handleMainFilterChange = (filter: string) => {
     setMainFilter(filter);
     setSubFilter("");
+    {
+      /*
     setDropdownOpen(false);
+    */
+    }
   };
 
   {
@@ -172,7 +185,7 @@ export function FindMentor() {
 
   return (
     <>
-      <div className="main">
+      <div className="main" style={{ background: "#fff" }}>
         <div className="main_content">
           <div style={{ background: "#fff" }}>
             <div className="flex justify-center text-lg not-italic font-bold text-[19px] mt-[20px] items-center align-middle  w-full ">

@@ -239,7 +239,7 @@ export function MentorBusPageMentee() {
 
   return (
     <>
-      <div className="main">
+      <div className="main" style={{ background: "#fff" }}>
         <div className="main_content">
           <div style={{ background: "#fff" }}>
             <div className="text-lg not-italic font-bold text-[19px] mt-[20px]">
@@ -514,7 +514,7 @@ export function MentorBusPageMentor() {
 
   return (
     <>
-      <div className="main">
+      <div className="main" style={{ background: "#fff" }}>
         <div className="main_content">
           <div style={{ background: "#fff" }}>
             <div className="text-lg not-italic font-bold text-[19px] mt-[20px]">
