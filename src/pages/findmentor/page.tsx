@@ -183,12 +183,11 @@ export function FindMentor() {
         style={{
           color: "#f2f2f2",
           fontSize: "25px",
-          marginTop: "100px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center", // 수평 중앙 정렬
           justifyContent: "center", // 수직 중앙 정렬
-          height: "100vh", // 화면 전체 높이 설정
+          height: "50vh", // 화면 전체 높이 설정
         }}
       >
         <div
