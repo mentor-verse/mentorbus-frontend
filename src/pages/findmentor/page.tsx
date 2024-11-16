@@ -181,7 +181,7 @@ export function FindMentor() {
     return (
       <div
         style={{
-          color: "#f2f2f2",
+          color: "#888888",
           fontSize: "25px",
           display: "flex",
           flexDirection: "column",
