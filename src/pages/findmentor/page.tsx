@@ -1,12 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { SearchBox } from "@/components/ui/searchbox";
-{
-  /*
+
 import { FilterButton } from "@/components/Icons/FilterButton";
 import { UnderArrowBlue } from "@/components/Icons/UnderArrowBlue";
-*/
-}
+
 import { NotYetPage } from "./containers/NotYetPage";
 import axios from "axios"; // Import axios
 import BottomNav from "@/containers/navbar";
@@ -32,12 +30,9 @@ export function FindMentor() {
 
   const [mainFilter, setMainFilter] = useState("all");
   const [subFilter, setSubFilter] = useState("");
-  {
-    /*
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
-*/
-  }
+
   const [searchBoxes, setSearchBoxes] = useState<SearchBoxType[]>([]); // API에서 불러온 데이터를 저장할 state
   const [loading, setLoading] = useState(true); // 로딩 상태
   const navigate = useNavigate();
@@ -60,6 +55,7 @@ export function FindMentor() {
           ? response.data
           : [response.data];
         setSearchBoxes(classesFromApi); // 데이터를 searchBoxes 상태에 저장
+        console.log("searchBoxes", searchBoxes);
       } else {
         setSearchBoxes([]); // 데이터가 배열이 아닐 경우 빈 배열로 설정
       }
@@ -136,20 +132,14 @@ export function FindMentor() {
     setMainFilter(filter);
     setSubFilter("");
     {
-      /*
-    setDropdownOpen(false);
-    */
+      setDropdownOpen(false);
     }
   };
 
-  {
-    /*
   const handleSubFilterChange = (filter: string) => {
     setSubFilter(filter); // subFilter 값에 info 값을 설정
     setDropdownOpen(false);
   };
-  */
-  }
 
   const handleSearchBoxClick = (box: SearchBoxType) => {
     navigate("/mentorinfo", { state: { selectedBox: box } });
@@ -260,7 +250,6 @@ export function FindMentor() {
               ref={roadDivRef}
               className="mt-[20px] flex items-center relative ml-4"
             >
-              {/*
               <button onClick={() => setDropdownOpen(!dropdownOpen)}>
                 <FilterButton />
               </button>
@@ -300,7 +289,6 @@ export function FindMentor() {
                     )}
                 </div>
               )}
-              */}
             </div>
             <div className="mt-[5px] grid place-content-center w-[95%]">
               {filteredBoxes.map((box, index) => (

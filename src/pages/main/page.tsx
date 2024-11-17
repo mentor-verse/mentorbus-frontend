@@ -57,6 +57,20 @@ const getRandomColleges = (
   return shuffled.slice(0, count);
 };
 
+type SearchBoxType = {
+  character1: string;
+  nickname: string;
+  num: string;
+  title: string;
+  gen: string;
+  major: string;
+  name: string;
+  info: string;
+  date: string;
+  text: string;
+  sort: string;
+};
+
 export function MainPage() {
   const [userName, setUserName] = useState<string | null>("");
   const [major, setUserMajor] = useState<string>("");
@@ -67,7 +81,7 @@ export function MainPage() {
   const [kakaoId, setKakaoId] = useState<string | null>(null); // kakaoId 상태값으로 설정
   const navigate = useNavigate();
   const [mentorData, setMentorData] = useState<SearchBoxType[]>([]); // API에서 불러온 데이터를 저장할 state
-  const [loading, setLoading] = useState(true); // 로딩 상태
+  const [, setLoading] = useState(true); // 로딩 상태
 
   // URL에서 kakaoId를 가져오는 함수
   useEffect(() => {
