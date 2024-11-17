@@ -110,10 +110,9 @@ export function MentorBusPageMentee() {
 
   // URL에서 kakaoId를 가져오는 함수
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const menteeId = searchParams.get("mentee_id"); // URL에서 userId 파라미터로 kakaoId 추출
+    const menteeId = localStorage.getItem("kakao_id");
     setMenteeId(menteeId); // 상태 업데이트
-  }, [location.search]);
+  }, []);
 
   // Fetch applied items whenever mentee_id changes
   useEffect(() => {
@@ -201,9 +200,7 @@ export function MentorBusPageMentee() {
       // 서버에 PATCH 요청 보내기
       try {
         const response = await fetch(
-          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/classes/${
-            item.id + 1
-          }/status`,
+          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/classes/${item.id}/status`,
           {
             method: "PATCH",
             headers: {

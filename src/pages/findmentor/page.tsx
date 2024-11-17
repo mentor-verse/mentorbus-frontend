@@ -108,7 +108,7 @@ export function FindMentor() {
     if (mainFilter === "all") {
       loadClasses();
     } else if (mainFilter === "school" && subFilter) {
-      loadClasses(subFilter); // subFilter (info 값)으로 loadSpecificClasses 호출
+      loadClasses(); // subFilter (info 값)으로 loadSpecificClasses 호출
     }
   }, [mainFilter, subFilter]); // subFilter 값이 변경될 때마다 호출
 
