@@ -67,6 +67,8 @@ export function FindMentor() {
   };
 
   // API에서 특정 학교 데이터를 불러오는 함수
+  {
+    /*
   const loadSpecificClasses = async (major: string) => {
     try {
       const response = await axios.get(
@@ -89,6 +91,8 @@ export function FindMentor() {
       setLoading(false); // 데이터 로드 완료 후 로딩 상태를 false로 설정
     }
   };
+  */
+  }
 
   // school params를 확인해 subFilter로 설정
   useEffect(() => {
@@ -104,7 +108,7 @@ export function FindMentor() {
     if (mainFilter === "all") {
       loadClasses();
     } else if (mainFilter === "school" && subFilter) {
-      loadSpecificClasses(subFilter); // subFilter (info 값)으로 loadSpecificClasses 호출
+      loadClasses(subFilter); // subFilter (info 값)으로 loadSpecificClasses 호출
     }
   }, [mainFilter, subFilter]); // subFilter 값이 변경될 때마다 호출
 
@@ -114,7 +118,7 @@ export function FindMentor() {
       if (mainFilter === "all") {
         return subFilter ? box.sort === subFilter : true;
       } else if (mainFilter === "school") {
-        return subFilter ? box.info === subFilter : true;
+        return subFilter ? box.major === subFilter : true;
       }
       return true;
     })
@@ -276,14 +280,14 @@ export function FindMentor() {
                       )
                     )}
                   {mainFilter === "school" &&
-                    [...new Set(searchBoxes.map((box) => box.info))].map(
-                      (info, index) => (
+                    [...new Set(searchBoxes.map((box) => box.major))].map(
+                      (major, index) => (
                         <div
                           key={index}
                           className="dropdown_option p-[10px] hover:bg-gray-200 cursor-pointer"
-                          onClick={() => handleSubFilterChange(info)}
+                          onClick={() => handleSubFilterChange(major)}
                         >
-                          {info}
+                          {major}
                         </div>
                       )
                     )}
