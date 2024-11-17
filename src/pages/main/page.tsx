@@ -211,7 +211,15 @@ export function MainPage() {
         <div className="main_content overflow-hidden bg-white">
           <div style={{ background: "#fff" }}>
             <Header major={major} className="mt-[50px]" title={""} />
-            <div className="w-auto mt-[30px]">
+            <div
+              className="w-auto mt-[30px]"
+              onClick={() =>
+                window.open(
+                  "https://www.instagram.com/mentorbus_official/",
+                  "_blank"
+                )
+              }
+            >
               <Banner2 />
             </div>
             {position === "멘티" ? (
