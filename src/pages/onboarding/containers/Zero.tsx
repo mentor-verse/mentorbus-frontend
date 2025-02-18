@@ -144,15 +144,27 @@ const Zero: React.FC<ZeroProps> = () => {
       const res = await (window as any).AppleID.auth.signIn();
       console.log("Apple sign-in response:", res);
 
-      // API에 애플 로그인 결과 전송
+      // 안전한 데이터 접근 (Optional Chaining)
+      const firstName = res?.user?.name?.firstName || "";
+      const lastName = res?.user?.name?.lastName || "";
+      const fullName = lastName + firstName;
+      const email = res?.user?.email || ""; // 또는 res?.user?.email, 실제 구조에 맞게 수정
+      const id_token = res?.authorization?.id_token || "";
+
+      // 만약 필수 데이터가 없다면 에러 처리
+      if (!email || !id_token) {
+        throw new Error("필수 사용자 데이터가 누락되었습니다.");
+      }
+
+      // API 요청 전송 (sendAppleData)
       const apiResponse = await sendAppleData({
-        name: res.user.name,
-        email: res.user.email,
-        id_token: res.authorization.id_token,
+        name: fullName,
+        email: email,
+        id_token: id_token,
       });
       console.log("API response:", apiResponse);
 
-      // 응답 메시지에 따라 페이지 이동 처리
+      // 응답에 따른 페이지 이동 처리
       if (apiResponse.message === "user data already existed") {
         navigate("/main");
       } else if (apiResponse.message === "user data saved successfully") {
