@@ -154,8 +154,3 @@ export interface postAppleProps {
   user: AppleUser;
   authorization: AppleAuthorization;
 }
-
-export interface postAppleRes {
-  message: string;
-  // 기타 응답 데이터 필드가 있다면 추가
-}

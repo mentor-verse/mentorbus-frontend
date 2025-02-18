@@ -148,12 +148,13 @@ const Zero: React.FC<ZeroProps> = () => {
       const apiResponse = await sendAppleData(res);
       console.log("API response:", apiResponse);
 
-      // 응답 메시지에 따라 페이지 이동 처리
+      /*
       if (apiResponse.message === "user data already existed") {
         navigate("/main");
       } else if (apiResponse.message === "user data saved successfully") {
         navigate("/onboarding?specialQuery=true");
       }
+      */
     } catch (error) {
       console.error("Apple sign-in error:", error);
     }
