@@ -8,7 +8,26 @@ import { signInUser, signUpUser } from "@/apis/googleAuth"; // 로그인/회원�
 import { getGoogleAccessToken } from "@/hooks/login/useGoogleOAuth"; // OAuth 토큰 교환 함수
 
 // You can import your Apple login API function here
-import { appleLoginRedirect } from "@/apis/appleAuth"; // Define the function to handle Apple login
+//import { appleLoginRedirect } from "@/apis/appleAuth"; // Define the function to handle Apple login
+
+// 파일 상단 혹은 타입 선언 파일(d.ts)에서 아래와 같이 선언합니다.
+declare global {
+  interface Window {
+    AppleID: {
+      auth: {
+        init: (config: {
+          clientId: string;
+          scope: string;
+          redirectURI: string;
+          state: string;
+          nonce: string;
+          usePopup: boolean;
+        }) => void;
+        signIn: () => Promise<any>;
+      };
+    };
+  }
+}
 
 interface ZeroProps {
   count: number;
@@ -106,12 +125,11 @@ const Zero: React.FC<ZeroProps> = () => {
   };
   */
 
-  const loginWithApple = async (e) => {
+  const loginWithApple = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     console.log("sign in with apple");
 
-    // 실제 값을 사용하세요.
-    window.AppleID.auth.init({
+    (window as any).AppleID.auth.init({
       clientId: import.meta.env.VITE_APPLE_CLIENT_ID,
       scope: "kang email",
       redirectURI: import.meta.env.VITE_APPLE_REDIRECT_URI,
@@ -121,7 +139,7 @@ const Zero: React.FC<ZeroProps> = () => {
     });
 
     try {
-      const res = await window.AppleID.auth.signIn();
+      const res = await (window as any).AppleID.auth.signIn();
       console.log(res);
     } catch (error) {
       console.error(error);
