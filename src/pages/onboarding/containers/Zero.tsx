@@ -6,6 +6,7 @@ import { AppleBtn } from "@/components/Icons/AppleBtn";
 import { useNavigate } from "react-router-dom";
 import { signInUser, signUpUser } from "@/apis/googleAuth"; // 로그인/회원가입 API
 import { getGoogleAccessToken } from "@/hooks/login/useGoogleOAuth"; // OAuth 토큰 교환 함수
+import { usePostAppleData } from "@/hooks/usePostAppleData";
 
 // You can import your Apple login API function here
 //import { appleLoginRedirect } from "@/apis/appleAuth"; // Define the function to handle Apple login
@@ -124,6 +125,7 @@ const Zero: React.FC<ZeroProps> = () => {
     appleLoginRedirect();
   };
   */
+  const { mutateAsync: sendAppleData } = usePostAppleData();
 
   const loginWithApple = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
@@ -140,9 +142,20 @@ const Zero: React.FC<ZeroProps> = () => {
 
     try {
       const res = await (window as any).AppleID.auth.signIn();
-      console.log(res);
+      console.log("Apple sign-in response:", res);
+
+      // API에 애플 로그인 결과 전송
+      const apiResponse = await sendAppleData(res);
+      console.log("API response:", apiResponse);
+
+      // 응답 메시지에 따라 페이지 이동 처리
+      if (apiResponse.message === "user data already existed") {
+        navigate("/main");
+      } else if (apiResponse.message === "user data saved successfully") {
+        navigate("/onboarding?specialQuery=true");
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Apple sign-in error:", error);
     }
   };
 

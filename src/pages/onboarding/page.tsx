@@ -29,12 +29,7 @@ export function Onboarding() {
   const prevCountRef = useRef<number>(count);
 
   useEffect(() => {
-    const kakaoId = localStorage.getItem("kakaoId");
-
-    if (kakaoId) {
-      console.log("Kakao login data already exists");
-      navigate(`/main?userId=${kakaoId}`);
-    } else if (isLoggedIn || localStorage.getItem("kakaoToken")) {
+    if (isLoggedIn) {
       setCount(1);
     } else {
       setCount(0);
@@ -68,7 +63,7 @@ export function Onboarding() {
 
     if (specialQuery) {
       setCount(1);
-    } else if (isLoggedIn || localStorage.getItem("kakaoToken")) {
+    } else if (isLoggedIn) {
       setCount(1);
     } else {
       setCount(0);

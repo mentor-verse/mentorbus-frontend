@@ -131,3 +131,22 @@ export interface postOnboardingResDto {
   interest: string;
   isMentor: boolean;
 }
+
+//<<------------------------------->
+
+export interface postAppleProps {
+  name: string | null;
+  email: string | null;
+  id_token: string | null;
+}
+
+export interface postAppleRes {
+  message: string;
+  data: postAppleResDto[];
+}
+
+export interface postAppleResDto {
+  name: string | null;
+  email: string | null;
+  id_token: string | null;
+}

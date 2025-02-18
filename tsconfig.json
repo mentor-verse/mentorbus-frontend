@@ -25,6 +25,6 @@
     },
     "types": ["node"]
   },
-  "include": ["src"],
+  "include": ["src", "src/hooks/login/.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
