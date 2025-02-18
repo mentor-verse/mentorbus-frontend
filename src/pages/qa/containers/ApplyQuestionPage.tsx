@@ -2,7 +2,7 @@ import * as React from "react";
 import { cn } from "../../../libs/utils.ts";
 import { useLocation, useNavigate } from "react-router-dom";
 import { XIcon } from "@/components/Icons/PlusButton.tsx";
-import axios from "axios";
+import { usePostQuestion } from "@/hooks/usePostQuestion.ts";
 
 export interface ApplyQuestionPageProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -15,7 +15,7 @@ export interface ApplyQuestionPageProps
 const ApplyQuestionPage = React.forwardRef<
   HTMLDivElement,
   ApplyQuestionPageProps
->(({ className, back_disable, back_work, Link, setAnswer }, ref) => {
+>(({ className, back_disable, back_work, Link }, ref) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [inputValue, setInputValue] = React.useState("");
@@ -47,8 +47,8 @@ const ApplyQuestionPage = React.forwardRef<
     const value = event.target.value;
     setInputValue(value);
 
-    event.target.style.height = "auto"; // Reset height to auto to calculate correct scrollHeight
-    event.target.style.height = `${event.target.scrollHeight}px`; // Set height to the scrollHeight of the content
+    event.target.style.height = "auto";
+    event.target.style.height = `${event.target.scrollHeight}px`;
   };
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,70 +56,20 @@ const ApplyQuestionPage = React.forwardRef<
     setTitle(value);
   };
 
-  const handleSaveAndNavigate = () => {
-    const storedData = JSON.parse(localStorage.getItem("questions") || "[]");
-    const newQuestion = {
-      question: title,
-      answer: inputValue,
-      star_num: 0,
-      comment_num: 0,
-      type: "all",
-      major: localStorage.getItem("major") || "공학계열",
-      mentor_answer: "",
-      userName: localStorage.getItem("userName") || "기본명",
-    };
+  const { mutateAsync: createQuestion } = usePostQuestion();
 
-    storedData.push(newQuestion);
-    localStorage.setItem("questions", JSON.stringify(storedData));
-    setAnswer(inputValue);
-    fetchData();
-
-    window.location.href = "/qabus"; // This will navigate and refresh the page
-  };
-
-  const fetchData = async () => {
+  const handleApplyClick = async () => {
+    console.log("Button clicked!");
     try {
-      // Get ClassData from localStorage
-      const letterData = localStorage.getItem("questions") || "[]";
-      const comment_id = null; // Initialize comment_id to null or assign a value
+      await createQuestion({
+        userId: 4321,
+        title: title,
+        content: inputValue,
+      });
 
-      // Convert ClassData to JSON
-      const letterDataJson = JSON.parse(letterData);
-
-      // Check if there's at least one entry
-      if (letterDataJson.length > 0) {
-        try {
-          // POST request for the first entry
-          const response = await axios.post(
-            `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/letters`,
-            {
-              star_num: 0,
-              comment_num: 0,
-              type: "all",
-              major: localStorage.getItem("major") || "공학계열",
-              mentor_answer: "",
-              kakao_id: localStorage.getItem("kakao_id") || "기본명",
-              title: title,
-              question: inputValue,
-              author: localStorage.getItem("userName") || "기본명",
-              isClick: false,
-              comment_id: comment_id || null,
-            }
-          );
-
-          // Check if the request was successful
-          if (response.status === 200) {
-            const newClass = response.data.comment;
-            console.log("Letter created successfully:", newClass);
-          } else {
-            console.error("Failed to create letter for:", title);
-          }
-        } catch (error) {
-          console.error("Error creating letter for:", title, error);
-        }
-      }
-    } catch (error) {
-      console.error("Error processing LetterData:", error);
+      navigate("/qabus");
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -143,7 +93,7 @@ const ApplyQuestionPage = React.forwardRef<
               <div className="text-[19px] text-[#333333] font-bold">글쓰기</div>
               <div
                 className="text-[16px] text-[#333333] font-medium mr-[20px] cursor-pointer"
-                onClick={handleSaveAndNavigate}
+                onClick={handleApplyClick}
               >
                 작성
               </div>

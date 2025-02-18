@@ -6,7 +6,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { LeftArrow } from "@/components/Icons/LeftArrow.tsx";
 import BottomNav from "@/containers/navbar.tsx";
 import { ApplyAnswerBox } from "@/pages/qa/containers/ApplyAnswerBox.tsx";
-import axios from "axios";
+import { useGetAnswer } from "@/hooks/useGetAnswer.ts";
+import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { getAnswerRes } from "@/types/get/index.ts";
 
 export interface CommentPageProps extends React.HTMLAttributes<HTMLDivElement> {
   Link: string;
@@ -18,24 +21,26 @@ const CommentPage = React.forwardRef<HTMLDivElement, CommentPageProps>(
   ({ className, back_disable, back_work, Link }, ref) => {
     const navigate = useNavigate();
     const location = useLocation();
-    const [letter_id, setLetterId] = React.useState<string | null>(null); // kakaoId 상태값으로 설정
-    const [comment_id, setCommentId] = React.useState<string | null>(null); // kakaoId 상태값으로 설정
-    const [mentor_answer, setMentorAnswer] = React.useState(false); // kakaoId 상태값으로 설정
+    const [questionId, setQuestionId] = useState<number | null>(null);
+    const [commentIds, setCommentIds] = useState<
+      Array<{
+        content: string;
+        replyCount: string;
+      }>
+    >([]);
+    const [mentorAnswer, setMentorAnswer] = useState<getAnswerRes[]>([]);
 
-    // Extract userName and idx from the query parameters or state
-    const userName = localStorage.getItem("userName") || "기본명"; // Default value if userName is null
+    const userName = localStorage.getItem("userName") || "기본명";
+    const queryClient = useQueryClient();
+    const localUserId = localStorage.getItem("userId");
 
-    // QAPage로부터 전달받은 state에서 데이터 추출
     const { title, question, star_num, comment_num, position } =
       location.state || {};
-
-    // Get the user's position from localStorage
 
     const handleBackClick = () => {
       if (back_work === "no") {
         return;
       }
-
       if (Link) {
         navigate(Link);
       } else {
@@ -43,38 +48,44 @@ const CommentPage = React.forwardRef<HTMLDivElement, CommentPageProps>(
       }
     };
 
-    // URL에서 kakaoId를 가져오는 함수
-    React.useEffect(() => {
+    useEffect(() => {
       const searchParams = new URLSearchParams(location.search);
-      const urlLetterId = searchParams.get("letter_id"); // URL에서 letter_id 파라미터로 kakaoId 추출
-      console.log("urlLetterId", urlLetterId);
-      setLetterId(urlLetterId); // 상태 업데이트
-    }, [location.search]); // Make sure to listen to location.search to handle URL changes
-
-    // letter_id가 업데이트될 때 실행
-    React.useEffect(() => {
-      if (letter_id) {
-        console.log("letter_id_find", letter_id);
+      const urlQuestionId = searchParams.get("questionId");
+      const parsedQuestionId = urlQuestionId ? Number(urlQuestionId) : null;
+      if (!isNaN(parsedQuestionId)) {
+        setQuestionId(parsedQuestionId);
       }
-    }, [letter_id]); // Add letter_id as a dependency to trigger when it's updated
+    }, [location.search]);
 
-    React.useEffect(() => {
-      if (letter_id) {
-        axios
-          .get(
-            `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/comments/${letter_id}`
-          )
-          .then((response) => {
-            setCommentId(response.data);
-            console.log("Comment data:", response.data);
-            setMentorAnswer(true);
-          })
-          .catch((error) => {
-            console.error("Error fetching comment data:", error);
-            setMentorAnswer(false);
-          });
+    const {
+      data: resp,
+      isLoading,
+      isError,
+      refetch,
+    } = useGetAnswer({ questionId });
+
+    useEffect(() => {
+      if (!queryClient.getQueryData(["getComment"])) {
+        refetch();
       }
-    }, [letter_id]); // letter_id가 변경될 때만 실행
+    }, [queryClient, refetch]);
+
+    useEffect(() => {
+      setMentorAnswer(resp || []);
+      setCommentIds(
+        resp?.map((answer) => ({
+          content: answer.content || "No content",
+          replyCount: answer.replyCount || "0",
+        })) || []
+      );
+    }, [resp]);
+
+    // 전체 resp 배열에서 로컬 userId와 일치하는 항목이 있는지 확인
+    const isOwner =
+      resp && resp.some((answer) => String(answer.userId) === localUserId);
+
+    if (isLoading) return <p>Loading...</p>;
+    if (isError) return <p>Error loading articles</p>;
 
     return (
       <div className={cn("grid place-items-center", className)} ref={ref}>
@@ -99,29 +110,25 @@ const CommentPage = React.forwardRef<HTMLDivElement, CommentPageProps>(
           />
         </div>
 
-        {mentor_answer && Array.isArray(comment_id) // comment_id가 배열일 경우만 map 실행
-          ? comment_id.map(
-              (
-                comment: {
-                  content: string;
-                  replyCount: string;
-                },
-                index: React.Key | null | undefined
-              ) => (
-                <CommentSection
-                  key={index}
-                  mentor_answer={comment.content} // 각 댓글의 replyCount를 표시
-                  star_num={0}
-                  comment_num={0}
-                />
-              )
-            )
-          : position !== "멘티" && (
-              <>
-                <div className="mt-[25px]"></div>
-                <ApplyAnswerBox name={userName} gen={"woman"} />
-              </>
-            )}
+        {commentIds &&
+          Array.isArray(commentIds) &&
+          commentIds.length > 0 &&
+          commentIds.map((comment, index) => (
+            <CommentSection
+              key={index}
+              mentor_answer={comment.content}
+              star_num={0}
+              comment_num={parseInt(comment.replyCount)}
+            />
+          ))}
+
+        {/* 전체 resp 배열에 로컬 userId가 포함되지 않은 경우 ApplyAnswerBox 렌더링 */}
+        {!isOwner && position !== "멘티" && (
+          <>
+            <div className="mt-[25px]"></div>
+            <ApplyAnswerBox name={userName} gen={"woman"} />
+          </>
+        )}
 
         <BottomNav />
       </div>

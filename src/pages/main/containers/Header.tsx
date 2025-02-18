@@ -1,6 +1,5 @@
 import * as React from "react";
 import { cn } from "@/libs/utils.ts";
-import { UnderArrow } from "@/components/Icons/MainIcons";
 
 export interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
@@ -18,9 +17,7 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
         ref={ref}
         {...props}
       >
-        <div className="flex items-center ml-[22px] border-none">
-          {major} &nbsp; <UnderArrow />
-        </div>
+        <div className="flex items-center ml-[22px] border-none">{major}</div>
       </div>
     );
   }

@@ -7,6 +7,7 @@ import { OpenClassSecond } from "./OpenClassSecond";
 import { OpenClassThird } from "./OpenClassThird";
 import { LeftArrow } from "@/components/Icons/LeftArrow";
 import axios from "axios";
+import { usePostClassOpen } from "@/hooks/usePostClassOpen";
 
 export interface OpenClassPageProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -67,100 +68,43 @@ const OpenClassPage = React.forwardRef<HTMLDivElement, OpenClassPageProps>(
       setTitle(value);
     };
 
-    const handleButtonClick = async () => {
+    const { mutateAsync: createClass } = usePostClassOpen();
+
+    const handleBtnClick = async (
+      event: React.MouseEvent<HTMLButtonElement>
+    ) => {
+      console.log("Button clicked!");
       if (viewState === 2) {
         console.log("Final view state, attempting to navigate...");
 
         try {
-          const existingClassDataString =
-            localStorage.getItem("ClassData") || "[]";
-          let existingClassData: {
-            id: number;
-            title: string;
-            content: string;
-            date: string;
-            maxPeople: string;
-            gatherUrl: string;
-          }[];
-
-          try {
-            existingClassData = JSON.parse(existingClassDataString);
-            if (!Array.isArray(existingClassData)) {
-              throw new Error("Parsed data is not an array");
-            }
-          } catch (error) {
-            console.error("Error parsing ClassData from localStorage:", error);
-            existingClassData = [];
+          // Convert maxPeople to a number before passing it to createClass
+          const parsedMaxPeople = Number(maxPeople);
+          if (isNaN(parsedMaxPeople)) {
+            alert(
+              "Please enter a valid number for the maximum number of people."
+            );
+            return;
           }
 
-          const classData = {
-            id: Date.now(),
-            title,
+          await createClass({
+            userId: 1234,
+            userName: "테스트",
+            title: title,
             content: inputValue,
-            date,
-            maxPeople,
-            gatherUrl,
-          };
+            date: date,
+            memberCount: parsedMaxPeople,
+            map: gatherUrl,
+            job: "숭실대",
+            major: "IT계열",
+          });
 
-          const updatedClassData = [...existingClassData, classData];
-          localStorage.setItem("ClassData", JSON.stringify(updatedClassData));
-
-          const fetchData = async () => {
-            try {
-              const classDataString = localStorage.getItem("ClassData");
-              if (!classDataString) {
-                navigate(`/find`);
-                return;
-              }
-
-              const ClassDataArray = JSON.parse(classDataString);
-
-              console.log("classDataString.length", ClassDataArray.length);
-              // 첫 번째 항목에 대해서만 요청 보내기
-              const ClassData = ClassDataArray[ClassDataArray.length];
-              console.log("classData", classData);
-              try {
-                const response = await axios.post(
-                  `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/class/open`,
-                  {
-                    nickname: String(classData.id) || 1726744673383,
-                    title: classData.title,
-                    num: classData.maxPeople,
-                    date: classData.date,
-                    map: classData.gatherUrl,
-                    content: classData.content,
-                    name: localStorage.getItem("userName"),
-                    major: localStorage.getItem("userBelong"),
-                    sort: localStorage.getItem("major"),
-                    status: "pending",
-                    kakao_id: localStorage.getItem("kakao_id"),
-                  }
-                );
-
-                if (response.status === 200) {
-                  const newClass = response.data.comment;
-                  console.log("Class created successfully:", newClass);
-                  navigate(`/find`);
-                } else {
-                  console.error("Failed to create class for:", ClassData.title);
-                }
-              } catch (error) {
-                console.error(
-                  "Error creating class for:",
-                  ClassData.title,
-                  error
-                );
-              }
-            } catch (error) {
-              console.error("Error processing ClassData:", error);
-            }
-          };
-
-          await fetchData();
-        } catch (error) {
-          console.error("Error saving data or navigating:", error);
+          navigate(`/`);
+        } catch (e) {
+          console.error(e);
         }
       } else {
+        // Move to the next state (0 -> 1 -> 2 -> 0)
         setViewState((prev) => ((prev + 1) % 3) as 0 | 1 | 2);
       }
     };
@@ -261,7 +205,7 @@ const OpenClassPage = React.forwardRef<HTMLDivElement, OpenClassPageProps>(
                     cursor: areFieldsEmpty() ? "not-allowed" : "pointer",
                   }}
                   disabled={areFieldsEmpty()}
-                  onClick={handleButtonClick}
+                  onClick={handleBtnClick}
                 >
                   다음
                 </Button>

@@ -5,22 +5,13 @@ import { FilterButton } from "@/components/Icons/FilterButton";
 import { useNavigate } from "react-router-dom";
 import { SearchIcon } from "@/components/Icons/MainIcons";
 import BottomNav from "@/containers/navbar";
-import axios from "axios";
-
-interface QuestionBoxType {
-  id: number;
-  title: string;
-  question: string;
-  answer: string;
-  star_num: number;
-  comment_num: number;
-  type: string;
-  major: string;
-  author: string;
-  position: string;
-  mentor_answer?: string;
-  isClick: boolean;
-}
+import { useGetQuestion } from "@/hooks/useGetQuestion";
+import { useQueryClient } from "@tanstack/react-query";
+import { usePostQuestionLikes } from "@/hooks/usePostQuestionLikes";
+import { useGetQaCount } from "@/hooks/useGetQaCount";
+import { getQaCountRes, getQuestionLikeRes, getQuestionRes } from "@/types/get";
+import { useDelQuestionUnlike } from "@/hooks/useDelQuestionUnlike";
+import { useGetQuestionLike } from "@/hooks/useGetQuestionLike";
 
 export function QAPage() {
   const [filter, setFilter] = useState("entry");
@@ -29,134 +20,183 @@ export function QAPage() {
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const [userData, setUserData] = useState();
 
-  // State to hold questions fetched from the server
-  const [searchBoxes, setSearchBoxes] = useState<QuestionBoxType[]>([]);
+  const queryClient = useQueryClient();
 
-  // State for search functionality
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [q, setSearchQuery] = useState<string>("");
   const [isSearchOpen, setIsSearchOpen] = useState(false); // Toggle search bar visibility
-  // Fetch data from the server
-  const getLetters = async () => {
-    try {
-      const response = await fetch(
-        "https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/letters"
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok " + response.statusText);
-      }
-      const data = await response.json();
 
-      if (Array.isArray(data)) {
-        const formattedData = data.map((item) => ({
-          ...item,
-          isClick: item.isClick === "1",
-        }));
-        setSearchBoxes(formattedData);
-      } else if (typeof data === "object" && data !== null) {
-        const formattedData = [
-          {
-            ...data,
-            isClick: data.isClick === "1",
-          },
-        ];
-        setSearchBoxes(formattedData);
-      } else {
-        throw new Error("Unexpected data format");
-      }
+  const [questionData, setQuestionData] = useState<getQuestionRes[]>([]);
+  const [qCount, setQCount] = useState<getQaCountRes[]>([]);
+  const [qLike, setQLike] = useState<getQuestionLikeRes[]>([]);
 
-      console.log(data);
-    } catch (error) {
-      console.error(
-        "There has been a problem with your fetch operation:",
-        error
-      );
+  const [tempQuery, setTempQuery] = useState<string>("");
+  const [favoriteStates, setFavoriteStates] = useState<Record<number, boolean>>(
+    {}
+  );
+
+  const category = "IT계열";
+
+  const {
+    data: resp,
+    isLoading,
+    isError,
+    refetch,
+  } = useGetQuestion({ q, category });
+
+  const questionIds = questionData.map((item) => item.id);
+
+  const {
+    data: respCount,
+    isLoading: isLoadingCount,
+    isError: isErrorCount,
+    refetch: refetchCount,
+  } = useGetQaCount({ questionId: questionIds });
+
+  const userId = 1234;
+  const {
+    data: respQLike,
+    isLoading: isLoadingQLike,
+    isError: isErrorQLike,
+    refetch: refetchQLike,
+  } = useGetQuestionLike({ userId });
+
+  useEffect(() => {
+    if (respQLike && Array.isArray(respQLike)) {
+      const initialFavorites: Record<number, boolean> = {};
+      respQLike.forEach((like: { questionId: number }) => {
+        initialFavorites[like.questionId] = true;
+      });
+      setFavoriteStates(initialFavorites);
+    }
+  }, [respQLike]);
+
+  const { mutateAsync: setLike } = usePostQuestionLikes();
+  const { mutate } = useDelQuestionUnlike();
+
+  useEffect(() => {
+    if (respCount) {
+      setQCount(respCount);
+      console.log("respCount", respCount);
+    }
+  }, [respCount]);
+
+  useEffect(() => {
+    if (respQLike) {
+      setQLike(respQLike);
+      console.log("respQLike", respQLike);
+    }
+  }, [respQLike]);
+
+  useEffect(() => {
+    if (resp) {
+      setQuestionData(resp);
+      console.log("questionData", resp);
+    }
+  }, [resp]);
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      setSearchQuery(tempQuery);
     }
   };
 
   useEffect(() => {
-    getLetters();
-  }, [filter]);
+    if (!queryClient.getQueryData(["getQaCount"])) {
+      refetchCount();
+    }
+  }, [queryClient, refetchCount]);
+
+  useEffect(() => {
+    if (!queryClient.getQueryData(["getQuestion"])) {
+      refetch();
+    }
+  }, [queryClient, refetch]);
+
+  useEffect(() => {
+    if (!queryClient.getQueryData(["getQuestionLike"])) {
+      refetchQLike();
+    }
+  }, [queryClient, refetchQLike]);
 
   const uniqueMajors: string[] = [
-    ...new Set(searchBoxes.map((box) => box.major)),
+    ...new Set(questionData.map((box) => box.major)),
   ];
-  const loggedInUserName = localStorage.getItem("userName") || "";
 
-  const filteredBoxes = searchBoxes
+  const filteredBoxes = questionData
+    .filter((box) => box)
     .filter((box) => {
       if (filter === "entry") {
         return subFilter ? box.major === subFilter : true;
       }
       if (filter === "applied") {
-        return box.isClick === true;
+        // qLike에 포함된 questionId가 box.id와 일치하는지 확인
+        return qLike.some((like) => like.questionId === box.id);
       }
       if (filter === "written") {
-        return box.author === loggedInUserName;
+        // localStorage의 userId와 box의 userId가 일치하는지 확인
+        const loggedInUserId = localStorage.getItem("userId");
+        return box.userId?.toString() === loggedInUserId;
       }
       return false;
     })
-    // Apply search query filter
     .filter(
       (box) =>
-        searchQuery === "" ||
-        box.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        box.question.toLowerCase().includes(searchQuery.toLowerCase())
+        q === "" ||
+        box.title?.toLowerCase().includes(q.toLowerCase()) ||
+        box.question?.toLowerCase().includes(q.toLowerCase())
     );
 
-  const handleStarClick = async (index: number) => {
-    const updatedBoxes = [...searchBoxes];
-    const box = updatedBoxes[index];
+  const handleLikeClick = async (box: QuestionBoxType, index: number) => {
+    if (!box || !box.id) {
+      console.error("Box is undefined or missing ID");
+      return;
+    }
+
+    const isFavorited = favoriteStates[box.id] ?? box.isClick;
 
     try {
-      const response = await fetch(
-        `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/letters/${box.id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ isClick: true }),
-        }
-      );
+      if (!isFavorited) {
+        await setLike({
+          userId: 1234,
+          questionId: box.id,
+        });
 
-      const data = await response.json();
-      console.log("서버 응답:", data);
-
-      if (response.ok) {
-        updatedBoxes[index].isClick = true;
-        setSearchBoxes(updatedBoxes);
+        window.location.reload();
       } else {
-        console.error("업데이트 실패", data.message);
+        await mutate({
+          userId: 1234,
+          questionId: box.id,
+        });
+
+        window.location.reload(); // 로딩 속도 개선
       }
+      setFavoriteStates((prev) => ({
+        ...prev,
+        [box.id]: !isFavorited,
+      }));
     } catch (error) {
-      console.error("에러 발생:", error);
+      console.error("Error toggling like:", error);
     }
   };
 
-  const handleSubFilterChange = (filter: string) => {
-    setSubFilter(filter);
-    setDropdownOpen(false);
+  const handleQuestionBoxClick = (box: QuestionBoxType, index: number) => {
+    navigate(`/comment?questionId=${encodeURIComponent(box.id)}`, {
+      state: {
+        question: box.question,
+        title: box.title,
+        star_num: box.star_num,
+        comment_num: box.comment_num,
+        mentor_answer: box.mentor_answer,
+        position: localStorage.getItem("position"),
+        idx: index,
+      },
+    });
   };
 
-  const handleQuestionBoxClick = (box: QuestionBoxType, index: number) => {
-    navigate(
-      `/comment?userName=${encodeURIComponent(
-        box.author
-      )}&letter_id=${encodeURIComponent(box.id)}`,
-      {
-        state: {
-          question: box.question,
-          title: box.title,
-          star_num: box.star_num,
-          comment_num: box.comment_num,
-          mentor_answer: box.mentor_answer,
-          position: localStorage.getItem("position"),
-          idx: index,
-        },
-      }
-    );
+  const handleSubFilterChange = (major: string) => {
+    setSubFilter(major);
+    setDropdownOpen(false);
   };
 
   useEffect(() => {
@@ -181,28 +221,14 @@ export function QAPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const kakaoId = localStorage.getItem("kakao_id");
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error loading articles</p>;
 
-  useEffect(() => {
-    if (kakaoId) {
-      // 백엔드 API 호출
-      axios
-        .get(
-          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/userdata/${kakaoId}`
-        )
-        .then((response) => {
-          // 성공적으로 데이터를 가져왔을 때
-          setUserData(response.data);
-          console.log("userData (response)", response.data);
-          console.log("userData", userData);
-          localStorage.setItem("userName", response.data.nickname);
-          localStorage.setItem("userBelong", response.data.school);
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error);
-        });
-    }
-  }, []); // kakaoId가 변경될 때마다 실행
+  if (isLoadingCount) return <p>Loading...</p>;
+  if (isErrorCount) return <p>Error loading articles</p>;
+
+  if (isLoadingQLike) return <p>Loading...</p>;
+  if (isErrorQLike) return <p>Error loading articles</p>;
 
   return (
     <>
@@ -229,11 +255,12 @@ export function QAPage() {
                 <input
                   type="text"
                   placeholder="궁금한 고민을 검색해보세요"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onFocus={(e) => (e.target.style.border = "none")} // 클릭 시 border 비활성화
-                  onBlur={(e) => (e.target.style.border = "1px solid #D1D5DB")} // 포커스 해제 시 원래 border로 복구
-                  className="p-2 border border-gray-300  w-[90%] max-w-md rounded-lg "
+                  value={tempQuery}
+                  onChange={(e) => setTempQuery(e.target.value)}
+                  onKeyDown={handleSearchKeyDown}
+                  onFocus={(e) => (e.target.style.border = "none")}
+                  onBlur={(e) => (e.target.style.border = "1px solid #D1D5DB")}
+                  className="p-2 border border-gray-300 w-[90%] max-w-md rounded-lg"
                 />
               </div>
             )}
@@ -298,23 +325,42 @@ export function QAPage() {
             )}
 
             <div className="grid place-items-center">
-              {filteredBoxes.map((box, index: number) => (
-                <div
-                  className="border-b-[0.6px] border-[#BABABA] w-full grid place-items-center py-6"
-                  key={index}
-                  onClick={() => handleQuestionBoxClick(box, index)}
-                >
-                  <QuestionBox
-                    question={box.title}
-                    answer={box.question}
-                    star_num={box.star_num}
-                    comment_num={box.comment_num}
-                    className={box.type === "best" ? "best" : ""}
-                    onStarClick={() => handleStarClick(index)}
-                    star_color={box.isClick == true ? "#4E98EE" : "#fff"}
-                  />
-                </div>
-              ))}
+              {filteredBoxes.map((box, index: number) => {
+                if (!box) return null;
+
+                const questionCountData = respCount.find(
+                  (item) => item.question === box.id.toString()
+                );
+
+                const star_num = questionCountData
+                  ? questionCountData.likeCount
+                  : 0;
+                const comment_num = questionCountData
+                  ? questionCountData.commentCount
+                  : 0;
+
+                return (
+                  <div
+                    className="border-b-[0.6px] border-[#BABABA] w-full grid place-items-center py-6"
+                    key={index}
+                    onClick={() => handleQuestionBoxClick(box, index)}
+                  >
+                    <QuestionBox
+                      question={box.title}
+                      answer={box.content}
+                      star_num={star_num}
+                      comment_num={comment_num}
+                      className={box.type === "best" ? "best" : ""}
+                      onStarClick={() => handleLikeClick(box, index)}
+                      star_color={
+                        favoriteStates[box.id] ?? box.isClick
+                          ? "#4E98EE"
+                          : "#fff"
+                      }
+                    />
+                  </div>
+                );
+              })}
             </div>
 
             <div ref={growDivRef}></div>

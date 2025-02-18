@@ -18,7 +18,7 @@ export function Onboarding() {
   const [count, setCount] = useState(0);
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate(); // Initialize navigate hook
+  const navigate = useNavigate();
 
   const [showSecondMentor, setShowSecondMentor] = useState(true);
   const [showSecondMentee, setShowSecondMentee] = useState(false);
@@ -40,12 +40,11 @@ export function Onboarding() {
       setCount(0);
     }
   }, [isLoggedIn, navigate]);
-  
+
   useEffect(() => {
     const prevCount = prevCountRef.current;
     prevCountRef.current = count;
 
-    // 로컬 스토리지에서 position 값을 가져옴
     const position = localStorage.getItem("position");
 
     if (count === prevCount + 1 || count === prevCount - 1) {

@@ -2,6 +2,10 @@ import * as React from "react";
 import { cn } from "@/libs/utils.ts";
 import { ScheduleBox } from "@/components/ui/schedulebox";
 import { TitleSection } from "./TitleSection";
+import { useGetMentorSchedule } from "@/hooks/useGetMentorSchedule";
+import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { getMentorScheduleRes } from "@/types/get";
 
 export interface MentorScheduleSectionProps
   extends React.HTMLAttributes<HTMLDivElement> {}
@@ -22,11 +26,61 @@ const MentorScheduleSection = React.forwardRef<
   HTMLDivElement,
   MentorScheduleSectionProps
 >(({ className }, ref) => {
+  const queryClient = useQueryClient();
   // localStorage에서 'ClassData' 불러오기
-  const classDataString = localStorage.getItem("ClassData");
 
   // 불러온 데이터를 객체로 파싱 (배열 형태)
-  const classDataArray = classDataString ? JSON.parse(classDataString) : [];
+  const [classDataArray, setClassDataArray] = useState<getMentorScheduleRes[]>(
+    []
+  ); // Ensure it's initialized as an empty array
+
+  const userId = 1234;
+  const {
+    data: resp,
+    isLoading,
+    isError,
+    refetch,
+  } = useGetMentorSchedule({ userId });
+
+  useEffect(() => {
+    if (!queryClient.getQueryData(["getMentorSchedule"])) {
+      refetch();
+    }
+  }, [queryClient, refetch]);
+
+  useEffect(() => {
+    setClassDataArray(resp);
+    console.log("resp", resp);
+  }, [resp]);
+
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          color: "#888888",
+          fontSize: "25px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center", // 수평 중앙 정렬
+          justifyContent: "center", // 수직 중앙 정렬
+          height: "50vh", // 화면 전체 높이 설정
+        }}
+      >
+        <div
+          style={{
+            width: "800px",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          ⏰
+        </div>
+        로딩 중입니다<br></br>잠시 기다려주세요
+      </div>
+    ); // 로딩 상태일 때 표시할 내용
+  }
+
+  if (isError) return <p>에러발생 삐용삐용</p>;
 
   return (
     <div ref={ref}>
@@ -42,7 +96,7 @@ const MentorScheduleSection = React.forwardRef<
           className
         )}
       >
-        {classDataArray.map((classData: any, index: number) => (
+        {(classDataArray || []).map((classData: any, index: number) => (
           <ScheduleBox
             key={index}
             major={classData.title || "Default Major"}

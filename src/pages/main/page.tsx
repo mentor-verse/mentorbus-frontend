@@ -24,7 +24,10 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios"; // Import axios to make API requests
 import BottomNav from "@/containers/navbar";
-// Define the College type
+import { useGetMentor } from "@/hooks/useGetMentor";
+import { useQueryClient } from "@tanstack/react-query";
+import { getMentorResDto } from "@/types/get";
+
 interface CollegeType {
   img: string;
   name: string;
@@ -57,39 +60,26 @@ const getRandomColleges = (
   return shuffled.slice(0, count);
 };
 
-type SearchBoxType = {
-  character1: string;
-  nickname: string;
-  num: string;
-  title: string;
-  gen: string;
-  major: string;
-  name: string;
-  info: string;
-  date: string;
-  text: string;
-  sort: string;
-};
-
 export function MainPage() {
   const [userName, setUserName] = useState<string | null>("");
-  const [major, setUserMajor] = useState<string>("");
+  const [majors, setUserMajor] = useState<string>("");
   const [randomColleges, setRandomColleges] = useState<CollegeType[]>([]);
   const [position, setPosition] = useState<string | null>(null);
   const location = useLocation();
   const [userData, setUserData] = useState<any>(null); // 배열 대신 객체(null로 초기화)
   const [kakaoId, setKakaoId] = useState<string | null>(null); // kakaoId 상태값으로 설정
   const navigate = useNavigate();
-  const [mentorData, setMentorData] = useState<SearchBoxType[]>([]); // API에서 불러온 데이터를 저장할 state
-  const [, setLoading] = useState(true); // 로딩 상태
+  const [mentorData, setMentorData] = useState<getMentorResDto[]>([]); // API에서 불러온 데이터를 저장할 state
+
+  const queryClient = useQueryClient();
 
   // URL에서 kakaoId를 가져오는 함수
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const urlKakaoId = searchParams.get("userId"); // URL에서 userId 파라미터로 kakaoId 추출
+    const urlKakaoId = searchParams.get("userId");
     if (urlKakaoId) {
-      setKakaoId(urlKakaoId); // 상태 업데이트
-      localStorage.setItem("kakao_id", urlKakaoId); // localStorage에 저장
+      setKakaoId(urlKakaoId);
+      localStorage.setItem("kakao_id", urlKakaoId);
     } else {
       const storedKakaoId = localStorage.getItem("kakao_id");
       if (storedKakaoId) {
@@ -119,34 +109,19 @@ export function MainPage() {
     }
   }, [kakaoId]); // kakaoId가 변경될 때마다 실행
 
-  // API에서 특정 멘토 데이터를 불러오는 함수
-  const loadSpecificMentorClasses = async (major: string) => {
-    try {
-      const response = await axios.get(
-        `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/mentor/data/${major}`
-      );
+  const major = "공학계열";
+  const { data: resp, isLoading, isError, refetch } = useGetMentor({ major });
 
-      if (response.status === 200) {
-        console.log("response", response);
-
-        const MentorDataFromApi = Array.isArray(response.data)
-          ? response.data
-          : [response.data];
-        setMentorData(MentorDataFromApi); // 데이터를 searchBoxes 상태에 저장
-      } else {
-        setMentorData([]); // 데이터가 배열이 아닐 경우 빈 배열로 설정
-      }
-    } catch (error) {
-      setMentorData([]); // 오류 발생 시 빈 배열로 설정
-    } finally {
-      setLoading(false); // 데이터 로드 완료 후 로딩 상태를 false로 설정
-    }
-  };
-
-  // mainFilter와 subFilter가 변경될 때마다 적절한 데이터를 로드
   useEffect(() => {
-    loadSpecificMentorClasses(major); // subFilter (info 값)으로 loadSpecificClasses 호출
-  }, [major]); // subFilter 값이 변경될 때마다 호출
+    if (!queryClient.getQueryData(["getMentor"])) {
+      refetch();
+    }
+  }, [queryClient, refetch]);
+
+  useEffect(() => {
+    setMentorData(resp);
+    console.log("resp", resp);
+  }, [resp]);
 
   useEffect(() => {
     const storedUserName = localStorage.getItem("userName");
@@ -165,6 +140,40 @@ export function MainPage() {
   useEffect(() => {
     setRandomColleges(getRandomColleges(colleges, 16));
   }, []);
+
+  console.log(
+    "import.meta.env.GOOGLE_REDIRECT_URI ",
+    import.meta.env.VITE_GOOGLE_REDIRECT_URI
+  );
+
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          color: "#888888",
+          fontSize: "25px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "50vh",
+        }}
+      >
+        <div
+          style={{
+            width: "800px",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          ⏰
+        </div>
+        로딩 중입니다<br></br>잠시 기다려주세요
+      </div>
+    );
+  }
+
+  if (isError) return <p>에러발생 삐용삐용</p>;
 
   const renderMentorBoxes = () => (
     <>

@@ -4,6 +4,10 @@ import { Info } from "@/components/ui/info";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BottomNav from "@/containers/navbar";
+import { useGetClassMy } from "@/hooks/useGetClassMy";
+import { useQueryClient } from "@tanstack/react-query";
+import { useGetClass } from "@/hooks/useGetClass";
+import { usePatchClassStatus } from "@/hooks/usePatchClassStatus";
 
 declare global {
   interface Window {
@@ -14,7 +18,8 @@ declare global {
 }
 
 interface SelectedBox {
-  id: any;
+  userId: number;
+  id: number;
   gen: string;
   major: string;
   name: string;
@@ -85,14 +90,17 @@ if (position === "멘티") {
 
 // 멘티용 컴포넌트
 export function MentorBusPageMentee() {
+  const queryClient = useQueryClient();
+  const [classDataArray, setClassDataArray] = useState([]);
   const [InfoBox, setInfoBox] = useState(false);
-  const [mentee_id, setMenteeId] = useState<string | null>("");
+  const [user_Id, setUserId] = useState<string | null>("");
+  const [userClassData, setUserClassData] = useState<UserClassData | null>(
+    null
+  );
 
   const position = localStorage.getItem("position");
 
   useEffect(() => {
-    // 로컬 스토리지에서 position 값을 가져옴
-
     if (position === "멘토") {
       setInfoBox(true);
     } else {
@@ -100,71 +108,69 @@ export function MentorBusPageMentee() {
     }
   }, [position]);
 
-  const [filter, setFilter] = useState("entry");
+  const [filter, setFilter] = useState("unFinished");
   const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
-  const [classDataArray] = useState<
-    { title: string; content: string; date: string; gatherUrl: string }[]
-  >([]);
+  //const [classDataArray] = useState<{ title: string; content: string; date: string; gatherUrl: string }[]>([]);
 
-  // URL에서 kakaoId를 가져오는 함수
   useEffect(() => {
-    const menteeId = localStorage.getItem("kakao_id");
-    setMenteeId(menteeId); // 상태 업데이트
+    const userId = localStorage.getItem("userId");
+    setUserId(userId);
   }, []);
 
-  // Fetch applied items whenever mentee_id changes
+  const userId = 4321;
+
+  const { mutateAsync: patchPost, isLoadingPatch }: any = usePatchClassStatus();
+
+  const {
+    data: respGetClassMy,
+    isLoading: isLoadingGetClassMy,
+    isError: isErrorGetClassMy,
+    refetch: refetchGetClassMy,
+  } = useGetClassMy({ userId });
+
+  const classIds = (respGetClassMy ?? []).map((item) => item.classId);
+
+  const {
+    data: respGetClass,
+    isLoading: isLoadingGetClass,
+    isError: isErrorGetClass,
+    refetch: refetchGetClass,
+  } = useGetClass({
+    take: 10,
+    major: null,
+    job: null,
+    userId: null,
+    classId: classIds,
+  });
+
   useEffect(() => {
-    if (mentee_id) {
-      loadAppliedItems(); // Fetch data on mentee_id change
+    if (respGetClass) {
+      setClassDataArray(respGetClass);
+      console.log("classDataArray", classDataArray);
     }
-  }, [mentee_id]);
+  }, [respGetClass]);
 
-  // Fetch applied items whenever mentee_id changes
   useEffect(() => {
-    loadAppliedItems(); // Fetch data on mentee_id change
-  }, []);
-
-  const loadAppliedItems = async () => {
-    try {
-      const response = await axios.get(
-        `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/classes/myClass/${mentee_id}`
-      );
-
-      console.log("Full Response Object:", response);
-
-      if (response.status === 200) {
-        const itemsFromApi = Array.isArray(response.data)
-          ? response.data
-          : [response.data];
-
-        console.log("itemsFromApi:", itemsFromApi);
-
-        setAppliedItems(itemsFromApi); // Update with parsed items
-        console.log(appliedItems);
-      } else {
-        console.error("Unexpected response status:", response.status);
-        setAppliedItems([]);
-      }
-    } catch (error) {
-      console.error("Error fetching data from API:", error);
-      setAppliedItems([]);
+    if (!queryClient.getQueryData(["getClass"])) {
+      refetchGetClass();
     }
-  };
+  }, [queryClient, refetchGetClass]);
 
   useEffect(() => {
-    const handleStorageChange = (event: StorageEvent) => {
-      if (event.key === "appliedItems") {
-        loadAppliedItems(); // Refetch data when localStorage changes
-      }
-    };
+    if (!queryClient.getQueryData(["getClassMy"])) {
+      refetchGetClassMy();
+    }
+  }, [queryClient, refetchGetClassMy]);
 
-    window.addEventListener("storage", handleStorageChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []); // Run this effect only once on mount
+  useEffect(() => {
+    if (respGetClassMy) {
+      setUserClassData(respGetClassMy);
+      console.log("resp", respGetClassMy);
+      console.log("setUserClassData", userClassData);
+    }
+  }, [respGetClassMy]);
 
   const handleEnter = async (item: SelectedBox, classData: any) => {
     console.log(
@@ -189,50 +195,74 @@ export function MentorBusPageMentee() {
         document.body.removeChild(link);
       }
 
-      const updatedItems: SelectedBox[] = appliedItems.map((i) =>
-        i === item ? { ...i, status: "completed" } : i
-      );
+      const userId = localStorage.getItem("userId");
+      const classId = item.id;
 
-      setAppliedItems(updatedItems);
-      localStorage.setItem("appliedItems", JSON.stringify(updatedItems));
-      setFilter("applied");
-
-      // 서버에 PATCH 요청 보내기
       try {
-        const response = await fetch(
-          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/classes/${item.id}/status`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ status: "completed" }),
-          }
-        );
-
-        const data = await response.json();
-        console.log("서버 응답:", data);
-        console.log("updatedItems", updatedItems);
-        console.log("updatedItems.length", updatedItems.length);
-
-        // 성공적으로 서버에서 업데이트 된 경우
-        if (response.ok) {
-          updatedItems[updatedItems.length].status = "completed";
-
-          setAppliedItems(updatedItems);
-        } else {
-          console.error("업데이트 실패", data.message);
-        }
+        await patchPost({
+          userId,
+          classId,
+          isFinished: true,
+        });
       } catch (error) {
-        console.error("에러 발생:", error);
+        console.error("Error updating class status:", error);
       }
     } else {
-      console.error(
-        "classData.gatherUrl is missing or invalid:",
-        classData.gatherUrl
-      );
+      console.error("item.map is missing or invalid:", item.map);
     }
   };
+
+  if (isLoadingGetClassMy || isLoadingGetClass || isLoadingPatch) {
+    return (
+      <div
+        style={{
+          color: "#888888",
+          fontSize: "25px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "50vh",
+        }}
+      >
+        <div
+          style={{
+            width: "800px",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          ⏰
+        </div>
+        로딩 중입니다<br></br>잠시 기다려주세요
+      </div>
+    );
+  }
+
+  // 1. resp (useGetClassMy의 응답)에서 필터링
+  const filteredUserClasses = respGetClassMy
+    ? respGetClassMy.filter((r: any) => {
+        if (filter === "unFinished") {
+          return r.isFinished === "0"; // 진행예정
+        } else if (filter === "finished") {
+          return r.isFinished === "1"; // 진행완료
+        }
+        return true;
+      })
+    : [];
+
+  // 2. 필터링된 resp 항목에 해당하는 classDataArray의 수업 정보를 찾기
+  const filteredClasses = filteredUserClasses
+    .map((userClass: any) => {
+      return classDataArray.find(
+        (classItem: any) => classItem.id === userClass.classId
+      );
+    })
+    .filter(Boolean);
+
+  console.log("filteredClasses:", filteredClasses);
+
+  if (isErrorGetClassMy || isErrorGetClass) return <p>에러발생 삐용삐용</p>;
 
   return (
     <>
@@ -245,17 +275,17 @@ export function MentorBusPageMentee() {
             <div className="flex justify-between mt-[40px]">
               <div
                 className={`filter_btn_label ${
-                  filter === "entry" ? "active" : ""
+                  filter === "unFinished" ? "active" : ""
                 }`}
-                onClick={() => setFilter("entry")}
+                onClick={() => setFilter("unFinished")}
               >
                 진행예정
               </div>
               <div
                 className={`filter_btn_label ${
-                  filter === "applied" ? "active" : ""
+                  filter === "finished" ? "active" : ""
                 }`}
-                onClick={() => setFilter("applied")}
+                onClick={() => setFilter("finished")}
               >
                 진행완료
               </div>
@@ -272,42 +302,34 @@ export function MentorBusPageMentee() {
             </div>
 
             <div ref={roadDivRef} className="grid place-items-center">
-              {appliedItems.map((appliedItem, index) => {
-                // appliedItems에서 데이터를 가져옵니다.
-                const classData = classDataArray[index];
-
-                if (
-                  (filter === "entry" && appliedItem.status !== "completed") ||
-                  (filter === "applied" && appliedItem.status === "completed")
-                ) {
-                  return (
-                    <div
-                      key={index}
-                      className="grid place-items-center w-[80%] mt-[0px] h-[120px] relative"
+              {filteredClasses.length > 0 ? (
+                filteredClasses.map((classData: any, index: number) => (
+                  <div
+                    key={index}
+                    className="grid place-items-center w-[80%] mt-[0px] h-[120px] relative"
+                  >
+                    <SearchBox
+                      gen={classData?.gen || ""}
+                      major={classData.title || ""}
+                      name={classData.name || ""}
+                      info={classData.major || ""}
+                      date={classData.date || ""}
+                      sort={classData.map || ""}
+                      variant="default"
+                      size="default"
+                      onClick={
+                        filter === "unFinished"
+                          ? () => handleEnter(classData, classData)
+                          : undefined
+                      }
                     >
-                      <SearchBox
-                        gen={appliedItem?.gen || ""} // appliedItem에서 데이터 가져오기
-                        major={appliedItem.title || ""} // classData가 아니라 appliedItem에서 major 가져오기
-                        name={appliedItem.name || ""}
-                        info={appliedItem.major || ""}
-                        date={appliedItem.date || ""}
-                        sort={appliedItem.map || ""}
-                        variant="default"
-                        size="default"
-                        onClick={
-                          filter === "entry"
-                            ? () => handleEnter(appliedItem, classData)
-                            : undefined
-                        }
-                      >
-                        {filter === "entry" ? "수업입장" : "수업 완료"}
-                      </SearchBox>
-                    </div>
-                  );
-                }
-
-                return null;
-              })}
+                      {filter === "unFinished" ? "수업입장" : "수업 완료"}
+                    </SearchBox>
+                  </div>
+                ))
+              ) : (
+                <p>조건에 맞는 데이터가 없습니다.</p>
+              )}
             </div>
           </div>
           <div ref={growDivRef}></div>
@@ -331,6 +353,11 @@ export function MentorBusPageMentee() {
 //---------------------------------------------------------//
 
 export function MentorBusPageMentor() {
+  const queryClient = useQueryClient();
+  const [userClassData, setUserClassData] = useState<UserClassData | null>(
+    null
+  );
+
   const [filter, setFilter] = useState("entry");
   const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
   const [kakao_id, setKakaoId] = useState<string | null>("");
@@ -355,6 +382,23 @@ export function MentorBusPageMentor() {
       loadAppliedItems();
     }
   }, [kakao_id]);
+
+  /*
+  const userId = 1234;
+  const { data: resp, isLoading, isError, refetch } = useGetClassMy({ userId });
+
+  useEffect(() => {
+    if (!queryClient.getQueryData(["get-class-data"])) {
+      refetch();
+    }
+  }, [queryClient, refetch]);
+
+  useEffect(() => {
+    setUserClassData(resp);
+    console.log("resp", resp);
+    console.log("setUserClassData", userClassData);
+  }, [resp]);
+  */
 
   const loadAppliedItems = async () => {
     try {
@@ -508,6 +552,37 @@ export function MentorBusPageMentor() {
       setClassDataArray([]);
     }
   }, []);
+
+  /*
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          color: "#888888",
+          fontSize: "25px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center", // 수평 중앙 정렬
+          justifyContent: "center", // 수직 중앙 정렬
+          height: "50vh", // 화면 전체 높이 설정
+        }}
+      >
+        <div
+          style={{
+            width: "800px",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          ⏰
+        </div>
+        로딩 중입니다<br></br>잠시 기다려주세요
+      </div>
+    ); // 로딩 상태일 때 표시할 내용
+  }
+
+  if (isError) return <p>에러발생 삐용삐용</p>;
+  */
 
   return (
     <>

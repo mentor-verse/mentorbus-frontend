@@ -2,10 +2,10 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
@@ -15,7 +15,6 @@ module.exports = {
       screens: {
         "2xl": "1400px",
       },
-      
     },
     extend: {
       colors: {
@@ -55,8 +54,7 @@ module.exports = {
         kakao: {
           DEFAULT: "hsl(var(--kakao))",
           foreground: "hsl(var(--kakao-foreground))",
-        },       
-        
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -78,28 +76,28 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       rotate: {
-        '-12': '-12.416deg',
+        "-12": "-12.416deg",
       },
       fontSize: {
-        '600px': '600px',
+        "600px": "600px",
       },
       fontWeight: {
-        '900': '900',
+        900: "900",
       },
     },
   },
-  plugins:  [
-  require("tailwindcss-animate"),
-  function ({ addUtilities }) {
-    const newUtilities = {
-      '.text-stroke-2': {
-        '-webkit-text-stroke-width': '2px',
-      },
-      '.text-stroke-gray': {
-        '-webkit-text-stroke-color': '#D5D5D5',
-      },
-    };
-    addUtilities(newUtilities, ['responsive', 'hover']);
-  },
-]
-}
+  plugins: [
+    require("tailwindcss-animate"),
+    function ({ addUtilities }) {
+      const newUtilities = {
+        ".text-stroke-2": {
+          "-webkit-text-stroke-width": "2px",
+        },
+        ".text-stroke-gray": {
+          "-webkit-text-stroke-color": "#D5D5D5",
+        },
+      };
+      addUtilities(newUtilities, ["responsive", "hover"]);
+    },
+  ],
+};

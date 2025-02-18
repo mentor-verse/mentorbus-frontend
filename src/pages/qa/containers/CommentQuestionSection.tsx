@@ -29,7 +29,7 @@ const CommentQuestionSection = React.forwardRef<
       setStars(newStars);
       setStarred(newStarred);
       if (onStarClick) {
-        onStarClick(newStarred, newStars); // 현재 상태와 새로운 stars 값을 전달
+        onStarClick(newStarred, newStars); 
       }
     };
 

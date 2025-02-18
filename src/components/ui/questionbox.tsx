@@ -25,19 +25,6 @@ const QuestionBox = React.forwardRef<HTMLDivElement, QuestionBoxProps>(
     },
     ref
   ) => {
-    const [stars, setStars] = React.useState(star_num);
-    const [starred, setStarred] = React.useState(false);
-
-    const handleStarClick = () => {
-      const newStarred = !starred;
-      const newStars = newStarred ? stars + 1 : stars - 1;
-      setStars(newStars);
-      setStarred(newStarred);
-      if (onStarClick) {
-        onStarClick(newStarred, newStars); // Send updated starred state and new stars count
-      }
-    };
-
     return (
       <div ref={ref} className={cn("text-start items-center", className)}>
         <div
@@ -55,12 +42,15 @@ const QuestionBox = React.forwardRef<HTMLDivElement, QuestionBoxProps>(
         <div className={cn("flex text-start items-center mt-[4px]", className)}>
           <div
             className="flex text-start items-center text-blue-500 not-italic font-normal text-[11px]"
-            onClick={handleStarClick}
+            onClick={(e) => {
+              e.stopPropagation(); // 부모의 클릭 이벤트 전파 차단
+              onStarClick(e); // 별 클릭 핸들러 실행
+            }}
             style={{ cursor: "pointer" }} // Add cursor style to indicate it's clickable
           >
             <Star fill={star_color} />
             <div className="ml-[2px]"></div>
-            {stars}
+            {star_num}
           </div>
           <div className="flex text-start items-center text-gray-600 not-italic font-normal text-[11px] ml-[5px]">
             <Comment />

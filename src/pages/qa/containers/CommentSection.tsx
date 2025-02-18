@@ -17,7 +17,6 @@ const CommentSection = React.forwardRef<HTMLDivElement, CommentSectionProps>(
     const [letter_id, setLetterId] = React.useState<string | null>(null); // kakaoId 상태값으로 설정
     const [comment_id, setCommentId] = React.useState<string | null>(null); // kakaoId 상태값으로 설정
 
-    // URL에서 kakaoId를 가져오는 함수
     React.useEffect(() => {
       const searchParams = new URLSearchParams(location.search);
       const urlLetterId = searchParams.get("letter_id"); // URL에서 letter_id 파라미터로 kakaoId 추출

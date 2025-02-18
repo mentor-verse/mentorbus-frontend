@@ -1,5 +1,6 @@
 import { Logo } from "@/components/Icons/Logo";
 import { OnboardingButton } from "@/components/ui/onboardingbutton";
+import { usePostOnboarding } from "@/hooks/usePostOnboarding";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -11,60 +12,59 @@ interface FourthProps {
 
 export function Fourth({ count, setCount, sentence }: FourthProps) {
   const navigate = useNavigate();
-  const [kakaoId, setKakaoId] = useState<string | null>(null); // kakaoId 상태값으로 설정
+  const [userId, setUserId] = useState<string | null>(null);
 
-  // URL에서 kakaoId를 가져오는 함수
+  const { mutateAsync: createPost } = usePostOnboarding();
+
+  // URL에서 userId를 가져와 상태 및 localStorage에 저장
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const urlKakaoId = searchParams.get("userId"); // URL에서 userId 파라미터로 kakaoId 추출
-    if (urlKakaoId) {
-      setKakaoId(urlKakaoId); // 상태 업데이트
-      localStorage.setItem("kakao_id", urlKakaoId); // localStorage에 저장
+    const urlUserId = searchParams.get("userId");
+    if (urlUserId) {
+      setUserId(urlUserId);
+      localStorage.setItem("userId", urlUserId); // urlUserId를 사용합니다.
     } else {
-      const storedKakaoId = localStorage.getItem("kakao_id");
-      if (storedKakaoId) {
-        setKakaoId(storedKakaoId);
+      const storedUserId = localStorage.getItem("userId");
+      if (storedUserId) {
+        setUserId(storedUserId);
       }
     }
   }, [location.search]);
 
-  const handleNext = (major: string) => {
-    localStorage.setItem("major", major); // Store the major in localStorage
-    const position = localStorage.getItem("position");
-    const userName = localStorage.getItem("userName");
-    console.log("userName:", userName);
-    const userBelong = localStorage.getItem("userBelong");
+  const handleNext = async (selectedField: string) => {
+    try {
+      if (selectedField === "") {
+        alert("전공을 선택해주세요.");
+        return;
+      }
 
-    if (position === "멘토") {
-      // Mentor data를 POST
-      const mentorData = {
-        nickname: userName,
-        position: position,
-        job: userBelong,
-        major: major,
-        kakao_id: kakaoId,
+      const storedUserId = Number(localStorage.getItem("userId"));
+      if (isNaN(storedUserId)) {
+        console.error("userId가 숫자가 아닙니다.");
+        return;
+      }
+
+      const userName = localStorage.getItem("userName") || "";
+      const isMentor = localStorage.getItem("isMentor") === "true";
+      const job = localStorage.getItem("job") || "";
+      const school = localStorage.getItem("school") || "";
+
+      // 조건에 따라 payload 객체에 해당 속성만 포함시킵니다.
+      const payload = {
+        userId: storedUserId,
+        userName,
+        isMentor,
+        job,
+        school,
+        ...(isMentor
+          ? { major: selectedField } // 멘토면 major만 포함
+          : { interest: selectedField }), // 멘티면 interest만 포함
       };
 
-      console.log("mentorData:", mentorData);
-
-      fetch(
-        "https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/mentor",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(mentorData),
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("User data saved:", data);
-          navigate(`/main?userId=${kakaoId}`);
-        })
-        .catch((error) => {
-          console.error("Error saving mentor data:", error);
-        });
+      await createPost(payload);
+      navigate(`/`);
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -75,13 +75,13 @@ export function Fourth({ count, setCount, sentence }: FourthProps) {
   return (
     <div className="relative flex flex-col items-center text-[#fff]">
       <div className="relative z-10 text-start mt-[25%]">
-        <div className="w-[320px] justify-start flex items-start mb-3 text-[12px]">
+        <div className="w-[320px] flex items-start mb-3 text-[12px]">
           {count}/4
         </div>
-        <div className="w-[320px] justify-start flex items-start text-[26px] font-bold ">
+        <div className="w-[320px] flex items-start text-[26px] font-bold">
           <Logo width={"175"} height="auto" /> <div>에서</div>
         </div>
-        <div className="w-[320px] justify-start flex items-start text-[26px] font-bold text-center">
+        <div className="w-[320px] flex items-start text-[26px] font-bold text-center">
           {sentence}
         </div>
       </div>

@@ -6,9 +6,10 @@ import { FilterButton } from "@/components/Icons/FilterButton";
 import { UnderArrowBlue } from "@/components/Icons/UnderArrowBlue";
 
 import { NotYetPage } from "./containers/NotYetPage";
-import axios from "axios"; // Import axios
 import BottomNav from "@/containers/navbar";
 import { SearchIcon } from "@/components/Icons/MainIcons";
+import { useGetClass } from "@/hooks/useGetClass";
+import { useQueryClient } from "@tanstack/react-query";
 
 type SearchBoxType = {
   num: string;
@@ -23,10 +24,7 @@ type SearchBoxType = {
 };
 export function FindMentor() {
   const position = localStorage.getItem("position");
-
-  if (position === "멘토") {
-    return <NotYetPage />;
-  }
+  const queryClient = useQueryClient();
 
   const [mainFilter, setMainFilter] = useState("all");
   const [subFilter, setSubFilter] = useState("");
@@ -34,7 +32,6 @@ export function FindMentor() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const [searchBoxes, setSearchBoxes] = useState<SearchBoxType[]>([]); // API에서 불러온 데이터를 저장할 state
-  const [loading, setLoading] = useState(true); // 로딩 상태
   const navigate = useNavigate();
   const { school } = useParams();
   const growDivRef = useRef<HTMLDivElement>(null);
@@ -42,112 +39,18 @@ export function FindMentor() {
   const [searchQuery, setSearchQuery] = useState<string>(""); // Search query state
   const [isSearchOpen, setIsSearchOpen] = useState(false); // To toggle search bar visibility
 
-  // API에서 전체 데이터를 불러오는 함수
-  const loadClasses = async () => {
-    try {
-      const response = await axios.get(
-        `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/class/open`
-      );
+  const take = 10;
+  const job = null;
+  const major = null;
+  const userId = null;
+  const classId = null;
 
-      if (response.status === 200) {
-        console.log("response", response);
-        const classesFromApi = Array.isArray(response.data)
-          ? response.data
-          : [response.data];
-        setSearchBoxes(classesFromApi); // 데이터를 searchBoxes 상태에 저장
-        console.log("searchBoxes", searchBoxes);
-      } else {
-        setSearchBoxes([]); // 데이터가 배열이 아닐 경우 빈 배열로 설정
-      }
-    } catch (error) {
-      setSearchBoxes([]); // 오류 발생 시 빈 배열로 설정
-    } finally {
-      setLoading(false); // 데이터 로드 완료 후 로딩 상태를 false로 설정
-    }
-  };
-
-  // API에서 특정 학교 데이터를 불러오는 함수
-  {
-    /*
-  const loadSpecificClasses = async (major: string) => {
-    try {
-      const response = await axios.get(
-        `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/class/open/${major}`
-      );
-
-      if (response.status === 200) {
-        console.log("response", response);
-
-        const classesFromApi = Array.isArray(response.data)
-          ? response.data
-          : [response.data];
-        setSearchBoxes(classesFromApi); // 데이터를 searchBoxes 상태에 저장
-      } else {
-        setSearchBoxes([]); // 데이터가 배열이 아닐 경우 빈 배열로 설정
-      }
-    } catch (error) {
-      setSearchBoxes([]); // 오류 발생 시 빈 배열로 설정
-    } finally {
-      setLoading(false); // 데이터 로드 완료 후 로딩 상태를 false로 설정
-    }
-  };
-  */
-  }
-
-  // school params를 확인해 subFilter로 설정
-  useEffect(() => {
-    if (school) {
-      const decodedSchool = decodeURIComponent(school);
-      setMainFilter("school");
-      setSubFilter(decodedSchool);
-    }
-  }, [school]);
-
-  // mainFilter와 subFilter가 변경될 때마다 적절한 데이터를 로드
-  useEffect(() => {
-    if (mainFilter === "all") {
-      loadClasses();
-    } else if (mainFilter === "school" && subFilter) {
-      loadClasses(); // subFilter (info 값)으로 loadSpecificClasses 호출
-    }
-  }, [mainFilter, subFilter]); // subFilter 값이 변경될 때마다 호출
-
-  // Add filter for search query in addition to mainFilter and subFilter
-  const filteredBoxes = searchBoxes
-    .filter((box) => {
-      if (mainFilter === "all") {
-        return subFilter ? box.sort === subFilter : true;
-      } else if (mainFilter === "school") {
-        return subFilter ? box.major === subFilter : true;
-      }
-      return true;
-    })
-    .filter(
-      (box) =>
-        searchQuery === "" ||
-        box.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        box.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        box.major.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-  console.log("filteredBoxes", filteredBoxes);
-
-  const handleMainFilterChange = (filter: string) => {
-    setMainFilter(filter);
-    setSubFilter("");
-    {
-      setDropdownOpen(false);
-    }
-  };
-
-  const handleSubFilterChange = (filter: string) => {
-    setSubFilter(filter); // subFilter 값에 info 값을 설정
-    setDropdownOpen(false);
-  };
-
-  const handleSearchBoxClick = (box: SearchBoxType) => {
-    navigate("/mentorinfo", { state: { selectedBox: box } });
-  };
+  const {
+    data: resp,
+    isLoading,
+    isError,
+    refetch,
+  } = useGetClass({ take, major, job, userId, classId });
 
   useEffect(() => {
     const handleResize = () => {
@@ -171,7 +74,73 @@ export function FindMentor() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (loading) {
+  useEffect(() => {
+    if (!queryClient.getQueryData(["get-class"])) {
+      refetch();
+    }
+  }, [queryClient, refetch]);
+
+  useEffect(() => {
+    if (resp) {
+      setSearchBoxes(resp);
+      console.log("resp", resp);
+      console.log("searchBoxes", searchBoxes);
+    }
+  }, [resp]);
+
+  // school params를 확인해 subFilter로 설정
+  useEffect(() => {
+    if (school) {
+      const decodedSchool = decodeURIComponent(school);
+      setMainFilter("school");
+      setSubFilter(decodedSchool);
+    }
+  }, [school]);
+
+  // Add filter for search query in addition to mainFilter and subFilter
+  const filteredBoxes = searchBoxes
+    .filter((box) => {
+      if (mainFilter === "all") {
+        return subFilter ? box.sort === subFilter : true;
+      } else if (mainFilter === "school") {
+        return subFilter ? box.major === subFilter : true;
+      }
+      return true;
+    })
+    .filter(
+      (box) =>
+        searchQuery === "" ||
+        box.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        box.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        box.major?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+  console.log("filteredBoxes", filteredBoxes);
+
+  const handleMainFilterChange = (filter: string) => {
+    setMainFilter(filter);
+    setSubFilter("");
+    {
+      setDropdownOpen(false);
+    }
+  };
+
+  const handleSubFilterChange = (filter: string) => {
+    setSubFilter(filter); // subFilter 값에 info 값을 설정
+    setDropdownOpen(false);
+  };
+
+  const handleSearchBoxClick = (box: SearchBoxType) => {
+    navigate("/mentorinfo", { state: { selectedBox: box } });
+  };
+
+  if (isError) return <p>Error loading articles</p>;
+
+  if (position === "멘토") {
+    return <NotYetPage />;
+  }
+
+  if (isLoading) {
     return (
       <div
         style={{

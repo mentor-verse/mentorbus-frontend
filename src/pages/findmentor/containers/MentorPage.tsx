@@ -6,6 +6,7 @@ import { SearchBox } from "@/components/ui/searchbox";
 import { Button } from "@/components/ui/button";
 import { ApplyFinished } from "./ApplyFinished";
 import axios from "axios";
+import { usePostClassApply } from "@/hooks/usePostClassApply";
 
 export function MentorPage() {
   const [isApplied, setIsApplied] = useState(false);
@@ -15,53 +16,20 @@ export function MentorPage() {
 
   const selectedBox = location.state?.selectedBox;
 
-  // Function to send data to the API
-  const saveClass = async (box: {
-    nickname: any;
-    title: any;
-    num: any;
-    date: any;
-    map: any;
-    content: any;
-    name: any;
-    major: any;
-    status: any;
-  }) => {
-    try {
-      const response = await axios.post(
-        `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/class/save`,
-        {
-          nickname: box.nickname,
-          title: box.title,
-          num: box.num,
-          date: box.date,
-          map: box.map,
-          content: box.content,
-          name: box.name,
-          major: box.major,
-          status: box.status,
-          mentee_id: localStorage.getItem("kakao_id"),
-        }
-      );
-      console.log("Class saved successfully:", response.data);
-      console.log("Class saved response:", response);
-      setMenteeId(response.data.result.data.mentee_id);
-      console.log(
-        "response.data.result.data.mentee_id",
-        response.data.result.data.mentee_id
-      );
-    } catch (error) {
-      console.error("Error saving class:", error);
-      alert("이미 신청한 수업입니다.");
-      navigate("/find");
-    }
-  };
+  const { mutateAsync: applyClass } = usePostClassApply();
 
-  const handleApplyClick = () => {
-    if (selectedBox) {
-      saveClass(selectedBox); // Save class data to the API when user applies
+  const handleApplyClick = async () => {
+    console.log("Button clicked!");
+    try {
+      await applyClass({
+        userId: 4321,
+        classId: 223,
+      });
+
+      navigate("/qabus");
+    } catch (e) {
+      console.error(e);
     }
-    setIsApplied(true);
   };
 
   const handleRedirectToMentorBus = () => {

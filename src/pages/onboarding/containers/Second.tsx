@@ -10,7 +10,14 @@ interface SecondProps {
 
 export function Second({ count, setCount, sentence }: SecondProps) {
   const handleNext = (position: string) => {
-    localStorage.setItem("position", position); // Store the position in localStorage
+    localStorage.setItem("position", position); // 선택한 역할 저장
+
+    if (position === "멘토") {
+      localStorage.setItem("isMentor", "true"); // 멘토일 경우 true 저장
+    } else {
+      localStorage.removeItem("isMentor"); // 멘티일 경우 isMentor 삭제 (false처럼 동작)
+    }
+
     setCount(count + 1);
   };
 
@@ -23,7 +30,7 @@ export function Second({ count, setCount, sentence }: SecondProps) {
         <div className="w-[320px] justify-start flex items-start text-[26px] font-bold ">
           <Logo width={"175"} height="auto" /> <div>에서</div>
         </div>
-        <div className="w-[320px] justify-start flex items-start text-[26px] font-bold w-max">
+        <div className="w-[320px] justify-start flex items-start text-[26px] font-bold">
           {sentence}
         </div>
       </div>

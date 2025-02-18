@@ -4,6 +4,7 @@ import { SmallWoman } from "@/components/Icons/SmallWoman";
 import { SmallMan } from "@/components/Icons/SmallMan";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export interface ApplyAnswerBoxProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -14,20 +15,19 @@ export interface ApplyAnswerBoxProps
 const ApplyAnswerBox = React.forwardRef<HTMLDivElement, ApplyAnswerBoxProps>(
   ({ className, name, gen }) => {
     const navigate = useNavigate();
-    const [letter_id, setLetterId] = React.useState<string | null>(null);
+    const [letter_id, setLetterId] = useState<string | null>(null);
     const queryParams = new URLSearchParams(window.location.search);
-    const idx = parseInt(queryParams.get("index") || "0", 10); // Convert idx to number, default to 0
+    const idx = parseInt(queryParams.get("index") || "0", 10);
 
-    // URL에서 letter_id를 가져오는 함수
-    React.useEffect(() => {
+    useEffect(() => {
       const searchParams = new URLSearchParams(window.location.search);
-      console.log("window.location.search:", window.location.search); // Log full search string for debugging
+      console.log("window.location.search:", window.location.search);
 
-      const urlLetterId = searchParams.get("letter_id"); // Get the letter_id parameter
-      console.log("Extracted letter_id:", urlLetterId); // Log to see the extracted letter_id
+      const urlLetterId = searchParams.get("letter_id");
+      console.log("Extracted letter_id:", urlLetterId);
 
       if (urlLetterId) {
-        setLetterId(urlLetterId); // 상태 업데이트
+        setLetterId(urlLetterId);
       } else {
         console.error("letter_id not found in the URL");
       }
@@ -35,7 +35,6 @@ const ApplyAnswerBox = React.forwardRef<HTMLDivElement, ApplyAnswerBoxProps>(
 
     const handleClick = () => {
       if (letter_id) {
-        // 이동할 때 letter_id와 userName을 포함하여 전달
         navigate(`/applyanswer?letter_id=${letter_id}`, {
           state: { userName: name, idx },
         });
