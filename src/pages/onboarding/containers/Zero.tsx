@@ -145,7 +145,11 @@ const Zero: React.FC<ZeroProps> = () => {
       console.log("Apple sign-in response:", res);
 
       // API에 애플 로그인 결과 전송
-      const apiResponse = await sendAppleData(res);
+      const apiResponse = await sendAppleData({
+        name: res.user.name,
+        email: res.user.email,
+        id_token: res.authorization.id_token,
+      });
       console.log("API response:", apiResponse);
 
       // 응답 메시지에 따라 페이지 이동 처리
