@@ -44,7 +44,7 @@ const QuestionBox = React.forwardRef<HTMLDivElement, QuestionBoxProps>(
             className="flex text-start items-center text-blue-500 not-italic font-normal text-[11px]"
             onClick={(e) => {
               e.stopPropagation(); // 부모의 클릭 이벤트 전파 차단
-              onStarClick(e); // 별 클릭 핸들러 실행
+              onStarClick?.(true, star_num + 1);
             }}
             style={{ cursor: "pointer" }} // Add cursor style to indicate it's clickable
           >

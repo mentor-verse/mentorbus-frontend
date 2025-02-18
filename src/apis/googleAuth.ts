@@ -2,7 +2,7 @@ import {
   SignInRequest,
   SignInResponse,
   SignUpRequest,
-} from "@/types/login/googleAuth";
+} from "@/types/login/GoogleAuth";
 import { client } from "./clients";
 
 export const signInUser = async (

@@ -18,6 +18,7 @@ export default function GoogleSignUp() {
           await signUpUser("google", {
             redirectUri: import.meta.env.GOOGLE_REDIRECT_URI || "",
             token: googleAccessToken,
+            nickname: "",
           });
 
           console.log("회원가입 성공!");

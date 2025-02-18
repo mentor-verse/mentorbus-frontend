@@ -73,6 +73,7 @@ export function MainPage() {
 
   const queryClient = useQueryClient();
 
+  console.log("majors", majors);
   // URL에서 kakaoId를 가져오는 함수
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -119,8 +120,7 @@ export function MainPage() {
   }, [queryClient, refetch]);
 
   useEffect(() => {
-    setMentorData(resp);
-    console.log("resp", resp);
+    setMentorData((resp as unknown as getMentorResDto[]) ?? []);
   }, [resp]);
 
   useEffect(() => {

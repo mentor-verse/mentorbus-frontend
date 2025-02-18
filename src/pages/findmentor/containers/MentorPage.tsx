@@ -5,14 +5,12 @@ import { MentorInfo } from "./MentorInfo";
 import { SearchBox } from "@/components/ui/searchbox";
 import { Button } from "@/components/ui/button";
 import { ApplyFinished } from "./ApplyFinished";
-import axios from "axios";
 import { usePostClassApply } from "@/hooks/usePostClassApply";
 
 export function MentorPage() {
   const [isApplied, setIsApplied] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const [mentee_id, setMenteeId] = useState(false);
 
   const selectedBox = location.state?.selectedBox;
 
@@ -45,7 +43,7 @@ export function MentorPage() {
       localStorage.setItem("appliedItems", JSON.stringify(appliedItems));
     }
 
-    navigate(`/mentorbus?name=${selectedBox.name}&mentee_id=${mentee_id}`);
+    navigate(`/mentorbus?name=${selectedBox.name}`);
     console.log("selectedBox", selectedBox);
   };
 

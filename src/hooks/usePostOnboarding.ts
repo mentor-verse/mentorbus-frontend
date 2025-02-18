@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { postOnboardingProps, postOnboardingRes } from "@/types/post";
-import { postOnboarding } from "@/apis/PostOnboarding";
+import { postOnboarding } from "@/apis/postOnboarding";
 
 export function usePostOnboarding(): UseMutationResult<
   postOnboardingRes,

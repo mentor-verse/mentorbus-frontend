@@ -4,17 +4,20 @@ export interface getProfileProps {
 
 export interface getProfileRes {
   data: getProfileResDto[];
+  userName: string;
+  job: string; //멘토일 경우 소속 혹은 직장, 멘티라면 null
+  isMentor: boolean; //멘토, 멘티 여부
 }
 
 export interface getProfileResDto {
-  userId: "number";
-  userName: "string";
-  isMentor: "boolean"; //멘토, 멘티 여부
-  job: "string"; //멘토일 경우 소속 혹은 직장, 멘티라면 null
-  major: "string"; //멘토일 경우 전문분야, 멘티라면 null
-  school: "string"; //멘티일 경우 소속학교, 멘토라면 null
-  interest: "string"; //멘티일 경우 관심사, 멘토라면 null
-  level: "number";
+  userId: number;
+  userName: string;
+  isMentor: boolean; //멘토, 멘티 여부
+  job: string; //멘토일 경우 소속 혹은 직장, 멘티라면 null
+  major: string; //멘토일 경우 전문분야, 멘티라면 null
+  school: string; //멘티일 경우 소속학교, 멘토라면 null
+  interest: string; //멘티일 경우 관심사, 멘토라면 null
+  level: number;
 }
 
 //<<------------------------------->
@@ -24,6 +27,8 @@ export interface getClassMyProps {
 }
 
 export interface getClassMyRes {
+  isFinished: boolean;
+  filter(arg0: (r: any) => boolean): unknown;
   data: getClassMyResDto[];
 }
 
@@ -44,7 +49,7 @@ export interface getClassProps {
   major: string | null;
   job: string | null;
   userId: number | null;
-  classId: number | null;
+  classId: number[] | null;
 }
 
 export interface getClassRes {
@@ -71,6 +76,18 @@ export interface getQuestionProps {
 }
 
 export interface getQuestionRes {
+  answer: string;
+  mentor_answer: string | undefined;
+  position: string;
+  author: string;
+  major: string;
+  userId: number;
+  question: string;
+  type: string;
+  title: string;
+  content: string;
+  isClick: boolean;
+  id: number;
   data: getQuestionResDto[];
 }
 
@@ -90,16 +107,17 @@ export interface getAnswerProps {
 }
 
 export interface getAnswerRes {
+  some(arg0: (answer: { userId: number }) => boolean): unknown;
   data: getAnswerResDto[];
 }
 
 export interface getAnswerResDto {
-  userId: "number";
-  answerId: "number";
-  userName: "string";
-  content: "string";
-  likes: "number";
-  comments: "number";
+  userId: number;
+  answerId: number;
+  userName: string;
+  content: string;
+  likes: number;
+  comments: number;
 }
 
 //<<------------------------------->
@@ -132,6 +150,10 @@ export interface getMentorRes {
 }
 
 export interface getMentorResDto {
+  nickname: string;
+  major: string;
+  gen: string;
+  character1: string;
   userId: number;
   userName: string;
   job: string;
@@ -141,7 +163,7 @@ export interface getMentorResDto {
 //<<------------------------------->
 
 export interface getQaCountProps {
-  questionId: number | null;
+  questionId: number[] | null;
 }
 
 export interface getQaCountRes {
@@ -161,6 +183,7 @@ export interface getQuestionLikeProps {
 }
 
 export interface getQuestionLikeRes {
+  questionId: any;
   data: getQuestionLikeResDto[];
 }
 

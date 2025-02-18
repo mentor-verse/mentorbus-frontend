@@ -49,7 +49,7 @@ const MentorScheduleSection = React.forwardRef<
   }, [queryClient, refetch]);
 
   useEffect(() => {
-    setClassDataArray(resp);
+    setClassDataArray(resp ? (Array.isArray(resp) ? resp : [resp]) : []);
     console.log("resp", resp);
   }, [resp]);
 

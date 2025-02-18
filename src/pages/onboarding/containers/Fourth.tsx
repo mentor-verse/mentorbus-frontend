@@ -14,6 +14,7 @@ export function Fourth({ count, setCount, sentence }: FourthProps) {
   const navigate = useNavigate();
   const [userId, setUserId] = useState<string | null>(null);
 
+  console.log("userId", userId);
   const { mutateAsync: createPost } = usePostOnboarding();
 
   // URL에서 userId를 가져와 상태 및 localStorage에 저장

@@ -15,17 +15,12 @@ import { Cloud2 } from "@/components/Icons/Cloud2";
 import BottomNav from "@/containers/navbar";
 import { useGetProfile } from "@/hooks/useGetProfile";
 import { useQueryClient } from "@tanstack/react-query";
-
-interface UserData {
-  userName: string;
-  job: string;
-  position: string;
-}
+import { getProfileRes } from "@/types/get";
 
 export function MyPage() {
   const queryClient = useQueryClient();
   const [level] = useState("3"); // 기본값을 설정하거나 필요에 따라 변경 가능
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<getProfileRes | null>(null);
 
   const userId = 3645188105;
   const { data: resp, isLoading, isError, refetch } = useGetProfile({ userId });
@@ -38,14 +33,12 @@ export function MyPage() {
 
   useEffect(() => {
     if (resp) {
-      setUserData(resp[0]);
-      console.log("resp", resp[0]);
-      console.log("userData", userData);
+      setUserData(resp);
     }
   }, [resp]);
 
   const renderLevelIcon = () => {
-    if (userData?.position === "멘토") {
+    if (userData?.isMentor === true) {
       switch (level) {
         case "1":
           return <LevelFirstMentor />;

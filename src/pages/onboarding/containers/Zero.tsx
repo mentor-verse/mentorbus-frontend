@@ -100,10 +100,32 @@ const Zero: React.FC<ZeroProps> = () => {
     window.location.href = googleLoginUrl;
   };
 
-  // Apple 로그인 핸들러
+  /*
   const handleAppleLogin = () => {
-    // Redirect to Apple's login page
     appleLoginRedirect();
+  };
+  */
+
+  const loginWithApple = async (e) => {
+    e.preventDefault();
+    console.log("sign in with apple");
+
+    // 실제 값을 사용하세요.
+    window.AppleID.auth.init({
+      clientId: import.meta.env.VITE_APPLE_CLIENT_ID,
+      scope: "kang email",
+      redirectURI: import.meta.env.VITE_APPLE_REDIRECT_URI,
+      state: "state_parameter",
+      nonce: "random_nonce",
+      usePopup: true,
+    });
+
+    try {
+      const res = await window.AppleID.auth.signIn();
+      console.log(res);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -119,7 +141,7 @@ const Zero: React.FC<ZeroProps> = () => {
             <GoogleBtn />
           </div>
           <div className="ml-5"></div>
-          <div onClick={handleAppleLogin}>
+          <div onClick={loginWithApple}>
             <AppleBtn />
           </div>
         </div>

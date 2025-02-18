@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { OpenClassSecond } from "./OpenClassSecond";
 import { OpenClassThird } from "./OpenClassThird";
 import { LeftArrow } from "@/components/Icons/LeftArrow";
-import axios from "axios";
 import { usePostClassOpen } from "@/hooks/usePostClassOpen";
 
 export interface OpenClassPageProps
@@ -71,7 +70,8 @@ const OpenClassPage = React.forwardRef<HTMLDivElement, OpenClassPageProps>(
     const { mutateAsync: createClass } = usePostClassOpen();
 
     const handleBtnClick = async (
-      event: React.MouseEvent<HTMLButtonElement>
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      _event: React.MouseEvent<HTMLButtonElement>
     ) => {
       console.log("Button clicked!");
       if (viewState === 2) {

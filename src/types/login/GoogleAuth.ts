@@ -12,4 +12,5 @@ export interface SignInResponse {
 export interface SignUpRequest {
   redirectUri: string;
   token: string;
+  nickname: string;
 }

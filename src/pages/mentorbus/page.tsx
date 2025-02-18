@@ -8,6 +8,7 @@ import { useGetClassMy } from "@/hooks/useGetClassMy";
 import { useQueryClient } from "@tanstack/react-query";
 import { useGetClass } from "@/hooks/useGetClass";
 import { usePatchClassStatus } from "@/hooks/usePatchClassStatus";
+import { getClassMyRes, getClassRes } from "@/types/get";
 
 declare global {
   interface Window {
@@ -91,10 +92,10 @@ if (position === "멘티") {
 // 멘티용 컴포넌트
 export function MentorBusPageMentee() {
   const queryClient = useQueryClient();
-  const [classDataArray, setClassDataArray] = useState([]);
+  const [classDataArray, setClassDataArray] = useState<getClassRes[]>([]);
   const [InfoBox, setInfoBox] = useState(false);
-  const [user_Id, setUserId] = useState<string | null>("");
-  const [userClassData, setUserClassData] = useState<UserClassData | null>(
+  const [, setUserId] = useState<string | null>("");
+  const [userClassData, setUserClassData] = useState<getClassMyRes | null>(
     null
   );
 
@@ -109,7 +110,6 @@ export function MentorBusPageMentee() {
   }, [position]);
 
   const [filter, setFilter] = useState("unFinished");
-  const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
   //const [classDataArray] = useState<{ title: string; content: string; date: string; gatherUrl: string }[]>([]);
@@ -130,7 +130,9 @@ export function MentorBusPageMentee() {
     refetch: refetchGetClassMy,
   } = useGetClassMy({ userId });
 
-  const classIds = (respGetClassMy ?? []).map((item) => item.classId);
+  const classIds = (Array.isArray(respGetClassMy) ? respGetClassMy : []).map(
+    (item: { classId: number }) => item.classId
+  );
 
   const {
     data: respGetClass,
@@ -147,10 +149,12 @@ export function MentorBusPageMentee() {
 
   useEffect(() => {
     if (respGetClass) {
-      setClassDataArray(respGetClass);
+      setClassDataArray(
+        Array.isArray(respGetClass) ? respGetClass : [respGetClass]
+      );
       console.log("classDataArray", classDataArray);
     }
-  }, [respGetClass]);
+  }, [classDataArray, respGetClass]);
 
   useEffect(() => {
     if (!queryClient.getQueryData(["getClass"])) {
@@ -240,12 +244,12 @@ export function MentorBusPageMentee() {
   }
 
   // 1. resp (useGetClassMy의 응답)에서 필터링
-  const filteredUserClasses = respGetClassMy
-    ? respGetClassMy.filter((r: any) => {
+  const filteredUserClasses: getClassMyRes[] = Array.isArray(respGetClassMy)
+    ? (respGetClassMy as getClassMyRes[]).filter((r) => {
         if (filter === "unFinished") {
-          return r.isFinished === "0"; // 진행예정
+          return r.isFinished === false; // 진행예정
         } else if (filter === "finished") {
-          return r.isFinished === "1"; // 진행완료
+          return r.isFinished === true; // 진행완료
         }
         return true;
       })
@@ -353,11 +357,6 @@ export function MentorBusPageMentee() {
 //---------------------------------------------------------//
 
 export function MentorBusPageMentor() {
-  const queryClient = useQueryClient();
-  const [userClassData, setUserClassData] = useState<UserClassData | null>(
-    null
-  );
-
   const [filter, setFilter] = useState("entry");
   const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
   const [kakao_id, setKakaoId] = useState<string | null>("");

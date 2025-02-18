@@ -14,6 +14,21 @@ import { useDelQuestionUnlike } from "@/hooks/useDelQuestionUnlike";
 import { useGetQuestionLike } from "@/hooks/useGetQuestionLike";
 
 export function QAPage() {
+  interface QuestionBoxType {
+    id: number;
+    title: string;
+    question: string;
+    answer: string;
+    star_num: number;
+    comment_num: number;
+    type: string;
+    major: string;
+    author: string;
+    position: string;
+    mentor_answer?: string;
+    isClick: boolean;
+  }
+
   const [filter, setFilter] = useState("entry");
   const [subFilter, setSubFilter] = useState<string>("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -35,6 +50,7 @@ export function QAPage() {
     {}
   );
 
+  console.log("qCount", qCount);
   const category = "IT계열";
 
   const {
@@ -76,22 +92,22 @@ export function QAPage() {
 
   useEffect(() => {
     if (respCount) {
-      setQCount(respCount);
+      setQCount(Array.isArray(respCount) ? respCount : [respCount]);
       console.log("respCount", respCount);
     }
   }, [respCount]);
 
   useEffect(() => {
     if (respQLike) {
-      setQLike(respQLike);
+      setQLike(Array.isArray(respQLike) ? respQLike : [respQLike]);
       console.log("respQLike", respQLike);
     }
   }, [respQLike]);
 
   useEffect(() => {
     if (resp) {
-      setQuestionData(resp);
-      console.log("questionData", resp);
+      setQuestionData(Array.isArray(resp) ? resp : [resp]);
+      console.log("resp", resp);
     }
   }, [resp]);
 
@@ -147,7 +163,7 @@ export function QAPage() {
         box.question?.toLowerCase().includes(q.toLowerCase())
     );
 
-  const handleLikeClick = async (box: QuestionBoxType, index: number) => {
+  const handleLikeClick = async (box: QuestionBoxType) => {
     if (!box || !box.id) {
       console.error("Box is undefined or missing ID");
       return;
@@ -328,35 +344,41 @@ export function QAPage() {
               {filteredBoxes.map((box, index: number) => {
                 if (!box) return null;
 
-                const questionCountData = respCount.find(
-                  (item) => item.question === box.id.toString()
-                );
+                const questionCountData = Array.isArray(respCount)
+                  ? respCount.find(
+                      (item) => item.question === box.id.toString()
+                    )
+                  : { likeCount: 0, commentCount: 0 };
 
-                const star_num = questionCountData
-                  ? questionCountData.likeCount
-                  : 0;
-                const comment_num = questionCountData
-                  ? questionCountData.commentCount
-                  : 0;
+                const formattedBox: QuestionBoxType = {
+                  id: box.id,
+                  title: box.title,
+                  question: box.question,
+                  answer: box.answer ?? "",
+                  star_num: questionCountData?.likeCount ?? 0,
+                  comment_num: questionCountData?.commentCount ?? 0,
+                  type: box.type,
+                  major: box.major,
+                  author: box.author ?? "Unknown",
+                  position: box.position ?? "Unknown",
+                  mentor_answer: box.mentor_answer,
+                  isClick: favoriteStates[box.id] ?? false,
+                };
 
                 return (
                   <div
                     className="border-b-[0.6px] border-[#BABABA] w-full grid place-items-center py-6"
                     key={index}
-                    onClick={() => handleQuestionBoxClick(box, index)}
+                    onClick={() => handleQuestionBoxClick(formattedBox, index)}
                   >
                     <QuestionBox
-                      question={box.title}
-                      answer={box.content}
-                      star_num={star_num}
-                      comment_num={comment_num}
-                      className={box.type === "best" ? "best" : ""}
-                      onStarClick={() => handleLikeClick(box, index)}
-                      star_color={
-                        favoriteStates[box.id] ?? box.isClick
-                          ? "#4E98EE"
-                          : "#fff"
-                      }
+                      question={formattedBox.title}
+                      answer={formattedBox.answer}
+                      star_num={formattedBox.star_num}
+                      comment_num={formattedBox.comment_num}
+                      className={formattedBox.type === "best" ? "best" : ""}
+                      onStarClick={() => handleLikeClick(formattedBox)}
+                      star_color={formattedBox.isClick ? "#4E98EE" : "#fff"}
                     />
                   </div>
                 );

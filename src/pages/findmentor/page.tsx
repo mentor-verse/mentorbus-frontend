@@ -82,9 +82,23 @@ export function FindMentor() {
 
   useEffect(() => {
     if (resp) {
-      setSearchBoxes(resp);
+      const formattedData: SearchBoxType[] = Array.isArray(resp)
+        ? resp.map((item) => ({
+            num: item.num ?? "0",
+            title: item.title ?? "",
+            gen: item.gen ?? "",
+            major: item.major ?? "",
+            name: item.name ?? "",
+            info: item.info ?? "",
+            date: item.date ?? "",
+            text: item.text ?? "",
+            sort: item.sort ?? "",
+          }))
+        : [];
+
+      setSearchBoxes(formattedData);
       console.log("resp", resp);
-      console.log("searchBoxes", searchBoxes);
+      console.log("searchBoxes", formattedData);
     }
   }, [resp]);
 

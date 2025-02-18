@@ -28,7 +28,7 @@ const CommentPage = React.forwardRef<HTMLDivElement, CommentPageProps>(
         replyCount: string;
       }>
     >([]);
-    const [mentorAnswer, setMentorAnswer] = useState<getAnswerRes[]>([]);
+    const [, setMentorAnswer] = useState<getAnswerRes[]>([]);
 
     const userName = localStorage.getItem("userName") || "기본명";
     const queryClient = useQueryClient();
@@ -52,7 +52,7 @@ const CommentPage = React.forwardRef<HTMLDivElement, CommentPageProps>(
       const searchParams = new URLSearchParams(location.search);
       const urlQuestionId = searchParams.get("questionId");
       const parsedQuestionId = urlQuestionId ? Number(urlQuestionId) : null;
-      if (!isNaN(parsedQuestionId)) {
+      if (parsedQuestionId !== null && !isNaN(parsedQuestionId)) {
         setQuestionId(parsedQuestionId);
       }
     }, [location.search]);
@@ -71,18 +71,24 @@ const CommentPage = React.forwardRef<HTMLDivElement, CommentPageProps>(
     }, [queryClient, refetch]);
 
     useEffect(() => {
-      setMentorAnswer(resp || []);
+      const answers = Array.isArray(resp) ? resp : resp ? [resp] : [];
+      setMentorAnswer(answers);
       setCommentIds(
-        resp?.map((answer) => ({
-          content: answer.content || "No content",
-          replyCount: answer.replyCount || "0",
-        })) || []
+        (answers as Array<{ content: string; replyCount: number }>).map(
+          (answer) => ({
+            content: answer.content || "No content",
+            replyCount: String(answer.replyCount || 0),
+          })
+        )
       );
     }, [resp]);
 
     // 전체 resp 배열에서 로컬 userId와 일치하는 항목이 있는지 확인
     const isOwner =
-      resp && resp.some((answer) => String(answer.userId) === localUserId);
+      resp &&
+      resp.some(
+        (answer: { userId: number }) => String(answer.userId) === localUserId
+      );
 
     if (isLoading) return <p>Loading...</p>;
     if (isError) return <p>Error loading articles</p>;
