@@ -131,7 +131,7 @@ const Zero: React.FC<ZeroProps> = () => {
 
     (window as any).AppleID.auth.init({
       clientId: import.meta.env.VITE_APPLE_CLIENT_ID,
-      scope: "kang email",
+      scope: "name email",
       redirectURI: import.meta.env.VITE_APPLE_REDIRECT_URI,
       state: "state_parameter",
       nonce: "random_nonce",
