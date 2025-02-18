@@ -134,19 +134,28 @@ export interface postOnboardingResDto {
 
 //<<------------------------------->
 
+// types/post/index.ts
+export interface AppleUserName {
+  firstName: string;
+  lastName: string;
+}
+
+export interface AppleUser {
+  name: AppleUserName;
+  email: string;
+}
+
+export interface AppleAuthorization {
+  id_token: string;
+  // 필요에 따라 다른 필드도 추가 가능
+}
+
 export interface postAppleProps {
-  name: string | null;
-  email: string | null;
-  id_token: string | null;
+  user: AppleUser;
+  authorization: AppleAuthorization;
 }
 
 export interface postAppleRes {
   message: string;
-  data: postAppleResDto[];
-}
-
-export interface postAppleResDto {
-  name: string | null;
-  email: string | null;
-  id_token: string | null;
+  // 기타 응답 데이터 필드가 있다면 추가
 }
