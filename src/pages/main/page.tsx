@@ -21,12 +21,13 @@ import HIU from "@/assets/HIU.webp";
 import { MentorBox } from "@/components/ui/mentorbox";
 import { MentorScheduleSection } from "@/pages/main/containers/MentorScheduleSection"; // Import the new component
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios"; // Import axios to make API requests
 import BottomNav from "@/containers/navbar";
 import { useGetMentor } from "@/hooks/useGetMentor";
 import { useQueryClient } from "@tanstack/react-query";
-import { getMentorResDto } from "@/types/get";
+import { getMentorResDto, getProfileResDto } from "@/types/get";
+import { RootState } from "@/store";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 interface CollegeType {
   img: string;
@@ -61,56 +62,39 @@ const getRandomColleges = (
 };
 
 export function MainPage() {
-  const [userName, setUserName] = useState<string | null>("");
-  const [majors, setUserMajor] = useState<string>("");
+  const [userName, setUserName] = useState<string | undefined>("");
+  const [userMajor, setUserMajor] = useState<string | null | undefined>("");
   const [randomColleges, setRandomColleges] = useState<CollegeType[]>([]);
-  const [position, setPosition] = useState<string | null>(null);
-  const location = useLocation();
-  const [userData, setUserData] = useState<any>(null); // 배열 대신 객체(null로 초기화)
-  const [kakaoId, setKakaoId] = useState<string | null>(null); // kakaoId 상태값으로 설정
-  const navigate = useNavigate();
+  const [position, setPosition] = useState<boolean | null>();
   const [mentorData, setMentorData] = useState<getMentorResDto[]>([]); // API에서 불러온 데이터를 저장할 state
 
+  const user = useSelector((state: RootState) => state.user);
+  const [userData, setUserData] = useState<getProfileResDto | null>(user);
+
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
-  console.log("majors", majors);
-  // URL에서 kakaoId를 가져오는 함수
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const urlKakaoId = searchParams.get("userId");
-    if (urlKakaoId) {
-      setKakaoId(urlKakaoId);
-      localStorage.setItem("kakao_id", urlKakaoId);
-    } else {
-      const storedKakaoId = localStorage.getItem("kakao_id");
-      if (storedKakaoId) {
-        setKakaoId(storedKakaoId);
-      }
-    }
-  }, [location.search]);
+    setUserData(user);
+  }, [user]);
 
-  // kakaoId가 있을 때 백엔드 API 호출
   useEffect(() => {
-    if (kakaoId) {
-      // 백엔드 API 호출
-      axios
-        .get(
-          `https://port-0-mentorbus-backend-m0zjsul0a4243974.sel4.cloudtype.app/onboarding/userdata/${kakaoId}`
-        )
-        .then((response: { data: { position: any } }) => {
-          // 성공적으로 데이터를 가져왔을 때
-          setUserData(response.data);
-          console.log("userData", userData);
-          setPosition(response.data.position);
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error);
-          navigate(`/onboarding?specialQuery=true?userId=${kakaoId}`);
-        });
+    if (userData == null) {
+      alert("로그인 후 사용가능합니다.");
+      navigate("/onboarding");
     }
-  }, [kakaoId]); // kakaoId가 변경될 때마다 실행
+  }, [navigate, userData]);
 
-  const major = "공학계열";
+  useEffect(() => {
+    if (userData !== null) {
+      console.log("userData", userData);
+      setPosition(userData.isMentor);
+      setUserMajor(userData.major || userData.interest);
+      setUserName(userData.userName);
+    }
+  }, [userData]);
+
+  const major = userMajor;
   const { data: resp, isLoading, isError, refetch } = useGetMentor({ major });
 
   useEffect(() => {
@@ -122,20 +106,6 @@ export function MainPage() {
   useEffect(() => {
     setMentorData((resp as unknown as getMentorResDto[]) ?? []);
   }, [resp]);
-
-  useEffect(() => {
-    const storedUserName = localStorage.getItem("userName");
-    if (storedUserName) {
-      setUserName(storedUserName);
-    }
-  }, []);
-
-  useEffect(() => {
-    const storedUserMajor = localStorage.getItem("major");
-    if (storedUserMajor) {
-      setUserMajor(storedUserMajor);
-    }
-  }, []);
 
   useEffect(() => {
     setRandomColleges(getRandomColleges(colleges, 16));

@@ -1,5 +1,5 @@
 export interface getProfileProps {
-  userId: number | null;
+  userId: number | null | undefined;
 }
 
 export interface getProfileRes {
@@ -142,7 +142,7 @@ export interface getMentorScheduleResDto {
 //<<------------------------------->
 
 export interface getMentorProps {
-  major: string | null;
+  major: string | null | undefined;
 }
 
 export interface getMentorRes {

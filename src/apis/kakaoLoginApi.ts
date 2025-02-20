@@ -1,6 +1,6 @@
-import { UserType } from "../types/login/UserType";
+import { KakaoUserType } from "../types/login/UserType";
 import { client } from "./clients";
 
 export const kakaoAuthCodeApi = (authCode: string) => {
-  return client.get<UserType>(`/auth/callback?code=${authCode}`);
+  return client.get<KakaoUserType>(`/auth/callback?code=${authCode}`);
 };

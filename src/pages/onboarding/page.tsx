@@ -1,6 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { isLoggedInAtom } from "@/atoms/isLoggedInAtom";
 import Zero from "./containers/Zero";
 import { First } from "./containers/First";
 import { Second } from "./containers/Second";
@@ -11,14 +9,12 @@ import { ZeroRoad } from "@/components/Icons/ZeroRoad";
 import { Cloud } from "@/components/Icons/Cloud";
 import { Cloud2 } from "@/components/Icons/Cloud2";
 import { Fifth } from "./containers/Fifth";
-import { useNavigate } from "react-router-dom";
 
 export function Onboarding() {
-  const isLoggedIn = useRecoilValue(isLoggedInAtom);
+  // const isLoggedIn = useRecoilValue(isLoggedInAtom);
   const [count, setCount] = useState(0);
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
 
   const [showSecondMentor, setShowSecondMentor] = useState(true);
   const [showSecondMentee, setShowSecondMentee] = useState(false);
@@ -27,14 +23,6 @@ export function Onboarding() {
   const [showThirdMentee, setShowThirdMentee] = useState(false);
 
   const prevCountRef = useRef<number>(count);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      setCount(1);
-    } else {
-      setCount(0);
-    }
-  }, [isLoggedIn, navigate]);
 
   useEffect(() => {
     const prevCount = prevCountRef.current;
@@ -63,12 +51,10 @@ export function Onboarding() {
 
     if (specialQuery) {
       setCount(1);
-    } else if (isLoggedIn) {
-      setCount(1);
     } else {
       setCount(0);
     }
-  }, [isLoggedIn]);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {

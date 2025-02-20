@@ -2,7 +2,6 @@ import { NextButton } from "@/components/Icons/NextButton";
 import { Logo } from "@/components/Icons/Logo";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { useSetRecoilState } from "recoil";
 import { userNameAtom } from "@/atoms/userNameAtom";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +23,6 @@ interface MentorData {
 }
 
 export function First({ count, setCount, sentence }: FirstProps) {
-  const setUserName = useSetRecoilState(userNameAtom);
   const navigate = useNavigate();
   const {
     register,
