@@ -9,7 +9,6 @@ import {
   UserActionTypes,
   UserData,
 } from "@/types/login/UserType";
-import { getProfileResDto } from "@/types/get";
 
 const loginSuccess = (userData: UserData): UserActionTypes => ({
   type: LOGIN_SUCCESS,
@@ -45,7 +44,8 @@ const KakaoRedirect = () => {
         const res = response.data;
         console.log("id", res.data.id);
         setUserId(res.data.id);
-        setUserData(userData);
+        console.log("respData", respData);
+        setUserData(respData);
 
         if (userData) {
           dispatch(loginSuccess(userData));
