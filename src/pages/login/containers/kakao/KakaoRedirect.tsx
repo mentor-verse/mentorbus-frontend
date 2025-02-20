@@ -24,7 +24,7 @@ const KakaoRedirect = () => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
-  const [userId, setUserId] = useState<number | null>(null);
+  const [userId, setUserId] = useState<number | null>();
   const [, setUserData] = useState<getProfileResDto | undefined>();
 
   const { data: resp, refetch } = useGetProfile(
@@ -51,7 +51,7 @@ const KakaoRedirect = () => {
           if (res.data.isFirst) {
             navigate("/onboardidng");
           } else {
-            navigate("/");
+            navigate("/main");
           }
         } else {
           alert("로그인에 실패했습니다");
@@ -62,7 +62,8 @@ const KakaoRedirect = () => {
     };
 
     kakaoLogin();
-  }, [AUTHORIZE_CODE, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [AUTHORIZE_CODE]);
 
   useEffect(() => {
     if (resp?.data && resp.data.length > 0) {
