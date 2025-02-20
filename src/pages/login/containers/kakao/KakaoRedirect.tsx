@@ -4,11 +4,11 @@ import { kakaoAuthCodeApi } from "@/apis/kakaoLoginApi";
 import { useGetProfile } from "@/hooks/useGetProfile";
 import { useDispatch } from "react-redux";
 import {
+  KakaoUserType,
   LOGIN_SUCCESS,
   UserActionTypes,
   UserData,
 } from "@/types/login/UserType";
-import { KakaoUserType } from "@/types/login/UserType";
 
 const loginSuccess = (userData: UserData): UserActionTypes => ({
   type: LOGIN_SUCCESS,
@@ -28,7 +28,7 @@ const KakaoRedirect = () => {
   const [isProfileFetched, setIsProfileFetched] = useState(false);
 
   const { data: respData, refetch } = useGetProfile(
-    { userId: userId! },
+    { userId: userId }, // userId가 없을 경우 undefined 전달
     { enabled: false } // 기본적으로 자동 실행 X
   );
 
@@ -52,25 +52,32 @@ const KakaoRedirect = () => {
 
   useEffect(() => {
     if (userId && !isProfileFetched) {
-      refetch();
-      setIsProfileFetched(true);
+      console.log("Fetching profile for userId:", userId);
+      refetch()
+        .then(() => {
+          console.log("Profile fetched successfully");
+          setIsProfileFetched(true);
+        })
+        .catch((err) => {
+          console.error("Profile fetch error:", err);
+        });
     }
   }, [userId, isProfileFetched, refetch]);
 
   useEffect(() => {
     if (respData) {
+      console.log("Profile data received:", respData);
       setUserData(respData);
       dispatch(loginSuccess(respData));
     }
   }, [respData, dispatch]);
 
   useEffect(() => {
-    if (userData) {
+    if (userData && kakaoData) {
       console.log("userData", userData);
-      navigate(kakaoData?.data.isFirst ? "/onboarding" : "/main");
+      navigate(kakaoData.data.isFirst ? "/onboarding" : "/main");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userData, navigate]);
+  }, [userData, kakaoData, navigate]);
 
   return <div>Loading…</div>;
 };
