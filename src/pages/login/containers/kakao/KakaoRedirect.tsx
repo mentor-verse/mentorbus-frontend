@@ -20,40 +20,33 @@ const KakaoRedirect = () => {
   const AUTHORIZE_CODE: string = new URLSearchParams(
     window.location.search
   ).get("code")!;
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const queryClient = useQueryClient();
-  const [userId, setUserId] = useState<number>();
-  const [userData, setUserData] = useState<getProfileResDto | undefined>();
 
-  const { data: resp, refetch } = useGetProfile({ userId: userId });
+  const [userId, setUserId] = useState<number | null>(null);
+  const [, setUserData] = useState<getProfileResDto | undefined>();
+
+  const { data: resp, refetch } = useGetProfile(
+    { userId: userId! },
+    { enabled: !!userId }
+  );
 
   useEffect(() => {
-    if (!queryClient.getQueryData(["get-profile"])) {
+    if (!queryClient.getQueryData(["getProfile"])) {
       refetch();
     }
   }, [queryClient, refetch]);
-
-  console.log("aafdafasaf");
 
   useEffect(() => {
     const kakaoLogin = async () => {
       try {
         const response = await kakaoAuthCodeApi(AUTHORIZE_CODE);
         const res = response.data;
-        console.log("res", res);
         console.log("id", res.data.id);
         setUserId(res.data.id);
-        if (resp?.data && resp.data.length > 0) {
-          const profile = resp.data[0];
-          setUserData(profile);
-          dispatch(loginSuccess(profile));
-          console.log("userData", userData);
-          console.log("저장성공");
-        }
 
+        // 로그인 성공 후 프로필 데이터가 있다면 처리
         if (res.code === "200") {
           if (res.data.isFirst) {
             navigate("/onboardidng");
@@ -70,6 +63,16 @@ const KakaoRedirect = () => {
 
     kakaoLogin();
   }, [AUTHORIZE_CODE, navigate]);
+
+  useEffect(() => {
+    if (resp?.data && resp.data.length > 0) {
+      const profile = resp.data[0];
+      setUserData(profile);
+      dispatch(loginSuccess(profile));
+      console.log("userData", profile);
+      console.log("저장성공");
+    }
+  }, [resp, dispatch]);
 
   return <div>Loading…</div>;
 };
