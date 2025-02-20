@@ -1,7 +1,9 @@
 import { BrowserRouter } from "react-router-dom";
 import { MainRouter } from "./pages/router";
 import { Toaster } from "./components/ui/sonner";
-import { RecoilRoot } from "recoil";
+import { Provider } from "react-redux";
+import store from "./store";
+
 import {
   QueryClient,
   QueryCache,
@@ -31,14 +33,14 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <RecoilRoot>
+      <Provider store={store}>
         <BrowserRouter>
           {" "}
           {/* Ensure this matches the base in vite.config.js */}
           <MainRouter />
           <Toaster />
         </BrowserRouter>
-      </RecoilRoot>
+      </Provider>
     </QueryClientProvider>
   );
 }
