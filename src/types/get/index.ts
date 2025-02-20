@@ -142,7 +142,7 @@ export interface getMentorScheduleResDto {
 //<<------------------------------->
 
 export interface getMentorProps {
-  major: string | null;
+  major: string | null | undefined;
 }
 
 export interface getMentorRes {

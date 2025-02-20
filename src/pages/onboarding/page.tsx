@@ -9,14 +9,12 @@ import { ZeroRoad } from "@/components/Icons/ZeroRoad";
 import { Cloud } from "@/components/Icons/Cloud";
 import { Cloud2 } from "@/components/Icons/Cloud2";
 import { Fifth } from "./containers/Fifth";
-import { useNavigate } from "react-router-dom";
 
 export function Onboarding() {
   // const isLoggedIn = useRecoilValue(isLoggedInAtom);
   const [count, setCount] = useState(0);
   const growDivRef = useRef<HTMLDivElement>(null);
   const roadDivRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
 
   const [showSecondMentor, setShowSecondMentor] = useState(true);
   const [showSecondMentee, setShowSecondMentee] = useState(false);
@@ -25,10 +23,6 @@ export function Onboarding() {
   const [showThirdMentee, setShowThirdMentee] = useState(false);
 
   const prevCountRef = useRef<number>(count);
-
-  useEffect(() => {
-    setCount(1);
-  }, [navigate]);
 
   useEffect(() => {
     const prevCount = prevCountRef.current;
