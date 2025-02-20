@@ -4,9 +4,14 @@ export interface getProfileProps {
 
 export interface getProfileRes {
   data: getProfileResDto[];
+  userId: number;
   userName: string;
-  job: string; //멘토일 경우 소속 혹은 직장, 멘티라면 null
   isMentor: boolean; //멘토, 멘티 여부
+  job: string; //멘토일 경우 소속 혹은 직장, 멘티라면 null
+  major: string; //멘토일 경우 전문분야, 멘티라면 null
+  school: string; //멘티일 경우 소속학교, 멘토라면 null
+  interest: string; //멘티일 경우 관심사, 멘토라면 null
+  level: number;
 }
 
 export interface getProfileResDto {
