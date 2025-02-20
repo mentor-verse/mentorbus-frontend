@@ -32,6 +32,19 @@ const KakaoRedirect = () => {
   );
 
   useEffect(() => {
+    if (userId) {
+      refetch();
+    }
+  }, [userId, refetch]);
+
+  useEffect(() => {
+    if (respData) {
+      setUserData(respData);
+      dispatch(loginSuccess(respData));
+    }
+  }, [respData, dispatch]);
+
+  useEffect(() => {
     if (!queryClient.getQueryData(["getProfile"])) {
       refetch();
     }
