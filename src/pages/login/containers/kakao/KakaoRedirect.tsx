@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { kakaoAuthCodeApi } from "@/apis/kakaoLoginApi";
 import { useGetProfile } from "@/hooks/useGetProfile";
-import { useQueryClient } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import {
   LOGIN_SUCCESS,
   UserActionTypes,
   UserData,
 } from "@/types/login/UserType";
+import { KakaoUserType } from "@/types/login/UserType";
 
 const loginSuccess = (userData: UserData): UserActionTypes => ({
   type: LOGIN_SUCCESS,
@@ -21,21 +21,41 @@ const KakaoRedirect = () => {
   ).get("code")!;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const queryClient = useQueryClient();
 
-  const [userId, setUserId] = useState<number | null>();
-  const [userData, setUserData] = useState<UserData | undefined>();
+  const [userId, setUserId] = useState<number | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [kakaoData, setKakaoData] = useState<KakaoUserType | null>(null);
+  const [isProfileFetched, setIsProfileFetched] = useState(false);
 
   const { data: respData, refetch } = useGetProfile(
     { userId: userId! },
-    { enabled: !!userId }
+    { enabled: false } // 기본적으로 자동 실행 X
   );
 
   useEffect(() => {
-    if (userId) {
+    const kakaoLogin = async () => {
+      try {
+        const response = await kakaoAuthCodeApi(AUTHORIZE_CODE);
+        const res = response.data;
+        console.log("id", res.data.id);
+
+        setUserId(res.data.id);
+        setKakaoData(res);
+      } catch (err) {
+        console.error("카카오 로그인 실패:", err);
+        alert("로그인에 실패했습니다");
+      }
+    };
+
+    kakaoLogin();
+  }, [AUTHORIZE_CODE]);
+
+  useEffect(() => {
+    if (userId && !isProfileFetched) {
       refetch();
+      setIsProfileFetched(true);
     }
-  }, [userId, refetch]);
+  }, [userId, isProfileFetched, refetch]);
 
   useEffect(() => {
     if (respData) {
@@ -45,46 +65,12 @@ const KakaoRedirect = () => {
   }, [respData, dispatch]);
 
   useEffect(() => {
-    if (!queryClient.getQueryData(["getProfile"])) {
-      refetch();
+    if (userData) {
+      console.log("userData", userData);
+      navigate(kakaoData?.data.isFirst ? "/onboarding" : "/main");
     }
-  }, [queryClient, refetch]);
-
-  useEffect(() => {
-    const kakaoLogin = async () => {
-      try {
-        const response = await kakaoAuthCodeApi(AUTHORIZE_CODE);
-        const res = response.data;
-        console.log("id", res.data.id);
-        setUserId(res.data.id);
-        console.log("respData", respData);
-        setUserData(respData);
-
-        if (userData) {
-          dispatch(loginSuccess(userData));
-        } else {
-          console.warn("userData is undefined, not dispatching.");
-        }
-
-        console.log("userData", userData);
-
-        if (res.code === "200") {
-          if (res.data.isFirst) {
-            navigate("/onboardidng");
-          } else {
-            navigate("/main");
-            console.log("respData", respData);
-          }
-        } else {
-          alert("로그인에 실패했습니다");
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    kakaoLogin();
-  }, [AUTHORIZE_CODE, dispatch, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData, navigate]);
 
   return <div>Loading…</div>;
 };
