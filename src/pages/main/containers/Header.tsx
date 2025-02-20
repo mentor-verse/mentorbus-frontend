@@ -3,7 +3,7 @@ import { cn } from "@/libs/utils.ts";
 
 export interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
-  major: string;
+  major: string | null | undefined;
 }
 
 const Header = React.forwardRef<HTMLDivElement, HeaderProps>(

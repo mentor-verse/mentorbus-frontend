@@ -201,7 +201,7 @@ export function MainPage() {
             >
               <Banner2 />
             </div>
-            {position === "멘티" ? (
+            {position === false ? (
               renderMentorBoxes()
             ) : (
               <MentorScheduleSection />

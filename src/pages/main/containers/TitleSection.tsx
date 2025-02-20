@@ -5,7 +5,7 @@ export interface TitleSectionProps
   extends React.HTMLAttributes<HTMLDivElement> {
   title: string | undefined;
   title2: string;
-  major: string;
+  major: string | null | undefined;
   title3: string;
 }
 

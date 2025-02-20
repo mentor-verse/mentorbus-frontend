@@ -28,7 +28,7 @@ const KakaoRedirect = () => {
   const [userId, setUserId] = useState<number>();
   const [userData, setUserData] = useState<getProfileResDto | undefined>();
 
-  const { data: resp, refetch } = useGetProfile({ userId: userId });
+  const { data: resp, refetch } = useGetProfile({ userId });
 
   useEffect(() => {
     if (!queryClient.getQueryData(["get-profile"])) {
@@ -36,11 +36,13 @@ const KakaoRedirect = () => {
     }
   }, [queryClient, refetch]);
 
+  console.log("aafdafasaf");
   useEffect(() => {
     if (resp?.data && resp.data.length > 0) {
       const profile = resp.data[0];
       setUserData(profile);
       dispatch(loginSuccess(profile));
+      console.log("저장성공");
     }
   }, [dispatch, resp, userData]);
 
@@ -49,7 +51,9 @@ const KakaoRedirect = () => {
       try {
         const response = await kakaoAuthCodeApi(AUTHORIZE_CODE);
         const res = response.data;
-        setUserId(response.data.data.id);
+        console.log("res", res);
+        console.log("id", res.data.id);
+        setUserId(res.data.id);
 
         if (res.code === "200") {
           if (res.data.isFirst) {

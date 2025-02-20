@@ -2,7 +2,6 @@ import { NextButton } from "@/components/Icons/NextButton";
 import { Logo } from "@/components/Icons/Logo";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { userNameAtom } from "@/atoms/userNameAtom";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Axios로 API 요청하기 위해 추가
@@ -32,11 +31,12 @@ export function First({ count, setCount, sentence }: FirstProps) {
 
   // 서버에서 가져온 멘토 데이터를 저장할 state
   const [mentorData, setMentorData] = useState<MentorData | null>(null); // mentorData 타입 설정
+  const [userName, setUserName] = useState<string>("");
 
   // 폼 제출 처리 함수
   const onSubmit = (data: FormData) => {
     setUserName(data.name);
-    localStorage.setItem("userName", data.name);
+    localStorage.setItem("userName", userName);
     setCount(count + 1);
   };
 
