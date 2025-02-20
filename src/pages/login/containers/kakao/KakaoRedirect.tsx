@@ -1,34 +1,64 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { kakaoAuthCodeApi } from '@/apis/kakaoLoginApi';
-import { useSetRecoilState } from 'recoil';
-import { LoginState } from '@/recoil/atoms/atom';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { kakaoAuthCodeApi } from "@/apis/kakaoLoginApi";
+import { useGetProfile } from "@/hooks/useGetProfile";
+import { useQueryClient } from "@tanstack/react-query";
+import { useDispatch } from "react-redux";
+import {
+  LOGIN_SUCCESS,
+  UserActionTypes,
+  UserData,
+} from "@/types/login/UserType";
+import { getProfileResDto } from "@/types/get";
+
+const loginSuccess = (userData: UserData): UserActionTypes => ({
+  type: LOGIN_SUCCESS,
+  payload: userData,
+});
 
 const KakaoRedirect = () => {
-  const setLoginState = useSetRecoilState(LoginState);
-  const AUTHORIZE_CODE: string = new URLSearchParams(window.location.search).get('code')!;
+  const AUTHORIZE_CODE: string = new URLSearchParams(
+    window.location.search
+  ).get("code")!;
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const queryClient = useQueryClient();
+  const [userId, setUserId] = useState<number>();
+  const [userData, setUserData] = useState<getProfileResDto | undefined>();
+
+  const { data: resp, refetch } = useGetProfile({ userId: userId });
+
+  useEffect(() => {
+    if (!queryClient.getQueryData(["get-profile"])) {
+      refetch();
+    }
+  }, [queryClient, refetch]);
+
+  useEffect(() => {
+    if (resp?.data && resp.data.length > 0) {
+      const profile = resp.data[0];
+      setUserData(profile);
+      dispatch(loginSuccess(profile));
+    }
+  }, [dispatch, resp, userData]);
 
   useEffect(() => {
     const kakaoLogin = async () => {
       try {
         const response = await kakaoAuthCodeApi(AUTHORIZE_CODE);
         const res = response.data;
-        const accessToken = response.data.data.accessToken;
-        localStorage.setItem('kakaoData', JSON.stringify(res));
-        localStorage.setItem('accessToken', accessToken);
+        setUserId(response.data.data.id);
 
-        if (res.code === '200') {
-          // 최초 회원가입 유저의 경우 약관 동의가 필요
+        if (res.code === "200") {
           if (res.data.isFirst) {
-            navigate('/onboardidng'); // 최초 회원가입 유저는 온보딩 페이지로 이동
+            navigate("/onboardidng");
           } else {
-            navigate('/'); // 이미 가입된 유저는 메인 화면으로 이동
-            setLoginState(true);
+            navigate("/");
           }
         } else {
-          alert('로그인에 실패했습니다');
+          alert("로그인에 실패했습니다");
         }
       } catch (err) {
         console.log(err);
@@ -36,7 +66,7 @@ const KakaoRedirect = () => {
     };
 
     kakaoLogin();
-  }, [AUTHORIZE_CODE, navigate, setLoginState]);
+  }, [AUTHORIZE_CODE, navigate]);
 
   return <div>Loading…</div>;
 };

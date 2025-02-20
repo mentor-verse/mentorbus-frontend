@@ -1,5 +1,5 @@
 export interface getProfileProps {
-  userId: number | null;
+  userId: number | null | undefined;
 }
 
 export interface getProfileRes {

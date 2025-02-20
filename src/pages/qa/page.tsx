@@ -51,7 +51,8 @@ export function QAPage() {
   );
 
   console.log("qCount", qCount);
-  const category = "IT계열";
+  const category =
+    localStorage.getItem("major") || localStorage.getItem("interest");
 
   const {
     data: resp,
