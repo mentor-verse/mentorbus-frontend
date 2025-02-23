@@ -24,10 +24,11 @@ import React, { useEffect, useState } from "react";
 import BottomNav from "@/containers/navbar";
 import { useGetMentor } from "@/hooks/useGetMentor";
 import { useQueryClient } from "@tanstack/react-query";
-import { getMentorResDto, getProfileResDto } from "@/types/get";
+import { getMentorResDto } from "@/types/get";
 import { RootState } from "@/store";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { UserData } from "@/types/login/UserType";
 
 interface CollegeType {
   img: string;
@@ -69,21 +70,20 @@ export function MainPage() {
   const [mentorData, setMentorData] = useState<getMentorResDto[]>([]); // API에서 불러온 데이터를 저장할 state
 
   const user = useSelector((state: RootState) => state.user);
-  const [userData, setUserData] = useState<getProfileResDto | null>(user);
+  const [userData, setUserData] = useState<UserData | null>(
+    Array.isArray(user) && user.length > 0 ? user[0] : null
+  );
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   useEffect(() => {
-    setUserData(user);
-  }, [user]);
-
-  useEffect(() => {
-    if (userData == null) {
-      alert("로그인 후 사용가능합니다.");
-      navigate("/onboarding");
+    if (Array.isArray(user) && user.length > 0) {
+      setUserData(user[0]);
+    } else {
+      setUserData(null);
     }
-  }, [navigate, userData]);
+  }, [user]);
 
   useEffect(() => {
     if (userData !== null) {
@@ -92,10 +92,23 @@ export function MainPage() {
       setUserMajor(userData.major || userData.interest);
       setUserName(userData.userName);
     }
-  }, [userData]);
+  }, [userData, userMajor]);
 
-  const major = userMajor;
-  const { data: resp, isLoading, isError, refetch } = useGetMentor({ major });
+  const {
+    data: resp,
+    isLoading,
+    isError,
+    refetch,
+  } = useGetMentor({ major: userMajor });
+
+  useEffect(() => {
+    if (userData) {
+      refetch();
+    } else {
+      alert("로그인 후 사용가능합니다.");
+      navigate("/onboarding");
+    }
+  }, [userData, refetch, navigate]);
 
   useEffect(() => {
     if (!queryClient.getQueryData(["getMentor"])) {
@@ -110,11 +123,6 @@ export function MainPage() {
   useEffect(() => {
     setRandomColleges(getRandomColleges(colleges, 16));
   }, []);
-
-  console.log(
-    "import.meta.env.GOOGLE_REDIRECT_URI ",
-    import.meta.env.VITE_GOOGLE_REDIRECT_URI
-  );
 
   if (isLoading) {
     return (
@@ -143,7 +151,7 @@ export function MainPage() {
     );
   }
 
-  if (isError) return <p>에러발생 삐용삐용</p>;
+  if (isError) return <p>에러가 발생했습니다.</p>;
 
   const renderMentorBoxes = () => (
     <>
@@ -189,7 +197,7 @@ export function MainPage() {
       <div className="main">
         <div className="main_content overflow-hidden bg-white">
           <div style={{ background: "#fff" }}>
-            <Header major={major} className="mt-[50px]" title={""} />
+            <Header major={userMajor} className="mt-[50px]" title={""} />
             <div
               className="w-auto mt-[30px]"
               onClick={() =>
