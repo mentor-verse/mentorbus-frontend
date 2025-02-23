@@ -19,7 +19,7 @@ import SMU from "@/assets/SMU.webp";
 import HIU from "@/assets/HIU.webp";
 
 import { MentorBox } from "@/components/ui/mentorbox";
-import { MentorScheduleSection } from "@/pages/main/containers/MentorScheduleSection"; // Import the new component
+import { MentorScheduleSection } from "@/pages/main/containers/MentorScheduleSection";
 import React, { useEffect, useState } from "react";
 import BottomNav from "@/containers/navbar";
 import { useGetMentor } from "@/hooks/useGetMentor";
@@ -66,13 +66,17 @@ export function MainPage() {
   const [userName, setUserName] = useState<string | undefined>("");
   const [userMajor, setUserMajor] = useState<string | null | undefined>("");
   const [randomColleges, setRandomColleges] = useState<CollegeType[]>([]);
-  const [position, setPosition] = useState<boolean | null>();
-  const [mentorData, setMentorData] = useState<getMentorResDto[]>([]); // API에서 불러온 데이터를 저장할 state
+  const [position, setPosition] = useState<boolean | number | null>();
+  const [mentorData, setMentorData] = useState<getMentorResDto[]>([]);
 
   const user = useSelector((state: RootState) => state.user);
-  const [userData, setUserData] = useState<UserData | null>(
-    Array.isArray(user) && user.length > 0 ? user[0] : null
-  );
+  const [userData, setUserData] = useState<UserData | null>(user || null);
+
+  useEffect(() => {
+    setUserData(user);
+  }, [user]);
+
+  console.log("user", user);
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -80,6 +84,7 @@ export function MainPage() {
   useEffect(() => {
     if (Array.isArray(user) && user.length > 0) {
       setUserData(user[0]);
+      console.log("얍");
     } else {
       setUserData(null);
     }
@@ -89,10 +94,11 @@ export function MainPage() {
     if (userData !== null) {
       console.log("userData", userData);
       setPosition(userData.isMentor);
+      console.log("position", position);
       setUserMajor(userData.major || userData.interest);
       setUserName(userData.userName);
     }
-  }, [userData, userMajor]);
+  }, [position, userData, userMajor]);
 
   const {
     data: resp,
@@ -104,9 +110,6 @@ export function MainPage() {
   useEffect(() => {
     if (userData) {
       refetch();
-    } else {
-      alert("로그인 후 사용가능합니다.");
-      navigate("/onboarding");
     }
   }, [userData, refetch, navigate]);
 
@@ -172,7 +175,7 @@ export function MainPage() {
       <TitleSection
         title={userName || undefined}
         title2="님에게 맞는"
-        major={major}
+        major={userMajor}
         title3="멘토"
       />
       <div className="flex mt-[20px] overflow-auto">
@@ -209,7 +212,7 @@ export function MainPage() {
             >
               <Banner2 />
             </div>
-            {position === false ? (
+            {!Number(position) ? ( //db에 숫자로 저장되어있어서 숫자로 비교
               renderMentorBoxes()
             ) : (
               <MentorScheduleSection />
