@@ -10,12 +10,10 @@ interface SecondProps {
 
 export function Second({ count, setCount, sentence }: SecondProps) {
   const handleNext = (position: string) => {
-    localStorage.setItem("position", position); // 선택한 역할 저장
-
     if (position === "멘토") {
-      localStorage.setItem("isMentor", "true"); // 멘토일 경우 true 저장
+      localStorage.setItem("isMentor", "true");
     } else {
-      localStorage.removeItem("isMentor"); // 멘티일 경우 isMentor 삭제 (false처럼 동작)
+      localStorage.removeItem("isMentor");
     }
 
     setCount(count + 1);

@@ -4,6 +4,7 @@ export interface SignInRequest {
 }
 
 export interface SignInResponse {
+  user: any;
   accessToken: string;
   refreshToken: string;
   isFirst?: boolean; // 최초 로그인 여부

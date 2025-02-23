@@ -8,7 +8,6 @@ import { QAPage } from "@/pages/qa/page";
 import { MentorPage } from "./findmentor/containers/MentorPage";
 import { MyPage } from "./mypage/page";
 import { MentorBusPageMentee, MentorBusPageMentor } from "./mentorbus/page";
-import { Sam } from "./main/sam";
 import { CommentPage } from "./qa/containers/CommentPage";
 import { ApplyAnswerPage } from "./qa/containers/ApplyAnswerPage";
 import { useState } from "react";
@@ -52,7 +51,6 @@ export function MainRouter() {
         path="/comment/:index"
         element={<CommentPage Link={""} back_disable={""} back_work={"yes"} />}
       />
-      <Route path="/sam" element={<Sam />} />
       <Route
         path="/applyanswer"
         element={

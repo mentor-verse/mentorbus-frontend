@@ -22,12 +22,11 @@ export function Third({ count, setCount, sentence }: ThirdProps) {
   } = useForm<FormData>();
 
   const onSubmit = (data: FormData) => {
-    const isMentor = localStorage.getItem("isMentor") === "true"; // boolean 변환
-
+    const isMentor = localStorage.getItem("isMentor") === "true";
     if (isMentor) {
-      localStorage.setItem("job", data.belong); // 멘토일 경우 job으로 저장
+      localStorage.setItem("job", data.belong);
     } else {
-      localStorage.setItem("school", data.belong); // 멘티일 경우 school로 저장
+      localStorage.setItem("school", data.belong);
     }
 
     setCount(count + 1);

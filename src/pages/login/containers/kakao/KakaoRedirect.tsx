@@ -42,7 +42,6 @@ const KakaoRedirect = () => {
         setKakaoData(res);
       } catch (err) {
         console.error("카카오 로그인 실패:", err);
-        alert("로그인에 실패했습니다");
       }
     };
 
@@ -52,6 +51,7 @@ const KakaoRedirect = () => {
   useEffect(() => {
     if (userId) {
       refetch();
+      localStorage.setItem("userId", String(userId));
     }
   }, [userId, refetch]);
 
