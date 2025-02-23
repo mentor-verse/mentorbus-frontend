@@ -26,10 +26,9 @@ const KakaoRedirect = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [kakaoData, setKakaoData] = useState<KakaoUserType | null>(null);
 
-  // userId가 null이면 undefined 전달하여 useQuery 실행을 방지
   const { data: respData, refetch } = useGetProfile(
     { userId: userId },
-    { enabled: false } // 기본적으로 자동 실행 X
+    { enabled: false }
   );
 
   useEffect(() => {
@@ -52,20 +51,12 @@ const KakaoRedirect = () => {
 
   useEffect(() => {
     if (userId) {
-      console.log("Fetching profile for userId:", userId);
-      refetch()
-        .then(() => {
-          console.log("Profile fetched successfully");
-        })
-        .catch((err) => {
-          console.error("Profile fetch error:", err);
-        });
+      refetch();
     }
   }, [userId, refetch]);
 
   useEffect(() => {
     if (respData) {
-      console.log("Profile data received:", respData);
       setUserData(respData);
       dispatch(loginSuccess(respData));
     }
@@ -73,8 +64,9 @@ const KakaoRedirect = () => {
 
   useEffect(() => {
     if (userData && kakaoData) {
-      console.log("Navigating based on user data", userData);
-      navigate(kakaoData?.data?.isFirst ? "/onboarding" : "/main");
+      navigate(
+        kakaoData?.data?.isFirst ? "/onboarding?specialQuery=true" : "/main"
+      );
     }
   }, [userData, kakaoData, navigate]);
 
