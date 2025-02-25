@@ -4,7 +4,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 
-import store, { RootState } from "@/store"; // Redux 스토어 import
+import store, { RootState } from "@/store";
 
 interface CustomInternalAxiosRequestConfig extends InternalAxiosRequestConfig {
   requireAuth?: boolean;
@@ -20,7 +20,7 @@ export const client = axios.create({
 client.interceptors.request.use(
   (config: CustomInternalAxiosRequestConfig) => {
     if (config.requireAuth) {
-      const state = store.getState() as RootState; // RootState로 단언
+      const state = store.getState() as unknown as RootState;
       const accessToken = state.accessToken;
       if (accessToken) {
         config.headers = config.headers || {};
