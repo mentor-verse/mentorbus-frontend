@@ -6,7 +6,7 @@ import { LevelBar } from "../../../components/Icons/MyPageIcon";
 
 export interface ProfileProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
-  level: string;
+  level: number | undefined;
   gen: string;
   school: string;
 }
@@ -38,7 +38,7 @@ const Profile = React.forwardRef<HTMLDivElement, ProfileProps>(
               {school}
             </div>
             <div className="font-regular text-[#535353] text-[10px] tracking-[-5%] mt-[1xwpx]">
-              LV.{level}
+              LV {level}
             </div>
           </div>
         </div>
