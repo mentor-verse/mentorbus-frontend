@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ApplyFinished } from "./ApplyFinished";
 import { usePostClassApply } from "@/hooks/usePostClassApply";
 
-export function MentorPage() {
+export function MentorApplyPage() {
   const [isApplied, setIsApplied] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
