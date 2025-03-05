@@ -93,6 +93,7 @@ export function FindMentor() {
             date: item.date ?? "",
             text: item.text ?? "",
             sort: item.sort ?? "",
+            classId: item.id ?? "",
           }))
         : [];
 
