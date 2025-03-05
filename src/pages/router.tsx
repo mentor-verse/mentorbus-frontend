@@ -5,7 +5,7 @@ import Kakao from "./login/page";
 import KakaoRedirect from "./login/containers/kakao/KakaoRedirect";
 import { FindMentor } from "./findmentor/page";
 import { QAPage } from "@/pages/qa/page";
-import { MentorPage } from "./findmentor/containers/MentorPage";
+import { MentorApplyPage } from "./findmentor/containers/MentorApplyPage";
 import { MyPage } from "./mypage/page";
 import { MentorBusPageMentee, MentorBusPageMentor } from "./mentorbus/page";
 import { CommentPage } from "./qa/containers/CommentPage";
@@ -29,7 +29,7 @@ export function MainRouter() {
       <Route path="/find" element={<FindMentor />} />
       <Route path="/find/:school" element={<FindMentor />} />
       <Route path="/qabus" element={<QAPage />} />
-      <Route path="/mentorinfo" element={<MentorPage />} />
+      <Route path="/mentorinfo" element={<MentorApplyPage />} />
       <Route path="/mypage" element={<MyPage />} />
 
       <Route

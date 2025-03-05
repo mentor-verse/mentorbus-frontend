@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FindTitle from "./FindTitle";
 import { MentorInfo } from "./MentorInfo";
@@ -6,13 +6,41 @@ import { SearchBox } from "@/components/ui/searchbox";
 import { Button } from "@/components/ui/button";
 import { ApplyFinished } from "./ApplyFinished";
 import { usePostClassApply } from "@/hooks/usePostClassApply";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { UserData } from "@/types/login/UserType";
+import { postClassApplyProps } from "@/types/post";
 
-export function MentorPage() {
+export function MentorApplyPage() {
   const [isApplied, setIsApplied] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
   const selectedBox = location.state?.selectedBox;
+
+  const user = useSelector((state: RootState) => state.user);
+  const [userData, setUserData] = useState<UserData | null>(user || null);
+  const [userId, setUserId] = useState<postClassApplyProps>();
+  const [classId, setClassId] = useState<postClassApplyProps>();
+
+  useEffect(() => {
+    if (Array.isArray(user) && user.length > 0) {
+      setUserData(user[0]);
+    } else {
+      setUserData(null);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    setUserId(userData?.userId);
+  }, [userData]);
+
+  console.log("userData", userData);
+  console.log("userId", userId);
+
+  useEffect(() => {
+    setClassId(selectedBox.classId);
+  }, [selectedBox]);
 
   const { mutateAsync: applyClass } = usePostClassApply();
 
@@ -20,8 +48,8 @@ export function MentorPage() {
     console.log("Button clicked!");
     try {
       await applyClass({
-        userId: 4321,
-        classId: 223,
+        userId: userId,
+        classId: classId,
       });
 
       navigate("/qabus");
