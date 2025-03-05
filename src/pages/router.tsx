@@ -7,7 +7,7 @@ import { FindMentor } from "./findmentor/page";
 import { QAPage } from "@/pages/qa/page";
 import { MentorPage } from "./findmentor/containers/MentorPage";
 import { MyPage } from "./mypage/page";
-import { MentorBusPageMentee, MentorBusPageMentor } from "./mentorbus/page";
+import { MentorBusPage } from "./mentorbus/page";
 import { CommentPage } from "./qa/containers/CommentPage";
 import { ApplyAnswerPage } from "./qa/containers/ApplyAnswerPage";
 import { useState } from "react";
@@ -17,7 +17,6 @@ import { ClassInfoPage } from "./mentorbus/containers/ClassInfoPage";
 
 export function MainRouter() {
   const [, setAnswer] = useState(""); // 상태 선언
-  const position = localStorage.getItem("position"); // Retrieve position from localStorage
 
   return (
     <Routes>
@@ -32,16 +31,7 @@ export function MainRouter() {
       <Route path="/mentorinfo" element={<MentorPage />} />
       <Route path="/mypage" element={<MyPage />} />
 
-      <Route
-        path={`/mentorbus`}
-        element={
-          position === "멘티" ? (
-            <MentorBusPageMentee />
-          ) : (
-            <MentorBusPageMentor />
-          )
-        }
-      />
+      <Route path={`/mentorbus`} element={<MentorBusPage />} />
 
       <Route
         path="/comment"

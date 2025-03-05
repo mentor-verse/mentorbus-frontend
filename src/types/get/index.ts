@@ -32,7 +32,7 @@ export interface getClassMyProps {
 }
 
 export interface getClassMyRes {
-  isFinished: boolean;
+  isFinished: string;
   filter(arg0: (r: any) => boolean): unknown;
   data: getClassMyResDto[];
 }

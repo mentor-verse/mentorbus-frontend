@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { SearchBox } from "@/components/ui/searchbox";
 import { Info } from "@/components/ui/info";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import BottomNav from "@/containers/navbar";
 import { useGetClassMy } from "@/hooks/useGetClassMy";
 import { useQueryClient } from "@tanstack/react-query";
@@ -89,12 +87,11 @@ if (position === "멘티") {
   };
 }
 
-// 멘티용 컴포넌트
-export function MentorBusPageMentee() {
+export function MentorBusPage() {
   const queryClient = useQueryClient();
   const [classDataArray, setClassDataArray] = useState<getClassRes[]>([]);
   const [InfoBox, setInfoBox] = useState(false);
-  const [, setUserId] = useState<string | null>("");
+  const [userId, setUserId] = useState<string | null>("");
   const [userClassData, setUserClassData] = useState<getClassMyRes | null>(
     null
   );
@@ -118,8 +115,6 @@ export function MentorBusPageMentee() {
     const userId = localStorage.getItem("userId");
     setUserId(userId);
   }, []);
-
-  const userId = 4321;
 
   const { mutateAsync: patchPost, isLoadingPatch }: any = usePatchClassStatus();
 
@@ -243,19 +238,23 @@ export function MentorBusPageMentee() {
     );
   }
 
+  console.log("respGetClassMy", respGetClassMy);
+
   // 1. resp (useGetClassMy의 응답)에서 필터링
   const filteredUserClasses: getClassMyRes[] = Array.isArray(respGetClassMy)
     ? (respGetClassMy as getClassMyRes[]).filter((r) => {
-        if (filter === "unFinished") {
-          return r.isFinished === false; // 진행예정
-        } else if (filter === "finished") {
-          return r.isFinished === true; // 진행완료
+        if (filter === "finished") {
+          return r.isFinished === "1"; // 진행예정
+        } else if (filter === "unFinished") {
+          return r.isFinished === "0"; // 진행완료
         }
         return true;
       })
     : [];
 
+  console.log("filteredUserClasses", filteredUserClasses);
   // 2. 필터링된 resp 항목에 해당하는 classDataArray의 수업 정보를 찾기
+
   const filteredClasses = filteredUserClasses
     .map((userClass: any) => {
       return classDataArray.find(
@@ -356,6 +355,7 @@ export function MentorBusPageMentee() {
 
 //---------------------------------------------------------//
 
+/*
 export function MentorBusPageMentor() {
   const [filter, setFilter] = useState("entry");
   const [appliedItems, setAppliedItems] = useState<SelectedBox[]>([]);
@@ -397,7 +397,7 @@ export function MentorBusPageMentor() {
     console.log("resp", resp);
     console.log("setUserClassData", userClassData);
   }, [resp]);
-  */
+ 
 
   const loadAppliedItems = async () => {
     try {
@@ -552,7 +552,7 @@ export function MentorBusPageMentor() {
     }
   }, []);
 
-  /*
+
   if (isLoading) {
     return (
       <div
@@ -581,7 +581,7 @@ export function MentorBusPageMentor() {
   }
 
   if (isError) return <p>에러발생 삐용삐용</p>;
-  */
+  
 
   return (
     <>
@@ -672,3 +672,5 @@ export function MentorBusPageMentor() {
     </>
   );
 }
+
+*/
