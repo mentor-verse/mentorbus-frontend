@@ -23,6 +23,8 @@ export function OnboardingContainer({
   showThirdMentor,
   showThirdMentee,
 }: OnboardingContainerProps) {
+  console.log(localStorage);
+
   switch (count) {
     case 0:
       return (

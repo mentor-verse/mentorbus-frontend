@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { usePostAppleData } from "@/hooks/usePostAppleData";
 import { useGoogleOAuthHandler } from "../hooks/useGoogleOAuthHandler";
 import { SocialLoginButtons } from "../components/SocialLoginBtn";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "@/firebase";
+import axios from "axios";
 
 declare global {
   interface Window {
@@ -29,9 +32,9 @@ const Zero: React.FC = () => {
 
   const kakaoRestApiKey = import.meta.env.VITE_KAKAO_REST_API_KEY;
   const kakaoRedirectUri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
-  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  // const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
   const googleRedirectUri = import.meta.env.VITE_GOOGLE_REDIRECT_URI;
-  const googleScope = "profile email";
+  // const googleScope = "profile email";
 
   useEffect(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
@@ -48,11 +51,58 @@ const Zero: React.FC = () => {
     window.location.href = kakaoLoginUrl;
   };
 
-  const handleGoogleLogin = () => {
-    const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleClientId}&redirect_uri=${encodeURIComponent(
-      googleRedirectUri
-    )}&response_type=code&scope=${encodeURIComponent(googleScope)}`;
-    window.location.href = googleLoginUrl;
+  // const handleGoogleLogin = () => {
+  //   const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleClientId}&redirect_uri=${encodeURIComponent(
+  //     googleRedirectUri
+  //   )}&response_type=code&scope=${encodeURIComponent(googleScope)}`;
+  //   window.location.href = googleLoginUrl;
+  // };
+
+  const fetchLogin = async (
+    socialType: string,
+    uid: string,
+    email: string | null
+  ) => {
+    return await axios
+      .post(`http://localhost:3000/member/login/${socialType}`, {
+        uid: uid,
+        email: email,
+      })
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        console.error(err);
+        return null;
+      });
+  };
+
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    // console.log(await auth.currentUser?.getIdToken());
+    await signInWithPopup(auth, provider)
+      .then(async (data) => {
+        const uid = data.user.uid;
+        const socialType = "GOOGLE";
+        const email = data.user.email ?? "";
+
+        fetchLogin(socialType, uid, email)
+          .then((res) => {
+            console.log(res);
+            if (res?.data.result == 201) {
+              navigate("/main");
+            } else {
+              localStorage.setItem("socialType", socialType);
+              localStorage.setItem("email", email);
+              localStorage.setItem("uid", uid);
+              navigate("/onboarding?specialQuery=true");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => console.log(err));
   };
 
   const { mutateAsync: sendAppleData } = usePostAppleData();
