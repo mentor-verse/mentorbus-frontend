@@ -1,3 +1,4 @@
+import { fetchLogin } from "@/controllers/api";
 import { auth } from "@/firebase";
 import axios from "axios";
 import {
@@ -6,34 +7,13 @@ import {
   setPersistence,
   signInWithCredential,
 } from "firebase/auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const fetchLogin = async (
-  socialType: string,
-  uid: string,
-  email: string | null
-) => {
-  return await axios
-    .post(`http://localhost:3000/member/login/${socialType}`, {
-      uid: uid,
-      email: email,
-    })
-    .then((res) => {
-      return res;
-    })
-    .catch((err) => {
-      console.error(err);
-      return null;
-    });
-};
 
 const KakaoLoginRedirect = () => {
   const navigate = useNavigate();
 
-  const REST_API_KEY = "12a0588158a206cf61adb5ca7ebc218a";
-  const REDIRECT_URI = "http://localhost:5173/auth/kakao/callback";
-  const CLIENT_SECRET = "ceg2AyBSBHcvlqoB2rC3hIXvDzqARioE";
+  const [didMount, setDidMount] = useState(false);
 
   const socialType = "KAKAO";
   const code = new URL(window.location.href).searchParams.get("code");
@@ -43,10 +23,10 @@ const KakaoLoginRedirect = () => {
 
     const payload = {
       grant_type: "authorization_code",
-      client_id: REST_API_KEY,
-      redirect_uri: REDIRECT_URI,
+      client_id: import.meta.env.VITE_KAKAO_REST_API_KEY,
+      redirect_uri: import.meta.env.VITE_KAKAO_REDIRECT_URI,
       code,
-      client_secret: CLIENT_SECRET,
+      client_secret: import.meta.env.VITE_KAKAO_CLIENT_SECRET,
     };
 
     try {
@@ -69,22 +49,26 @@ const KakaoLoginRedirect = () => {
           .then((result) => {
             const uid = result.user.uid;
             const name = result.user.displayName;
-            console.log(name);
             const email = name; //비즈앱 신청 전 대체
-            console.log(result);
 
-            const credential = OAuthProvider.credentialFromResult(result);
-            const acToken = credential?.accessToken;
-            const idToken = credential?.idToken;
-            // setUsername(result.user.displayName);
+            // const credential = OAuthProvider.credentialFromResult(result);
+            // const acToken = credential?.accessToken;
+            // const idToken = credential?.idToken;
 
             fetchLogin(socialType, uid, email)
               .then((res) => {
-                console.log(res);
-                if (res?.data.status == 200) {
+                if (res.data.status == 200) {
                   navigate("/");
                 } else {
-                  navigate("/register", { state: { socialType } });
+                  if (
+                    window.confirm(
+                      `로그인 정보를 찾지 못했습니다\n회원가입하시겠습니까?`
+                    )
+                  )
+                    navigate("/register", { state: { socialType } });
+                  else {
+                    navigate("/login");
+                  }
                 }
               })
               .catch((err) => {
@@ -101,8 +85,13 @@ const KakaoLoginRedirect = () => {
   };
 
   useEffect(() => {
-    getKakaoAuthToken();
+    setDidMount(true);
   }, []);
+
+  useEffect(() => {
+    if (!didMount) return;
+    getKakaoAuthToken();
+  }, [didMount]);
 
   return <div>로그인 중...</div>;
 };

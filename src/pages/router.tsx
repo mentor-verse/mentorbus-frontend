@@ -4,12 +4,18 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/firebase";
 import LoginPage from "./login/page";
 import { MainPage } from "./main/page";
-import KakaoLoginRedirect from "./auth/kakao";
+import KakaoLoginRedirect from "./login/auth/kakao";
 import RegisterPage from "./register/page";
+import { FindMentor } from "./findmentor/page";
+import { QAPage } from "./qa/page";
+import { MentorBusPageMentee, MentorBusPageMentor } from "./mentorbus/page";
+import { CommentPage } from "./qa/containers/CommentPage";
+import { MentorApplyPage } from "./findmentor/containers/MentorApplyPage";
+import { MyPage } from "./mypage/page";
 
 export function MainRouter() {
   // const [, setAnswer] = useState(""); // 상태 선언
-  // const position = localStorage.getItem("position"); // Retrieve position from localStorage
+  const position = localStorage.getItem("position"); // Retrieve position from localStorage
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -26,7 +32,11 @@ export function MainRouter() {
     onAuthStateChanged(auth, (user) => {
       console.log(user);
       if (user === null) {
-        if (!["/login", "/register", "/auth"].includes(location.pathname)) {
+        if (
+          !["/login", "/register", "/auth/kakao/callback"].includes(
+            location.pathname
+          )
+        ) {
           alert("로그인이 필요한 페이지입니다.");
           console.log(333);
           navigate("/login");
@@ -43,36 +53,35 @@ export function MainRouter() {
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="auth/kakao/callback" element={<KakaoLoginRedirect />} />
+        <Route path="/find" element={<FindMentor />} />
+        <Route path="/qabus" element={<QAPage />} />
+        <Route path="/mentorinfo" element={<MentorApplyPage />} />
+        <Route path="/mypage" element={<MyPage />} />
+
+        <Route
+          path={`/mentorbus`}
+          element={
+            position === "멘티" ? (
+              <MentorBusPageMentee />
+            ) : (
+              <MentorBusPageMentor />
+            )
+          }
+        />
+        <Route
+          path="/comment"
+          element={
+            <CommentPage Link={""} back_disable={""} back_work={"yes"} />
+          }
+        />
       </Route>
-      {/* <Route path="/" element={<Onboarding />} />
-      <Route path="/onboarding" element={<Onboarding />} /> */}
-      {/* <Route path="/kakao" element={<Kakao />} />
-      <Route path="/oauth" element={<KakaoRedirect />} />
-      <Route path="/main" element={<MainPage />} />
-      <Route path="/find" element={<FindMentor />} />
+      {/*
       <Route path="/find/:school" element={<FindMentor />} />
-      <Route path="/qabus" element={<QAPage />} />
-      <Route path="/mentorinfo" element={<MentorApplyPage />} />
-      <Route path="/mypage" element={<MyPage />} />
       <Route path="/" element>
         <Route path="/onboarding"></Route>
       </Route>
 
-      <Route
-        path={`/mentorbus`}
-        element={
-          position === "멘티" ? (
-            <MentorBusPageMentee />
-          ) : (
-            <MentorBusPageMentor />
-          )
-        }
-      />
 
-      <Route
-        path="/comment"
-        element={<CommentPage Link={""} back_disable={""} back_work={"yes"} />}
-      />
       <Route
         path="/comment/:index"
         element={<CommentPage Link={""} back_disable={""} back_work={"yes"} />}

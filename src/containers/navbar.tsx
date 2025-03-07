@@ -96,8 +96,8 @@ const BottomNav = () => {
 
       <nav className="wrapper">
         <div className="flex justify-center">
-          <a href="/main">
-            <Home color={getColor("/main")} />
+          <a href="/">
+            <Home color={getColor("/")} />
           </a>
         </div>
         <div className="flex justify-center">

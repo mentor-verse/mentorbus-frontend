@@ -5,41 +5,10 @@ import LogoSVG from "@/assets/Logo.svg?react";
 import NextArrowCircleSVG from "@/assets/icons/next_arrow_circle.svg?react";
 import SearchSVG from "@/assets/icons/search.svg?react";
 
-import {
-  ChangeEvent,
-  ChangeEventHandler,
-  Dispatch,
-  MouseEventHandler,
-  SetStateAction,
-  useState,
-} from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { auth } from "@/firebase";
-import axios from "axios";
-
-interface UserInfo {
-  uid: string;
-  email: string;
-  nickname: string;
-  socialType: "DEFAULT" | "GOOGLE" | "APPLE" | "KAKAO" | "NAVER";
-  profileImage?: string;
-  userType: "MENTOR" | "MENTEE";
-  affiliation: string;
-  major: string;
-  interest: string;
-}
-
-const fetchRegister = async (userInfo: UserInfo) => {
-  return await axios
-    .post(`http://localhost:3000/member/register`, userInfo)
-    .then((res) => {
-      return res;
-    })
-    .catch((err) => {
-      console.error(err);
-      return null;
-    });
-};
+import { fetchCheckNickname, fetchRegister } from "@/controllers/api";
 
 const RegisterStepTitle = ({
   stepTitle,
@@ -54,18 +23,6 @@ const RegisterStepTitle = ({
     <p className="text-3xl">{stepTitle.text}</p>
   </>
 );
-
-const fetchCheckNickname = async (nickname: string) => {
-  return await axios
-    .get(`http://localhost:3000/member/check-nickname?nickname=${nickname}`)
-    .then((res) => {
-      return res.data.data;
-    })
-    .catch((err) => {
-      console.error(err);
-      return null;
-    });
-};
 
 const RegisterStepNicknameTextField = ({
   nickname,
@@ -88,16 +45,17 @@ const RegisterStepNicknameTextField = ({
     setIsLoading(true);
     const result = await fetchCheckNickname(nickname);
     setIsLoading(false);
-    setIsValid(result ? 1 : 2);
+    setIsValid(result.data ? 1 : 2);
   };
 
-  const validColor = ["white", "green-200", "red-500"][isValid];
+  const validColor = ["#FFFFFF", "#88e09f", "#ef4444"][isValid];
 
   return (
     <div className="relative flex flex-col items-end gap-8 w-full">
       <input
         className={`bg-transparent border-b-2 w-full text-center text-3xl
-          p-2 my-4 outline-none text-${validColor} border-${validColor}`}
+          p-2 my-4 outline-none`}
+        style={{ color: validColor, borderColor: validColor }}
         value={nickname}
         onChange={handleChangeNickname}
       />
@@ -229,9 +187,10 @@ const RegisterStepGridField = ({
   return (
     <div className="relative flex flex-col items-end w-full gap-8 my-2">
       <div className="grid grid-cols-2 gap-4 w-full">
-        {dataList.map((e) => {
+        {dataList.map((e, i) => {
           return (
             <div
+              key={i}
               className={`cursor-pointer font-bold text-xl p-6 border-2 rounded-md hover:bg-white hover:text-[#5baedd] ${
                 e == data ? "bg-white text-[#5baedd]" : "text-white"
               }`}

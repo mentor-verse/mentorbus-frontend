@@ -2,21 +2,26 @@ import { Banner2 } from "@/components/Icons/Banner";
 import { Header } from "./containers/Header";
 import { TitleSection } from "./containers/TitleSection";
 import { College } from "@/components/ui/college";
-import SU from "@/assets/SU.webp";
-import SSU from "@/assets/SSU.webp";
-import Seoul from "@/assets/Seoul.webp";
-import SOF from "@/assets/SOU.svg";
-import YU from "@/assets/YU.webp";
-import HU from "@/assets/HU.webp";
-import CAU from "@/assets/CAU.webp";
-import KU from "@/assets/KU.webp";
-import SGU from "@/assets/SGU.webp";
-import FU from "@/assets/FU.webp";
-import KKU from "@/assets/KKU.webp";
-import DKU from "@/assets/DKU.webp";
-import KMU from "@/assets/KMU.webp";
-import SMU from "@/assets/SMU.webp";
-import HIU from "@/assets/HIU.webp";
+import SNU from "@/assets/univ/SNU.webp";
+import KU from "@/assets/univ/KU.webp";
+import YU from "@/assets/univ/YU.webp";
+
+import SGU from "@/assets/univ/SGU.webp";
+import SKKU from "@/assets/univ/SKKU.webp";
+import HYU from "@/assets/univ/HYU.webp";
+
+import CAU from "@/assets/univ/CAU.webp";
+import HUPS from "@/assets/univ/HUPS.webp";
+import UOS from "@/assets/univ/UOS.webp";
+
+import KKU from "@/assets/univ/KKU.webp";
+import HU from "@/assets/univ/HU.webp";
+import DU from "@/assets/univ/DU.webp";
+import SSU from "@/assets/univ/SSU.webp";
+
+import KMU from "@/assets/univ/KMU.webp";
+import SMWU from "@/assets/univ/SMWU.webp";
+import SU from "@/assets/univ/SU.webp";
 
 import { MentorBox } from "@/components/ui/mentorbox";
 import { MentorScheduleSection } from "@/pages/main/containers/MentorScheduleSection";
@@ -36,22 +41,28 @@ interface CollegeType {
 }
 
 const colleges: CollegeType[] = [
-  { img: Seoul, name: "서울대학교" },
+  { img: SNU, name: "서울대학교" },
   { img: KU, name: "고려대학교" },
   { img: YU, name: "연세대학교" },
-  { img: SU, name: "성균관대학교" },
+
   { img: SGU, name: "서강대학교" },
-  { img: HU, name: "한양대학교" },
+  { img: SKKU, name: "성균관대학교" },
+  { img: HYU, name: "한양대학교" },
+
   { img: CAU, name: "중앙대학교" },
-  { img: FU, name: "한국외국어대학교" },
-  { img: SOF, name: "서울시립대학교" },
+  //경희대 KHU
+  { img: HUPS, name: "한국외국어대학교" },
+  { img: UOS, name: "서울시립대학교" },
+
   { img: KKU, name: "건국대학교" },
-  { img: DKU, name: "동국대학교" },
-  { img: HIU, name: "홍익대학교" },
-  { img: KMU, name: "국민대학교" },
+  { img: DU, name: "동국대학교" },
+  { img: HU, name: "홍익대학교" },
   { img: SSU, name: "숭실대학교" },
-  { img: SMU, name: "숙명여대" },
+
+  { img: KMU, name: "국민대학교" },
+  { img: SMWU, name: "숙명여대" },
   { img: SU, name: "세종대학교" },
+  //단국대
 ];
 
 const getRandomColleges = (

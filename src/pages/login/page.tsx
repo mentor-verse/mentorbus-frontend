@@ -1,8 +1,5 @@
 import LoginBus from "@/assets/onBoardingLoginBus.svg?react";
 
-import Cloud from "@/assets/Cloud.svg?react";
-import Cloud2 from "@/assets/Cloud2.svg?react";
-
 import LogoSVG from "@/assets/Logo.svg?react";
 
 import { KakaoBtn } from "@/components/Icons/KakaoBtn";
@@ -12,51 +9,21 @@ import { AppleBtn } from "@/components/Icons/AppleBtn";
 import OnBoardingLayout from "@/layout/onboarding";
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { auth } from "@/firebase";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-const fetchLogin = async (
-  socialType: string,
-  uid: string,
-  email: string | null
-) => {
-  return await axios
-    .post(`http://localhost:3000/member/login/${socialType}`, {
-      uid: uid,
-      email: email,
-    })
-    .then((res) => {
-      return res;
-    })
-    .catch((err) => {
-      console.error(err);
-      return null;
-    });
-};
+import { fetchLogin } from "@/controllers/api";
+import { useEffect } from "react";
 
 const LoginComponent = () => {
   const navigate = useNavigate();
 
   const onKakaoLogin = () => {
-    // export const REST_API_KEY = process.env.REACT_APP_REST_API_KEY as string;
-    // export const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI as string;
-    // export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-    // export const CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET as string;
-    // export const KAKAO_APP_KEY = process.env.REACT_APP_KAKAO_APP_KEY as string;
-
-    const REST_API_KEY = "12a0588158a206cf61adb5ca7ebc218a";
-    const REDIRECT_URI = "http://localhost:5173/auth/kakao/callback";
-    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-    const CLIENT_SECRET = "ceg2AyBSBHcvlqoB2rC3hIXvDzqARioE";
-    const KAKAO_APP_KEY = "700c958f24179e214a46bfa26f87defb";
-
-    console.log("kakao");
-    const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${encodeURIComponent(
-      REDIRECT_URI
+    const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${
+      import.meta.env.VITE_KAKAO_REST_API_KEY
+    }&redirect_uri=${encodeURIComponent(
+      import.meta.env.VITE_KAKAO_REDIRECT_URI
     )}&response_type=code`;
-    window.location.href = kakaoLoginUrl;
 
-    // window.open(kakaoLoginUrl);
+    window.location.href = kakaoLoginUrl;
   };
 
   const handleGoogleLogin = async () => {
@@ -69,18 +36,21 @@ const LoginComponent = () => {
         const email = data.user.email ?? "";
         console.log(data);
 
-        fetchLogin(socialType, uid, email)
-          .then((res) => {
-            console.log(res);
-            if (res?.data.status == 200) {
-              navigate("/");
-            } else {
+        fetchLogin(socialType, uid, email).then((res) => {
+          if (res.data.status == 200) {
+            navigate("/");
+          } else {
+            if (
+              window.confirm(
+                `로그인 정보를 찾지 못했습니다\n회원가입하시겠습니까?`
+              )
+            )
               navigate("/register", { state: { socialType } });
+            else {
+              navigate("/login");
             }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+          }
+        });
       })
       .catch((err) => console.log(err));
   };
@@ -108,22 +78,17 @@ const LoginComponent = () => {
           <AppleBtn />
         </div>
       </div>
-      <div onClick={() => signOut(auth)}>로그아웃</div>
     </div>
   );
 };
 
 const LoginPage = () => {
+  useEffect(() => {
+    signOut(auth);
+  }, []);
+
   return (
     <OnBoardingLayout>
-      <div>
-        <div className="absolute top-[10vh] right-0">
-          <Cloud />
-        </div>
-        <div className="absolute left-0 top-[20vh]">
-          <Cloud2 />
-        </div>
-      </div>
       <LoginBus className="absolute bottom-0 w-full h-auto" />
       <LoginComponent />
     </OnBoardingLayout>
